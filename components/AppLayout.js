@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Col, Input, Menu, Row } from 'antd';
 import styled from 'styled-components';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
+import { useSelector } from 'react-redux';
 
-const dummy = {
-    nickname: '제로초',
-    Post: [],
-    Followings: [],
-    Followers: [],
-    isLoggedIn: false,
-};
 const InputSearch = styled(Input.Search)`
 vertical-align: middle
 `;
 
 const AppLayout = ({ children }) => {
-    const [IsLoggedIn, setIsLoggedIn] = useState(false);
+    const { isLoggedIn } = useSelector((state) => state.user);
     return (
         <div>
             <Menu mode="horizontal">
@@ -30,9 +24,9 @@ const AppLayout = ({ children }) => {
             </Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {dummy.isLoggedIn
-                        ? <UserProfile setIsLoggedIn={setIsLoggedIn} />
-                        : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
+                    {isLoggedIn
+                        ? <UserProfile />
+                        : <LoginForm />}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}
