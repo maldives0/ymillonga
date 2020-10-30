@@ -6,7 +6,7 @@ export const initialState = {
             nickname: '주영',
         },
         content: 'first post',
-        Image: [{
+        Images: [{
             src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726'
         }, {
             src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
@@ -31,13 +31,14 @@ export const initialState = {
 
 const ADD_POST = 'ADD_POST';
 export const addPost = {
-    type: ADD_POST
+    type: ADD_POST,
+
 };
 const dummyPost = {
     id: 2,
     content: 'dummy data',
     User: {
-        id: 1,
+        id: 2,
         nickname: 'momo',
     },
     Images: [],

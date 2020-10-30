@@ -27,7 +27,8 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    dispatch(loginAction);
+    dispatch(loginAction({ id, password }));
+
   }, [password, passwordCheck, term]);
 
   const onChangePasswordCheck = useCallback((e) => {

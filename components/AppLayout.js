@@ -16,8 +16,8 @@ const AppLayout = ({ children }) => {
     return (
         <div>
             <Menu mode="horizontal">
-                <Menu.Item key="home"><Link href="/"><a>노드버드</a></Link></Menu.Item>
-                <Menu.Item key="profile"><Link href="/profile"><a>프로필</a></Link></Menu.Item>
+                <Menu.Item key="home"><Link href="/"><a>nodebird</a></Link></Menu.Item>
+                <Menu.Item key="profile"><Link href="/profile"><a>profile</a></Link></Menu.Item>
                 <Menu.Item key="mail">
                     <InputSearch enterButton />
                 </Menu.Item>

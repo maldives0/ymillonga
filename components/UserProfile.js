@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { logoutAction } from '../reducers/user';
 const UserProfile = () => {
-    // const { user } = useSelector(state => state.user.isLoggedIn);
+
     const dispatch = useDispatch();
     const onLogOut = useCallback(() => {
         dispatch(logoutAction);
