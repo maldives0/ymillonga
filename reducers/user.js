@@ -6,8 +6,54 @@ export const initialState = {
 };
 
 export const loginAction = (data) => {
+    return (dispatch, getState) => {
+        const state = getState();
+        setTimeout(() => {
+            dispatch(loginRequestAction());
+        }, 2000);
+        axios.post('/api/login')
+            .then((res) => {
+                dispatch(loginSuccessAction(res.data));
+            })
+            .catch((err) => {
+                dispatch(loginFailureAction(err));
+            })
+    }
+}
+
+export const loginRequestAction = (data) => {
     return {
-        type: 'LOG_IN',
+        type: 'LOG_IN_REQUEST',
+        data,
+    }
+};
+export const loginRequestSuccess = (data) => {
+    return {
+        type: 'LOG_IN_SUCCESS',
+        data,
+    }
+};
+export const loginRequestFailure = (data) => {
+    return {
+        type: 'LOG_IN_FAILURE',
+        data,
+    }
+};
+export const logoutRequestAction = (data) => {
+    return {
+        type: 'LOG_OUT_REQUEST',
+        data,
+    }
+};
+export const logoutRequestSuccess = (data) => {
+    return {
+        type: 'LOG_OUT_SUCCESS',
+        data,
+    }
+};
+export const logoutRequestFailure = (data) => {
+    return {
+        type: 'LOG_OUT_FAILURE',
         data,
     }
 };

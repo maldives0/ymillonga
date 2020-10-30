@@ -5,13 +5,13 @@ export const initialState = {
             id: 1,
             nickname: '주영',
         },
-        content: 'first post',
+        content: 'first post #해시태그 #익스프레스',
         Images: [{
-            src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726'
+            src: 'https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile7.uf.tistory.com%2Fimage%2F24283C3858F778CA2EFABE'
         }, {
-            src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
+            src: 'https://blog.jinbo.net/attach/615/200937431.jpg',
         }, {
-            src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
+            src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRzIiKMQJjundNhRhkqo-VwfcUKKIzWlulhpQ&usqp=CAU',
         }],
         Comments: [{
             User: {
