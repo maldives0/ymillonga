@@ -7,13 +7,14 @@ import AppLayout from '../components/AppLayout';
 
 
 const Home = () => {
-  const { isLoggedIn } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
   const { mainPosts } = useSelector(state => state.post);
 
   return (
     <AppLayout>
-      {isLoggedIn && <PostForm />}
+      {me && <PostForm />}
       {mainPosts.map((c) => {
+        console.log('c', c);
         return (
           <PostCard key={c.id} post={c} />
         );

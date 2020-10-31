@@ -5,6 +5,7 @@ import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, Ellipsis
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
@@ -14,7 +15,9 @@ const CardWrapper = styled.div`
 margin-bottom: 20px;
 `;
 const PostCard = ({ post }) => {
+    console.log('postData', post.content);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
+    const id = useSelector((state) => state.user.me?.id);
     const [liked, setLiked] = useState(false);
     const onToggleLike = useCallback(() => {
         setLiked((prev) => !prev);
@@ -24,7 +27,7 @@ const PostCard = ({ post }) => {
     }, []);
 
 
-    const id = useSelector((state) => state.user.me?.id);
+
     return (
         <CardWrapper key={post.id}>
             <Card
@@ -59,6 +62,7 @@ const PostCard = ({ post }) => {
                     title={post.User.nickname}
                     description={<PostCardContent
                         postData={post.content} />} />
+
             </Card>
             {commentFormOpened && (
                 <>
