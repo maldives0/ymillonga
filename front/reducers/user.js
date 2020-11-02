@@ -153,7 +153,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
 
         case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
-            draft.signUpError = null;
+            draft.signUpError = action.error;
             break;
         case CHANGE_NICKNAME_REQUEST:
             draft.changeNicknameLoading = true;
@@ -167,7 +167,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case CHANGE_NICKNAME_FAILURE:
             draft.changeNicknameLoading = false;
-            draft.changeNicknameError = null;
+            draft.changeNicknameError = action.error;
             break;
         case ADD_POST_TO_ME:
 
