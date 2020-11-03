@@ -18,10 +18,15 @@ const Signup = () => {
   const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');//뒤로가기 시 전 페이지가 나오지 않음
+    }
+  }, [me & me.id]);
   useEffect(() => {
     if (signUpDone) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [signUpDone]);
   useEffect(() => {

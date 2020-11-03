@@ -61,9 +61,10 @@ const dummyUser = (data) => ({
     Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
 });
 
-export const logInRequestAction = () => {
+export const logInRequestAction = (data) => {
     return {
         type: LOG_IN_REQUEST,
+        data,
     }
 }
 export const logOutRequestAction = () => {
@@ -91,7 +92,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.me.Followings.push({ id: action.data });
             break;
         case FOLLOW_FAILURE:
-            draft.followLoading = true;
+            draft.followLoading = false;
             draft.followError = action.error;
             break;
         case UNFOLLOW_REQUEST:
@@ -106,7 +107,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
             break;
         case UNFOLLOW_FAILURE:
-            draft.unfollowLoading = true;
+            draft.unfollowLoading = false;
             draft.unfollowError = action.error;
             break;
         case LOG_IN_REQUEST:
@@ -117,11 +118,11 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
 
         case LOG_IN_SUCCESS:
             draft.logInLoading = false;
+            draft.me = action.data;
             draft.logInDone = true;
-            draft.me = dummyUser(action.data);
             break;
         case LOG_IN_FAILURE:
-            draft.logInLoading = true;
+            draft.logInLoading = false;
             draft.logInError = action.error;
             break;
         case LOG_OUT_REQUEST:
@@ -136,7 +137,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
 
         case LOG_OUT_FAILURE:
-            draft.logOutLoading = true;
+            draft.logOutLoading = false;
             draft.logOutError = action.error;
             break;
 
