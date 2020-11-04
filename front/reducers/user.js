@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+    loadUserLoading: false,
+    loadUserDone: false,
+    loadUserError: null,
     logInLoading: false,
     logInDone: false,
     logInError: null,
@@ -24,6 +27,10 @@ export const initialState = {
     loginData: {},
 };
 
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -52,14 +59,14 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
-const dummyUser = (data) => ({
-    ...data,
-    nickname: 'momo',
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
-    Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
-});
+// const dummyUser = (data) => ({
+//     ...data,
+//     nickname: 'momo',
+//     id: 1,
+//     Posts: [{ id: 1 }],
+//     Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
+//     Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
+// });
 
 export const logInRequestAction = (data) => {
     return {
@@ -74,12 +81,27 @@ export const logOutRequestAction = () => {
 }
 export const signUpRequestAction = () => {
     return {
-        type: LOG_OUT_REQUEST,
+        type: SIGN_UP_REQUEST,
     }
 }
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case LOAD_MY_INFO_REQUEST:
+            draft.loadUserLoading = true;
+            draft.loadUserDone = false;
+            draft.loadUserError = null;
+            break;
+
+        case LOAD_MY_INFO_SUCCESS:
+            draft.loadUserLoading = false;
+            draft.loadUserDone = true;
+            draft.me = action.data;
+            break;
+        case LOAD_MY_INFO_FAILURE:
+            draft.loadUserLoading = false;
+            draft.loadUserError = action.error;
+            break;
         case FOLLOW_REQUEST:
             draft.followLoading = true;
             draft.followDone = false;

@@ -4,8 +4,10 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
@@ -19,6 +21,7 @@ db.sequelize.sync()
     .catch(console.error);
 passportConfig();
 
+app.use(morgan('dev'));
 app.use(cors({
     origin: 'http://localhost:3060',
     credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
@@ -40,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/post', postRouter);
+app.use('/posts', postRouter);
 app.use('/user', userRouter);
 
 app.use((err, req, res, next) => {
