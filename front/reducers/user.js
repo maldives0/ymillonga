@@ -25,13 +25,18 @@ export const initialState = {
     loadFollowersLoading: false,
     loadFollowersDone: false,
     loadFollowersError: null,
+    removeFollowerLoading: false,
+    removeFollowerDone: false,
+    removeFollowerError: null,
     changeNicknameLoading: false,
     changeNicknameDone: false,
     changeNicknameError: null,
+
     me: null,
     signUpData: {},
     loginData: {},
 };
+
 
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
@@ -61,6 +66,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
@@ -93,14 +102,25 @@ export const logOutRequestAction = () => {
         type: LOG_OUT_REQUEST,
     }
 }
-export const signUpRequestAction = () => {
-    return {
-        type: SIGN_UP_REQUEST,
-    }
-}
+
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case REMOVE_FOLLOWER_REQUEST:
+            draft.removeFollowerLoading = true;
+            draft.removeFollowerDone = false;
+            draft.removeFollowerError = null;
+            break;
+
+        case REMOVE_FOLLOWER_SUCCESS:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerDone = true;
+            draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data.UserId);
+            break;
+        case REMOVE_FOLLOWER_FAILURE:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerError = action.error;
+            break;
         case LOAD_FOLLOWINGS_REQUEST:
             draft.loadFollowingsLoading = true;
             draft.loadFollowingsDone = false;
@@ -237,6 +257,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.changeNicknameLoading = false;
             draft.changeNicknameError = action.error;
             break;
+
         case ADD_POST_TO_ME:
 
             draft.me.Posts.unshift({ id: action.data });

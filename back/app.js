@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -23,12 +24,11 @@ passportConfig();
 
 app.use(morgan('dev'));
 app.use(cors({
-    origin: 'http://localhost:3060',
+    origin: true,//'http://nodebird.com', 해당 주소에서 온 요청만 허용
     credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
 }));
-//app.use(cors({
-//     origin: 'http://nodebird.com'
-// })); // 해당 주소에서 온 요청만 허용
+
+app.use('/', express.static(path.join(__dirname, 'uploads')));// '/' => 'localhost:3065/모모.png',__dirname(현재폴더:back), __dirname + 'uploads'로 적지 않는다. 운영체제마다 /(맥),\(윈도우) 경로설정 다른 것을 자동으로 해준다. 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

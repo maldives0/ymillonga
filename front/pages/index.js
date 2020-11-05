@@ -44,7 +44,6 @@ const Home = () => {
     <AppLayout>
       {me && <PostForm />}
       {mainPosts.map((c) => {
-
         return (
           <PostCard key={c.id} post={c} />
         );

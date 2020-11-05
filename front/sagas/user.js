@@ -1,6 +1,7 @@
-import { all, fork, put, takeLatest, delay, call } from 'redux-saga/effects';
+import { all, fork, put, takeLatest, call } from 'redux-saga/effects';
 import axios from 'axios';
 import {
+
     LOAD_MY_INFO_REQUEST,
     LOAD_MY_INFO_SUCCESS,
     LOAD_MY_INFO_FAILURE,
@@ -33,10 +34,15 @@ import {
     LOAD_FOLLOWERS_SUCCESS,
     LOAD_FOLLOWERS_FAILURE,
 
+    REMOVE_FOLLOWER_REQUEST,
+    REMOVE_FOLLOWER_SUCCESS,
+    REMOVE_FOLLOWER_FAILURE,
+
     CHANGE_NICKNAME_REQUEST,
     CHANGE_NICKNAME_SUCCESS,
     CHANGE_NICKNAME_FAILURE,
 } from '../reducers/user';
+
 
 function changeNicknameAPI(data) {
     return axios.patch('/user/nickname', { nickname: data });
@@ -81,7 +87,7 @@ function* loadUser(action) {
     }
 }
 function followAPI(data) {
-    return axios.post(`/user/${data}/follow`);
+    return axios.patch(`/user/${data}/follow`);
 }
 function* follow(action) {
     try {
@@ -93,6 +99,7 @@ function* follow(action) {
             data: result.data
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: FOLLOW_FAILURE,
             error: err.response.data,
@@ -111,6 +118,7 @@ function* unfollow(action) {
             data: result.data
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: UNFOLLOW_FAILURE,
             error: err.response.data,
@@ -118,6 +126,26 @@ function* unfollow(action) {
     }
 
 
+}
+function removeFollowerAPI(data) {
+    return axios.delete(`/user/follower/${data}`);
+}
+function* removeFollower(action) {
+    try {
+
+        const result = yield call(removeFollowerAPI, action.data)
+
+        yield put({
+            type: REMOVE_FOLLOWER_SUCCESS,
+            data: result.data
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: REMOVE_FOLLOWER_FAILURE,
+            error: err.response.data,
+        });
+    }
 }
 function loadFollowersAPI(data) {
     return axios.get(`/user/followers`, data);
@@ -132,6 +160,7 @@ function* loadFollowers(action) {
             data: result.data
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: LOAD_FOLLOWERS_FAILURE,
             error: err.response.data,
@@ -151,6 +180,7 @@ function* loadFollowings(action) {
             data: result.data
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: LOAD_FOLLOWINGS_FAILURE,
             error: err.response.data,
@@ -169,6 +199,7 @@ function* login(action) {
             data: result.data,
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: LOG_IN_FAILURE,
             error: err.response.data,
@@ -189,6 +220,7 @@ function* logOut() {
 
         });
     } catch (err) {
+        console.error(err);
         yield put({
             type: LOG_OUT_FAILURE,
             error: err.response.data,
@@ -216,6 +248,7 @@ function* signUp(action) {
         });
     }
 }
+
 function* watchChangeNickname() {
     yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
@@ -225,15 +258,20 @@ function* watchLoadUser() {
 function* watchFollow() {
     yield takeLatest(FOLLOW_REQUEST, follow);
 }
+function* watchUnfollow() {
+    yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
 function* watchloadFollowings() {
     yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
 }
 function* watchloadFollowers() {
     yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers);
 }
-function* watchUnfollow() {
-    yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+function* watchRemoveFollower() {
+    yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
 }
+
+
 function* watchLogIn() {
     yield takeLatest(LOG_IN_REQUEST, login);
 }
@@ -245,12 +283,14 @@ function* watchSignUp() {
 }
 export default function* userSaga() {
     yield all([
+
         fork(watchChangeNickname),
         fork(watchLoadUser),
         fork(watchFollow),
+        fork(watchUnfollow),
         fork(watchloadFollowings),
         fork(watchloadFollowers),
-        fork(watchUnfollow),
+        fork(watchRemoveFollower),
         fork(watchLogIn),
         fork(watchLogOut),
         fork(watchSignUp),

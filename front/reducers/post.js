@@ -24,6 +24,9 @@ export const initialState = {
     unlikePostLoading: false,
     unlikePostDone: false,
     unlikePostError: null,
+    uploadImagesLoading: false,
+    uploadImagesDone: false,
+    uploadImagesError: null,
 };
 // export const generateDummyPost = (number) => Array(number).fill().map(() => ({
 //     id: shortId.generate(),
@@ -69,6 +72,11 @@ export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';//동기 ACTION은 하나만 만들어주면 된다, front에서만 image를 지워주고 server에서는 지우지 않는다. server에서도 지우려면 비동기로 만들어야 한다
 
 export const addPostRequestAction = (data) => ({
     type: ADD_POST_REQUEST,
@@ -106,6 +114,9 @@ export const addCommentRequestAction = (data) => ({
 const reducer = (state = initialState, action) => {
     return produce(state, (draft) => {
         switch (action.type) {
+            case REMOVE_IMAGE:
+                draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+                break;
             case LIKE_POST_REQUEST:
                 draft.likePostsLoading = true;
                 draft.likePostsDone = false;
@@ -167,6 +178,7 @@ const reducer = (state = initialState, action) => {
                 draft.addPostLoading = false;
                 draft.addPostDone = true;
                 draft.mainPosts.unshift(action.data);
+                draft.imagePaths = [];
                 break;
 
             case ADD_POST_FAILURE:
@@ -209,7 +221,21 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentLoading = false;
                 draft.addCommentError = action.error;
                 break;
+            case UPLOAD_IMAGES_REQUEST:
+                draft.uploadImagesLoading = true;
+                draft.uploadImagesDone = false;
+                draft.uploadImagesError = null;
+                break;
 
+            case UPLOAD_IMAGES_SUCCESS:
+                draft.imagePaths = action.data;
+                draft.uploadImagesLoading = false;
+                draft.uploadImagesDone = true;
+                break;
+            case UPLOAD_IMAGES_FAILURE:
+                draft.uploadImagesLoading = false;
+                draft.uploadImagesError = action.error;
+                break;
             default:
                 break;
         }

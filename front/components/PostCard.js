@@ -3,7 +3,7 @@ import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-
+import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
 
 import CommentForm from './CommentForm';
@@ -67,7 +67,7 @@ const PostCard = ({ post }) => {
                                     <>
                                         <Button>update</Button>
                                         <Button type="danger"
-                                            loading={removePostLoading} onClick={onRemovePost}                                        >delete</Button>
+                                            loading={removePostLoading} onClick={onRemovePost}>delete</Button>
                                     </>
                                 ) : <Button>report</Button>
                                 }
@@ -96,7 +96,14 @@ const PostCard = ({ post }) => {
                                 <Comment
                                     author={item.User.nickname}
                                     avatar={(
-                                        <Avatar>{item.User.nickname[0]}</Avatar>)}
+                                        <Link
+                                            href={{
+                                                pathname: '/user',
+                                                query: { id: item.User.id }
+                                            }}
+                                            as={`/user/${item.User.id}`}><a>
+                                                <Avatar>{item.User.nickname[0]}</Avatar></a></Link>
+                                    )}
                                     content={item.content} />
                             </li>
                         )} />
@@ -114,7 +121,7 @@ PostCard.propTypes = {
         User: PropTypes.object,
         content: PropTypes.string,
         createdAt: PropTypes.string,
-        comments: PropTypes.arrayOf(PropTypes.any),
+        Comments: PropTypes.arrayOf(PropTypes.any),
         Images: PropTypes.arrayOf(PropTypes.any),
         Likers: PropTypes.arrayOf(PropTypes.object),
     }),
