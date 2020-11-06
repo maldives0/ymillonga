@@ -5,7 +5,7 @@ import produce from 'immer';
 export const initialState = {
     mainPosts: [],
     imagePaths: [],
-    hasMorePostss: true,
+    hasMorePosts: true,
     loadPostsLoading: false,
     loadPostsDone: false,
     loadPostsError: null,
@@ -27,6 +27,9 @@ export const initialState = {
     uploadImagesLoading: false,
     uploadImagesDone: false,
     uploadImagesError: null,
+    retweetLoading: false,
+    retweetDone: false,
+    retweetError: null,
 };
 // export const generateDummyPost = (number) => Array(number).fill().map(() => ({
 //     id: shortId.generate(),
@@ -76,16 +79,17 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';//동기 ACTION은 하나만 만들어주면 된다, front에서만 image를 지워주고 server에서는 지우지 않는다. server에서도 지우려면 비동기로 만들어야 한다
 
 export const addPostRequestAction = (data) => ({
     type: ADD_POST_REQUEST,
     data,
 });
-// export const removePostRequestAction = (data) => ({
-//     type: REMOVE_POST_REQUEST,
-//     data,
-// });
+
 export const addCommentRequestAction = (data) => ({
     type: ADD_COMMENT_REQUEST,
     data,
@@ -158,11 +162,11 @@ const reducer = (state = initialState, action) => {
                 draft.loadPostsError = null;
                 break;
             case LOAD_POSTS_SUCCESS:
-
+                console.log(draft.mainPosts.length === 10);
                 draft.loadPostsLoading = false;
                 draft.loadPostsDone = true;
-                draft.mainPosts = action.data.concat(draft.mainPosts);
-                draft.hasMorePosts = draft.mainPosts.length < 50;
+                draft.mainPosts = draft.mainPosts.concat(action.data);
+                draft.hasMorePosts = draft.mainPosts.length === 10;
                 break;
 
             case LOAD_POSTS_FAILURE:
@@ -235,6 +239,21 @@ const reducer = (state = initialState, action) => {
             case UPLOAD_IMAGES_FAILURE:
                 draft.uploadImagesLoading = false;
                 draft.uploadImagesError = action.error;
+                break;
+            case RETWEET_REQUEST:
+                draft.retweetLoading = true;
+                draft.retweetDone = false;
+                draft.retweetError = null;
+                break;
+
+            case RETWEET_SUCCESS:
+                draft.mainPosts.unshift(action.data);
+                draft.retweetLoading = false;
+                draft.retweetDone = true;
+                break;
+            case RETWEET_FAILURE:
+                draft.retweetLoading = false;
+                draft.retweetError = action.error;
                 break;
             default:
                 break;
