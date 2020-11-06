@@ -7,7 +7,8 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {//GET/user/
+    // console.log('ssr cookie?', req.headers);
     try {
         if (req.user) {
             const fullUserWithoutPassword = await User.findOne({
@@ -34,6 +35,47 @@ router.get('/', async (req, res, next) => {
         else {
             req.status(200).json(null);
         }
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+router.get('/:userId', async (req, res, next) => {//GET/user/1 -특정한 사용자 가져오기
+
+    try {
+
+        const fullUserWithoutPassword = await User.findOne({
+            where: { id: req.params.userId },
+            attributes: {
+                exclude: ['password']
+            },
+            include: [{
+                model: Post,
+                attributes: ['id'],
+            }, {
+                model: User,
+                as: 'Followings',
+                attributes: ['id'],
+            },
+            {
+                model: User,
+                as: 'Followers',
+                attributes: ['id'],
+            }]
+        });
+        if (fullUserWithoutPassword) {
+            const data = fullUserWithoutPassword.toJSON();//시퀄라이즈(mysql작업을 쉽게 하도록 도와주는 라이브러리)에서 보내준 데이터를 json형태로 바꾼다
+            console.log('data??', data);
+            data.Posts = data.Posts.length;//개인정보 침해 방지
+            data.Followers = data.Followers.length;
+            data.Followings = data.Followings.length;
+            res.status(200).json(data);
+        } else {
+            res.status(404).json('존재하지 않는 사용자입니다.');
+        }
+
+
     }
     catch (error) {
         console.error(error);

@@ -6,6 +6,10 @@ import {
     LOAD_MY_INFO_SUCCESS,
     LOAD_MY_INFO_FAILURE,
 
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAILURE,
+
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
     LOG_IN_FAILURE,
@@ -65,14 +69,35 @@ function* changeNickname(action) {
         });
     }
 }
-function loadUserAPI() {
-    return axios.get('/user',);
+function loadUserAPI(data) {
+    return axios.get(`/user/${data}`,);
 }
 function* loadUser(action) {
     try {
 
 
         const result = yield call(loadUserAPI, action.data)
+
+        yield put({
+            type: LOAD_USER_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_USER_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+function loadMyInfoAPI() {
+    return axios.get('/user');
+}
+function* loadMyInfo() {
+    try {
+
+
+        const result = yield call(loadMyInfoAPI);
 
         yield put({
             type: LOAD_MY_INFO_SUCCESS,
@@ -252,8 +277,11 @@ function* signUp(action) {
 function* watchChangeNickname() {
     yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
+function* watchLoadMyInfo() {
+    yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
 function* watchLoadUser() {
-    yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
+    yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 function* watchFollow() {
     yield takeLatest(FOLLOW_REQUEST, follow);
@@ -285,6 +313,7 @@ export default function* userSaga() {
     yield all([
 
         fork(watchChangeNickname),
+        fork(watchLoadMyInfo),
         fork(watchLoadUser),
         fork(watchFollow),
         fork(watchUnfollow),

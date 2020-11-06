@@ -55,7 +55,7 @@ router.get('/', async (req, res, next) => {//GET/posts
             ],
 
         });
-        console.log('posts', posts);
+        // console.log('posts', posts);
         res.status(200).json(posts);
     }
     catch (error) {

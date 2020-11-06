@@ -3,28 +3,26 @@ import { combineReducers } from 'redux';
 import user from './user';
 import post from './post';
 
-const initialState = {
-    user: {
 
-    },
-    post: {
 
-    }
-};
-
-const rootReducer = combineReducers({
-    index: (state = {}, action) => {
-        switch (action.type) {
-            case HYDRATE:
-                console.log('HYDRATE', action);
-                return { ...state, ...action.payload };
-
-            default:
-                return state;
+const rootReducer = (state, action) => {
+    switch (action.type) {
+        case HYDRATE:
+            console.log('HYDRATE', action);
+            return action.payload;
+        default: {
+            const combineReducer = combineReducers({
+                user,
+                post,
+            });
+            return combineReducer(state, action);
         }
-    },
-    user,
-    post
-});
+    }
+
+};
+//const rootReducer =combineReducers({
+//     user,
+//     post,
+// });를 더 확장 가능한 꼴로 만든 것
 
 export default rootReducer;
