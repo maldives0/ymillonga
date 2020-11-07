@@ -94,6 +94,52 @@ router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next)
     console.log(req.files, 'upload image info');
     res.json(req.files.map((v) => v.filename));
 });
+router.get('/:postId', async (req, res, next) => {//GET/post/1
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.postId },
+
+        });
+        if (!post) {
+            return res.status(404).send('존재하지 않는 게시글입니다.');
+        }
+        const fullPost = await Post.findOne({
+            where: { id: post.id },
+            include: [
+                {
+                    model: Post,
+                    as: 'Retweet',
+                    include: [{
+                        model: User,
+                        attributes: ['id', 'nickname'],
+                    }, {
+                        model: Image,
+                    }],
+                }, {
+                    model: User,
+                    attribute: ['id', 'nickname'],
+                }, {
+                    model: User,
+                    as: 'Likers',
+                    attributes: ['id', 'nickname'],
+                }, {
+                    model: Image,
+                }, {
+                    model: Comment,
+                    include: [{
+                        model: User,
+                        attributes: ['id', 'nickname'],
+                    }],
+                }],
+        });
+        res.status(200).json(fullPost);
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+
+});
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/post
     try {
         const post = await Post.findOne({
@@ -197,7 +243,7 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
         if (!post) {
             return res.status(403).send('게시글이 존재하지 않습니다.');
         }
-        await post.removeLikers(req.user.id);
+        await post.addLikers(req.user.id);
         res.json({ PostId: post.id, UserId: req.user.id });
     }
     catch (error) {
@@ -213,7 +259,7 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
         if (!post) {
             return res.status(403).send('게시글이 존재하지 않습니다.');
         }
-        await post.addLikers(req.user.id);
+        await post.removeLikers(req.user.id);
         res.json({ PostId: post.id, UserId: req.user.id });
     }
     catch (error) {

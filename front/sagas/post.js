@@ -5,6 +5,9 @@ import {
     LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
     UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
     LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
+    LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE,
+    LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
+    LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE,
     ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
     REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
     ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE,
@@ -40,6 +43,7 @@ function* retweet(action) {
         });
     }
 }
+
 function uploadImagesAPI(data) {
     return axios.post('/post/images', data);
 }
@@ -60,6 +64,7 @@ function* uploadImages(action) {
         });
     }
 }
+
 function likePostAPI(data) {
     return axios.patch(`/post/${data}/like`);
 }
@@ -79,6 +84,7 @@ function* likePost(action) {
         });
     }
 }
+
 function unlikePostAPI(data) {
     return axios.delete(`/post/${data}/like`);
 }
@@ -98,6 +104,49 @@ function* unlikePost(action) {
         });
     }
 }
+
+function loadHashtagPostsAPI(data, lastId) {
+    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);//한글이 주소에 들어가면 에러남, req path contains unescaped character, encode해서 서버로 보냄
+}
+function* loadHashtagPosts(action) {
+    try {
+        const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
+
+        yield put({
+            type: LOAD_HASHTAG_POSTS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_HASHTAG_POSTS_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
+function loadUserPostsAPI(data, lastId) {
+    return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
+}
+function* loadUserPosts(action) {
+    try {
+        const result = yield call(loadUserPostsAPI, action.data, action.lastId);
+
+        yield put({
+            type: LOAD_USER_POSTS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_USER_POSTS_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
 function loadPostsAPI(lastId) {
     return axios.get(`/posts?lastId=${lastId || 0}`);//get은 두번째 인자 자리에 data를 넣을 수 없으므로('/',{withCredentials:true}) 주소에 ?뒤에 키는 값 형식으로 넣어준다, 주소에 데이터가 들어가면서 데이터캐싱이 가능하다(put,patch는 안됨)
 }
@@ -118,6 +167,28 @@ function* loadPosts(action) {
         });
     }
 }
+
+function loadPostAPI(data) {
+    return axios.get(`/post/${data}`);
+}
+function* loadPost(action) {
+    try {
+        const result = yield call(loadPostAPI, action.data);
+
+        yield put({
+            type: LOAD_POST_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+
 function addPostAPI(data) {
     return axios.post('/post', data);
     //{ content: data }: content를 json형식으로 보냄
@@ -142,6 +213,7 @@ function* addPost(action) {
         });
     }
 }
+
 function removePostAPI(data) {
     return axios.delete(`/post/${data}`);
 }
@@ -165,6 +237,7 @@ function* removePost(action) {
         });
     }
 }
+
 function addCommentAPI(data) {
     return axios.post(`/post/${data.postId}/comment`, data);
 }
@@ -184,6 +257,7 @@ function* addComment(action) {
         });
     }
 }
+
 function* watchRetweet() {
     yield takeLatest(RETWEET_REQUEST, retweet);
 }
@@ -195,6 +269,15 @@ function* watchLikePosts() {
 }
 function* watchUnlikePosts() {
     yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
+function* watchLoadPost() {
+    yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
+function* watchLoadHashtagPosts() {
+    yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+}
+function* watchLoadUserPosts() {
+    yield throttle(5000, LOAD_USER_POSTS_REQUEST, loadUserPosts);
 }
 function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
@@ -215,6 +298,9 @@ export default function* postSaga() {
         fork(watchUploadImages),
         fork(watchLikePosts),
         fork(watchUnlikePosts),
+        fork(watchLoadPost),
+        fork(watchLoadUserPosts),
+        fork(watchLoadHashtagPosts),
         fork(watchLoadPosts),
         fork(watchAddPost),
         fork(watchRemovePost),

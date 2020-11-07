@@ -5,7 +5,11 @@ import produce from 'immer';
 export const initialState = {
     mainPosts: [],
     imagePaths: [],
+    singlePost: null,
     hasMorePosts: true,
+    loadPostLoading: false,
+    loadPostDone: false,
+    loadPostError: null,
     loadPostsLoading: false,
     loadPostsDone: false,
     loadPostsError: null,
@@ -58,6 +62,18 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
+
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -133,11 +149,11 @@ const reducer = (state = initialState, action) => {
                 draft.likePostsDone = true;
                 break;
             }
-
             case LIKE_POST_FAILURE:
                 draft.likePostsLoading = false;
                 draft.likePostsError = action.error;
                 break;
+
             case UNLIKE_POST_REQUEST:
                 draft.unlikePostsLoading = true;
                 draft.unlikePostsDone = false;
@@ -150,29 +166,49 @@ const reducer = (state = initialState, action) => {
                 draft.unlikePostsDone = true;
                 break;
             }
-
             case UNLIKE_POST_FAILURE:
                 draft.unlikePostsLoading = false;
                 draft.unlikePostsError = action.error;
                 break;
 
+            case LOAD_POST_REQUEST:
+                draft.loadPostLoading = true;
+                draft.loadPostDone = false;
+                draft.loadPostError = null;
+                break;
+            case LOAD_POST_SUCCESS:
+                console.log(action.data, 'load post?');
+                draft.loadPostLoading = false;
+                draft.loadPostDone = true;
+                draft.singlePost = action.data;
+                break;
+            case LOAD_POST_FAILURE:
+                draft.loadPostLoading = false;
+                draft.loadPostError = action.error;
+                break;
+
+            case LOAD_USER_POSTS_REQUEST:
+            case LOAD_HASHTAG_POSTS_REQUEST:
             case LOAD_POSTS_REQUEST:
                 draft.loadPostsLoading = true;
                 draft.loadPostsDone = false;
                 draft.loadPostsError = null;
                 break;
+            case LOAD_USER_POSTS_SUCCESS:
+            case LOAD_HASHTAG_POSTS_SUCCESS:
             case LOAD_POSTS_SUCCESS:
-                console.log(draft.mainPosts.length === 10);
                 draft.loadPostsLoading = false;
                 draft.loadPostsDone = true;
                 draft.mainPosts = draft.mainPosts.concat(action.data);
                 draft.hasMorePosts = draft.mainPosts.length === 10;
                 break;
-
+            case LOAD_USER_POSTS_FAILURE:
+            case LOAD_HASHTAG_POSTS_FAILURE:
             case LOAD_POSTS_FAILURE:
                 draft.loadPostsLoading = false;
                 draft.loadPostsError = action.error;
                 break;
+
             case ADD_POST_REQUEST:
                 draft.addPostLoading = true;
                 draft.addPostDone = false;
@@ -184,7 +220,6 @@ const reducer = (state = initialState, action) => {
                 draft.mainPosts.unshift(action.data);
                 draft.imagePaths = [];
                 break;
-
             case ADD_POST_FAILURE:
                 draft.addPostLoading = false;
                 draft.addPostError = action.error;
@@ -195,13 +230,11 @@ const reducer = (state = initialState, action) => {
                 draft.removePostDone = false;
                 draft.removePostError = null;
                 break;
-
             case REMOVE_POST_SUCCESS:
                 draft.removePostLoading = false;
                 draft.removePostDone = true;
                 draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.PostId);
                 break;
-
             case REMOVE_POST_FAILURE:
                 draft.removePostLoading = false;
                 draft.removePostError = action.error;
@@ -212,7 +245,6 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentDone = false;
                 draft.addCommentError = null;
                 break;
-
             case ADD_COMMENT_SUCCESS: {
                 draft.addCommentLoading = false;
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
@@ -225,12 +257,12 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentLoading = false;
                 draft.addCommentError = action.error;
                 break;
+
             case UPLOAD_IMAGES_REQUEST:
                 draft.uploadImagesLoading = true;
                 draft.uploadImagesDone = false;
                 draft.uploadImagesError = null;
                 break;
-
             case UPLOAD_IMAGES_SUCCESS:
                 draft.imagePaths = action.data;
                 draft.uploadImagesLoading = false;
@@ -240,12 +272,12 @@ const reducer = (state = initialState, action) => {
                 draft.uploadImagesLoading = false;
                 draft.uploadImagesError = action.error;
                 break;
+
             case RETWEET_REQUEST:
                 draft.retweetLoading = true;
                 draft.retweetDone = false;
                 draft.retweetError = null;
                 break;
-
             case RETWEET_SUCCESS:
                 draft.mainPosts.unshift(action.data);
                 draft.retweetLoading = false;
@@ -255,6 +287,7 @@ const reducer = (state = initialState, action) => {
                 draft.retweetLoading = false;
                 draft.retweetError = action.error;
                 break;
+
             default:
                 break;
         }

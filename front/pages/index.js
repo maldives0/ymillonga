@@ -14,7 +14,7 @@ import wrapper from '../store/configureStore';
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector(state => state.user);
-  const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector(state => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
 
   useEffect(() => {
     if (retweetError) {
@@ -24,7 +24,6 @@ const Home = () => {
 
   useEffect(() => {
     function onScroll() {
-
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
@@ -33,7 +32,6 @@ const Home = () => {
             lastId,
           });
         }
-
       }
     }
     window.addEventListener('scroll', onScroll);
