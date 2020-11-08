@@ -31,6 +31,7 @@ const Post = () => {
         </AppLayout>
     );
 };
+
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
     console.log('context?', context);
     const cookie = context.req ? context.req.headers.cookie : '';

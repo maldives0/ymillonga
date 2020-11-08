@@ -41,9 +41,44 @@ router.get('/', async (req, res, next) => {//GET/user/
         next(error);
     }
 });
-
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('없는 사람을 찾으려고 하시네요?');
+        }
+        const followers = await user.getFollowers({
+            limit: parseInt(req.query.limit, 10),
+        });
+        res.status(200).json(followers);
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('없는 사람을 찾으려고 하시네요?');
+        }
+        const followings = await user.getFollowings({
+            limit: parseInt(req.query.limit, 10),
+        });
+        res.status(200).json(followings);
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
 router.get('/:userId', async (req, res, next) => {//GET/user/1 -특정한 사용자 가져오기
-
+    //wildcard는 되도록 가장 뒤에 배치한다. 안그러면 followers, followings가 :userId에 인식되어 뒤는 실행되지 않는다
     try {
         const fullUserWithoutPassword = await User.findOne({
             where: { id: req.params.userId },
@@ -82,7 +117,6 @@ router.get('/:userId', async (req, res, next) => {//GET/user/1 -특정한 사용
         next(error);
     }
 });
-
 router.get('/:userId/posts', async (req, res, next) => {//GET/user/1/posts
     try {
         const where = { UserId: req.params.userId };
@@ -140,7 +174,6 @@ router.get('/:userId/posts', async (req, res, next) => {//GET/user/1/posts
         next(error);
     }
 });
-
 router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
 
@@ -229,6 +262,8 @@ router.patch('/nickname', async (req, res, next) => {
     }
 });
 
+
+
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -294,36 +329,5 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
 //         next(error);
 //     }
 // });
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-    try {
-        const user = await User.findOne({
-            where: { id: req.user.id }
-        });
-        if (!user) {
-            res.status(403).send('없는 사람을 찾으려고 하시네요?');
-        }
-        const followers = await user.getFollowers();
-        res.status(200).json(followers);
-    }
-    catch (error) {
-        console.error(error);
-        next(error);
-    }
-});
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-    try {
-        const user = await User.findOne({
-            where: { id: req.user.id }
-        });
-        if (!user) {
-            res.status(403).send('없는 사람을 찾으려고 하시네요?');
-        }
-        const followings = await user.getFollowings();
-        res.status(200).json(followings);
-    }
-    catch (error) {
-        console.error(error);
-        next(error);
-    }
-});
+
 module.exports = router;

@@ -96,7 +96,6 @@ function loadMyInfoAPI() {
 function* loadMyInfo() {
     try {
 
-
         const result = yield call(loadMyInfoAPI);
 
         yield put({

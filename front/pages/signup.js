@@ -1,16 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
-import wrapper from '../store/configureStore';
-import { END } from 'redux-saga';
-
 import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
+import Router from 'next/router';
+import axios from 'axios';
+import { END } from 'redux-saga';
 
 import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
-import Router from 'next/router';
+import AppLayout from '../components/AppLayout';
+import wrapper from '../store/configureStore';
+
+
 
 const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -27,17 +28,20 @@ const Signup = () => {
     if (me && me.id) {
       Router.replace('/');//뒤로가기 시 전 페이지가 나오지 않음
     }
-  }, [me & me.id]);
+  }, [me && me.id]);
+
   useEffect(() => {
     if (signUpDone) {
       Router.replace('/');
     }
   }, [signUpDone]);
+
   useEffect(() => {
     if (signUpError) {
       alert(signUpError);
     }
   }, [signUpError]);
+
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
