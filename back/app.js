@@ -6,6 +6,8 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -23,9 +25,17 @@ db.sequelize.sync()
     .catch(console.error);
 passportConfig();
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined'));
+    app.use(hpp());
+    app.use(helmet());
+} else {
+    app.use(morgan('dev'));
+}
+
+
 app.use(cors({
-    origin: true,//'http://nodebird.com', 해당 주소에서 온 요청만 허용
+    origin: ['http://nodebird.com', 'nodebird.com'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
     credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
 }));
 
@@ -54,6 +64,6 @@ app.use('/hashtag', hashtagRouter);
 //     //에러 처리 미들웨어를 특별하게 보이도록 하고 싶을 때 따로 만들어주기
 
 // });
-app.listen(3065, () => {
+app.listen(80, () => {
     console.log('서버 실행 중');
 });
