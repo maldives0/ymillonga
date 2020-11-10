@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 app.use(cors({
-    origin: ['http://localhost:3060', 'nodebird.com', 'http://13.124.213.16'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
+    origin: ['http://localhost:3060', 'nodebird.com', 'http://52.79.186.162'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
     credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
 }));
 
