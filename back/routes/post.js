@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const multerS3 = require('multer-s3');//이미지 업로드를 알아서 해준다
+const AWS = require('aws-sdk');//aws 접근 권한 얻기
 
 const { Post, Image, Comment, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -16,16 +18,30 @@ catch (error) {
     console.log('uploads folder가 없으므로 생성합니다');
     fs.mkdirSync('uploads');
 }
+
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+});
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');//하드디스크 업로드 파일에 저장하기
-        },
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);//확장자 추출(.png)
-            const basename = path.basename(file.originalname, ext);//모모
-            done(null, basename + '_' + new Date().getTime() + ext);//모모202011051616.png
-        },
+    // storage: multer.diskStorage({
+    //     destination(req, file, done) {
+    //         done(null, 'uploads');//하드디스크 업로드 파일에 저장하기
+    //     },
+    //     filename(req, file, done) {
+    //         const ext = path.extname(file.originalname);//확장자 추출(.png)
+    //         const basename = path.basename(file.originalname, ext);//모모
+    //         done(null, basename + '_' + new Date().getTime() + ext);//모모202011051616.png
+    //     },
+    // }),
+    //s3 original 파일에 이미지 업로드하기
+    storage: multerS3({
+        s3: new AWS.S3(),//access
+        bucket: 'ymillonga',
+        key(req, file, cb) {
+            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+        }
     }),
     limits: { fileSize: 20 * 1024 * 1024 },//20MB로파일크기 제한
 });
@@ -92,7 +108,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
 
 router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
     console.log(req.files, 'upload image info');
-    res.json(req.files.map((v) => v.filename));
+    // res.json(req.files.map((v) => v.filename));
+    res.json(req.files.map((v) => v.location));
 });
 router.get('/:postId', async (req, res, next) => {//GET/post/1
     try {
