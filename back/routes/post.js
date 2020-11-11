@@ -109,7 +109,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
 router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
     console.log(req.files, 'upload image info');
     // res.json(req.files.map((v) => v.filename));
-    res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb')));
+    res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 });
 router.get('/:postId', async (req, res, next) => {//GET/post/1
     try {
