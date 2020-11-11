@@ -29,10 +29,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
-    app.use(cors({
-        origin: ['http://15.164.57.27'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
-        credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
-    }));
+
 } else {
     app.use(morgan('dev'));
     app.use(cors({
@@ -41,7 +38,10 @@ if (process.env.NODE_ENV === 'production') {
     }));
 }
 
-
+app.use(cors({
+    origin: ['http://localhost:3060', 'http://15.164.57.27'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
+    credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
+}));
 
 
 app.use('/', express.static(path.join(__dirname, 'uploads')));// '/' => 'localhost:3065/모모.png',__dirname(현재폴더:back), __dirname + 'uploads'로 적지 않는다. 운영체제마다 /(맥),\(윈도우) 경로설정 다른 것을 자동으로 해준다. 
