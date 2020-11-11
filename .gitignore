@@ -4,4 +4,4 @@ node_modules
 test
 uploads
 react-nodebird.pem
-rootkey
+rootkey.csv
