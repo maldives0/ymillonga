@@ -28,7 +28,7 @@ passportConfig();
 if (process.env.NODE_ENV === 'production') {
     app.use(morgan('combined'));
     app.use(hpp());
-    app.use(helmet());
+    app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cors({
         origin: ['http://15.164.57.27'],//'http://nodebird.com', 해당 주소에서 온 요청만 허용
         credentials: true,//true: cookie를 다른 도메인(3060 port에서 3065 port로 전달하는 경우)으로 전달하게 함
