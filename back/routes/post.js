@@ -25,24 +25,24 @@ AWS.config.update({
     region: 'ap-northeast-2',
 });
 const upload = multer({
-    // storage: multer.diskStorage({
-    //     destination(req, file, done) {
-    //         done(null, 'uploads');//하드디스크 업로드 파일에 저장하기
-    //     },
-    //     filename(req, file, done) {
-    //         const ext = path.extname(file.originalname);//확장자 추출(.png)
-    //         const basename = path.basename(file.originalname, ext);//모모
-    //         done(null, basename + '_' + new Date().getTime() + ext);//모모202011051616.png
-    //     },
-    // }),
-    //s3 original 파일에 이미지 업로드하기
-    storage: multerS3({
-        s3: new AWS.S3(),//access
-        bucket: 'ymillonga',
-        key(req, file, cb) {
-            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
-        }
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');//하드디스크 업로드 파일에 저장하기
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);//확장자 추출(.png)
+            const basename = path.basename(file.originalname, ext);//모모
+            done(null, basename + '_' + new Date().getTime() + ext);//모모202011051616.png
+        },
     }),
+    //s3 original 파일에 이미지 업로드하기
+    // storage: multerS3({
+    //     s3: new AWS.S3(),//access
+    //     bucket: 'ymillonga',
+    //     key(req, file, cb) {
+    //         cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+    //     }
+    // }),
     limits: { fileSize: 20 * 1024 * 1024 },//20MB로파일크기 제한
 });
 
@@ -108,9 +108,40 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
 
 router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => {
     console.log(req.files, 'upload image info');
-    // res.json(req.files.map((v) => v.filename));
-    res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
+    res.json(req.files.map((v) => v.filename));
+    //res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 });
+
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {//POST/post
+    //upload.none() 이미지 첨부하지 않고 text만 업로드하기
+
+    try {
+        const hashtags = req.body.content.match(/#[^\s#]+/g);
+        await Post.update({
+            content: req.body.content,
+            UserId: req.user.id,//로그인한 뒤에는 deserializeUser값을 사용한다
+        },
+            {
+                where: req.params.postId,
+                UserId: req.user.id,
+            });
+        const post = await Post.findOne({ where: { id: req.params.postId } });
+        if (hashtags) {
+            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+                where: { name: tag.slice(1).toLowerCase() },
+            })));
+            //findOrCreate:기존 값이 없을 때는 등록하고 있을 때는 가져온다, 결과값: [[노드,true],[리엑트,true]]
+            await post.setHashtags(result.map((v) => v[0]));//set: 기존 hashtag를 새로운 update hashtag로 대체한다
+        }
+        res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+
+});
+
 router.get('/:postId', async (req, res, next) => {//GET/post/1
     try {
         const post = await Post.findOne({

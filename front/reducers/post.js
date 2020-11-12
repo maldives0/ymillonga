@@ -22,6 +22,9 @@ export const initialState = {
     addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
+    updatePostLoading: false,
+    updatePostDone: false,
+    updatePostError: null,
     likePostLoading: false,
     likePostDone: false,
     likePostError: null,
@@ -90,6 +93,10 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
@@ -177,7 +184,6 @@ const reducer = (state = initialState, action) => {
                 draft.loadPostError = null;
                 break;
             case LOAD_POST_SUCCESS:
-                console.log(action.data, 'load post?');
                 draft.loadPostLoading = false;
                 draft.loadPostDone = true;
                 draft.singlePost = action.data;
@@ -249,13 +255,27 @@ const reducer = (state = initialState, action) => {
                 draft.addCommentLoading = false;
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
                 post.Comments.unshift(action.data);
-
                 draft.addCommentDone = true;
                 break;
             }
             case ADD_COMMENT_FAILURE:
                 draft.addCommentLoading = false;
                 draft.addCommentError = action.error;
+                break;
+            case UPDATE_POST_REQUEST:
+                draft.updatePostLoading = true;
+                draft.updatePostDone = false;
+                draft.updatePostError = null;
+                break;
+            case UPDATE_POST_SUCCESS: {
+                draft.updatePostLoading = false;
+                draft.mainPosts.fine((v) => v.id === action.data.PostId).content = action.data.content;
+                draft.updatePostDone = true;
+                break;
+            }
+            case UPDATE_POST_FAILURE:
+                draft.updatePostLoading = false;
+                draft.updatePostError = action.error;
                 break;
 
             case UPLOAD_IMAGES_REQUEST:

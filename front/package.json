@@ -4,15 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3060",
-    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
-    "start": "cross-env NODE_ENV=production next start -p 80"
+    "dev": "next -p 3060"
   },
   "author": "ZeroCho",
   "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@next/bundle-analyzer": "^10.0.1",
     "antd": "^4.6.6",
     "axios": "^0.21.0",
     "babel-plugin-styled-components": "^1.11.1",

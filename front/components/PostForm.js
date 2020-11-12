@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post';
 import useInput from '../hooks/useInput';
 
-const PostForm = () => {
-    const { imagePaths, addPostDone } = useSelector(state => state.post);
+const PostForm = ({ post }) => {
+    const { imagePaths, addPostDone, updatePostDone } = useSelector(state => state.post);
     const [text, onChangeText, setText] = useInput('');
     const dispatch = useDispatch();
 
     const imageInput = useRef();
+    const postInput = useRef();
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);
@@ -19,6 +20,11 @@ const PostForm = () => {
             setText('');
         }
     }, [addPostDone]);
+    useEffect(() => {
+        if (updatePostDone) {
+            postInput.current.value();
+        }
+    }, [updatePostDone]);
     const onChangeImages = useCallback((e) => {
         console.log('click image info', e.target.files);// 유사배열(배열 모양을 띄는 객체 형식)으로 반환됨
         const imageFormData = new FormData();//서버에 multipart형식으로 이미지를 보낼 수 있게 한다
@@ -70,7 +76,7 @@ const PostForm = () => {
                 {imagePaths.map((v, i) => {
                     return (
                         <div key={v} style={{ display: 'inline-block' }}>
-                            <img src={v.replace(/\/thumb\//, '/original/')} style={{ width: '200px' }} alt={v} />
+                            <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
                             <div>
                                 <Button
                                     onClick={onRemoveImage(i)}>delete</Button>

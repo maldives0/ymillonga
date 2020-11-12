@@ -6,12 +6,11 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
-import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+import { UPDATE_POST_REQUEST, REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
 
 const CardWrapper = styled.div`
 margin-bottom: 20px;
@@ -22,8 +21,8 @@ const PostCard = ({ post }) => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
-    const { removePostLoading, } = useSelector((state) => state.post);
-
+    const [editMode, setEditMode] = useState(false);
+    const { removePostLoading, updatePostLoading } = useSelector((state) => state.post);
 
     const onLike = useCallback(() => {
         if (!id) {
@@ -57,6 +56,23 @@ const PostCard = ({ post }) => {
             data: post.id,
         })
     }, [id]);
+    const onClickUpdate = useCallback(() => {
+        setEditMode(true);
+
+    }, []);
+    const onChangePost = useCallback((editText) => () => {
+        dispatchEvent({
+            type: UPDATE_POST_REQUEST,
+            data: {
+                PostId: post.id,
+                content: editText,
+            }
+        });
+    }, [post]);
+    const onCancelUpdate = useCallback(() => {
+        setEditMode(false);
+
+    }, []);
     const onRetweet = useCallback(() => {
         if (!id) {
             return alert('로그인이 필요합니다.');
@@ -87,7 +103,7 @@ const PostCard = ({ post }) => {
                             <Button.Group>
                                 {id && post.User.id === id ? (
                                     <>
-                                        <Button>update</Button>
+                                        {!post.RetweetId && <Button loading={updatePostLoading} onClick={onClickUpdate}>update</Button>}
                                         <Button type="danger"
                                             loading={removePostLoading} onClick={onRemovePost}>delete</Button>
                                     </>
@@ -109,12 +125,14 @@ const PostCard = ({ post }) => {
                             <div style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
                             <Card.Meta
                                 avatar={(
-                                    <Link href={`/user/${post.Retweet.User.id}`}>
+                                    <Link href={`/user/${post.Retweet.User.id}`} prefetch={false}>
                                         <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
                                     </Link>
                                 )}
                                 title={post.Retweet.User.nickname}
                                 description={<PostCardContent
+                                    onCancelUpdate={onCancelUpdate}
+                                    onChangePost={onChangePost}
                                     postData={post.Retweet.content} />} />
                         </Card>
                     ) : (
@@ -122,7 +140,7 @@ const PostCard = ({ post }) => {
                             <div style={{ float: 'right' }}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
                             <Card.Meta
                                 avatar={(
-                                    <Link href={`/user/${post.User.id}`}>
+                                    <Link href={`/user/${post.User.id}`} prefetch={false}>
                                         <a>
                                             <Avatar>{post.User.nickname[0]}</Avatar>
                                         </a>
@@ -130,9 +148,13 @@ const PostCard = ({ post }) => {
                                 )}
                                 title={post.User.nickname}
                                 description={<PostCardContent
+                                    editMode={editMode}
+                                    onChangePost={onChangePost}
+                                    onCancelUpdate={onCancelUpdate}
                                     postData={post.content} />} />
                         </>
                     )}
+
             </Card>
             {commentFormOpened && (
                 <>
@@ -147,7 +169,7 @@ const PostCard = ({ post }) => {
                                     author={item.User.nickname}
                                     avatar={(
                                         <Link
-                                            href={`/user/${item.User.id}`}  ><a>
+                                            href={`/user/${item.User.id}`} prefetch={false} ><a>
                                                 <Avatar>{item.User.nickname[0]}</Avatar></a></Link>
                                     )}
                                     content={item.content} />

@@ -25,7 +25,9 @@ db.sequelize.sync()
     .catch(console.error);
 passportConfig();
 
+
 if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
@@ -53,6 +55,7 @@ app.use(session(
         saveUninitialized: false,
         resave: false,
         secret: process.env.COOKIE_SECRET,
+        proxy: process.env.NODE_ENV === 'production',
         // cookie: {
         //     httpOnly: true,
         //     secure: false,
@@ -77,6 +80,6 @@ app.use('/hashtag', hashtagRouter);
 //     //에러 처리 미들웨어를 특별하게 보이도록 하고 싶을 때 따로 만들어주기
 
 // });
-app.listen(80, () => {
+app.listen(3065, () => {
     console.log('서버 실행 중');
 });

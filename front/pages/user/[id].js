@@ -19,7 +19,7 @@ const User = () => {
     const dispatch = useDispatch();
     const { id } = router.query;
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
-    const { userInfo } = useSelector((state) => state.user);
+    const { userInfo, me } = useSelector((state) => state.user);
     useEffect(() => {
         function onScroll() {
             if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
@@ -42,7 +42,7 @@ const User = () => {
 
     return (
         <AppLayout>
-            {userInfo && (
+            {userInfo && (userInfo.id !== me?.id) ? (
                 <Head>
                     <title>
                         {userInfo.nickname}님의 글
@@ -56,6 +56,7 @@ const User = () => {
             )}
             {userInfo ? (
                 <Card
+                    style={{ marginBottom: 20 }}
                     actions={[
                         <div key="twit">
                             twit
