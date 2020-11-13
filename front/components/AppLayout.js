@@ -1,70 +1,58 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
-import { Col, Input, Menu, Row } from 'antd';
-import styled, { createGlobalStyle } from 'styled-components';
-import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
-import { useSelector } from 'react-redux';
-import useInput from '../hooks/useInput';
-import Router from 'next/router';
+import Proptypes from 'prop-types';
+import { Menu, Button } from 'antd';
+import {
+    HomeOutlined,
+    AppstoreOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    SettingOutlined,
+    AimOutlined,
+    CalendarOutlined,
+} from '@ant-design/icons';
 
-const InputSearch = styled(Input.Search)`
-vertical-align: middle
-`;
-const Global = createGlobalStyle`
-.ant-row{
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-}
-.ant-col:first-child{
-    padding-left: 0 !important;
-}
-.ant-col:last-child{
-    padding-right: 0 !important;
-}
+const { SubMenu } = Menu;
 
-`;
+
+
 const AppLayout = ({ children }) => {
-    const [searchInput, onChangeSearchInput] = useInput('');
-    const { me } = useSelector((state) => state.user);
+    const [collapsed, setCollapsed] = useState(false);
 
-    const onSearch = useCallback(() => {
-        Router.push(`/hashtag/${searchInput}`);
-        // 프로그래밍적으로 다른 주소로 옮기기 위해서는 Router를 쓴다
-    }, [searchInput]);
+
+    const toggleCollapsed = useCallback(() => {
+        setCollapsed((prev) => !prev);
+    }, []);
     return (
-        <div>
-            <Global />
-            <Menu mode="horizontal">
-                <Menu.Item key="home"><Link href="/"><a>nodebird</a></Link></Menu.Item>
-                <Menu.Item key="profile"><Link href="/profile"><a>profile</a></Link></Menu.Item>
-                <Menu.Item key="mail">
-                    <InputSearch enterButton
-                        value={searchInput}
-                        onChange={onChangeSearchInput}
-                        onSearch={onSearch} />
-                </Menu.Item>
+
+        <div style={{ width: 256 }}>
+            <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
+                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+            </Button>
+            <Menu
+                defaultSelectedKeys={['1']}
+                defaultOpenKeys={['sub1']}
+                mode="inline"
+                theme="dark"
+                inlineCollapsed={collapsed}
+            >
+                <Menu.Item key="1" icon={<HomeOutlined />}>
+                    Home
+          </Menu.Item>
+                <SubMenu key="sub1" icon={<AppstoreOutlined />} title="Find">
+                    <Menu.Item key="2" icon={<AimOutlined />}>Map</Menu.Item>
+                    <Menu.Item key="3" icon={<CalendarOutlined />}>Calender</Menu.Item>
+
+                </SubMenu>
+
+                <Menu.Item key="4" icon={<SettingOutlined />}>
+                    Settings
+          </Menu.Item>
+
             </Menu>
-            <Row gutter={8}>
-                <Col xs={24} md={6}>
-                    {me
-                        ? <UserProfile />
-                        : <LoginForm />}
-                </Col>
-                <Col xs={24} md={12}>
-                    {children}
-                </Col>
-                <Col xs={24} md={6}>
-                    <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">Made by juyoung</a>
-                </Col>
-            </Row>
+
+            {children}
         </div>
     );
 };
-
-AppLayout.propTypes = {
-    children: PropTypes.node.isRequired,
-}
-
 export default AppLayout;
