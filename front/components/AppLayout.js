@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col } from 'antd';
+import { Layout, Menu, Row, Col, Input } from 'antd';
 import {
     HomeOutlined,
     MenuUnfoldOutlined,
@@ -12,17 +12,26 @@ import {
 import styled from '@emotion/styled';
 import GlobalLayout from './GlobalLayout';
 import LoginForm from './LoginForm';
-
+import useInput from '../hooks/useInput';
+import Router from 'next/router';
 
 const { Header, Sider, Content } = Layout;
+
+const InputSearch = styled(Input.Search)`
+vertical-align: middle;
+margin-right:5px;`
+    ;
 const Logo = styled.div`
 height: 32px;
 margin: 16px;
 `;
 
 const AppLayout = ({ children }) => {
-    const [collapsed, setCollapsed] = useState(false);
-
+    const [collapsed, setCollapsed] = useState(true);
+    const [searchInput, onChangeSearchInput] = useInput('');
+    const onSearch = useCallback(() => {
+        Router.push(`/hashtag/${searchInput}`);
+    }, [searchInput]);
 
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
@@ -51,12 +60,28 @@ const AppLayout = ({ children }) => {
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{ padding: 0 }}>
-                    {React.createElement(collapsed ? MenuFoldOutlined : MenuUnfoldOutlined, {
-                        className: 'trigger',
-                        onClick: toggleCollapsed,
-                        style: { marginLeft: 10 }
-                    })}
-
+                    <Row justify="space-between">
+                        <Col xs={24} md={3}>
+                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                className: 'trigger',
+                                onClick: toggleCollapsed,
+                                style: { marginLeft: 10 }
+                            })}
+                        </Col>
+                        <Col xs={24} md={9}>
+                            <InputSearch enterButton
+                                value={searchInput}
+                                onChange={onChangeSearchInput}
+                                onSearch={onSearch} />
+                        </Col>
+                        <Col xs={24} md={6}>
+                            <a
+                                href="https://github.com/maldives0/ymillonga"
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >Made by maldives0</a>
+                        </Col>
+                    </Row>
                 </Header>
                 <Content
                     className="site-layout-background"
@@ -67,17 +92,12 @@ const AppLayout = ({ children }) => {
                     }}
                 >
                     <Row gutter={8}>
-                        <Col xs={24} md={6}>
-                            <LoginForm />
-                        </Col>
-                        <Col xs={24} md={12}> {children}
+
+                        <Col xs={24} md={15}> {children}
                             <img src={"../imgs/logo.png"} style={{ width: 19, height: 19 }} alt="logo" /></Col>
-                        <Col xs={24} md={6}>
-                            <a
-                                href="https://github.com/maldives0/ymillonga"
-                                target="_blank"
-                                rel="noreferrer noopener"
-                            >Made by maldives0</a></Col>                    </Row>
+                        <Col xs={24} md={9}>
+                            <LoginForm />
+                        </Col>                    </Row>
 
                 </Content>
             </Layout>
