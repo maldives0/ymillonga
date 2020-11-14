@@ -20,13 +20,14 @@
   "homepage": "https://github.com/maldives0/ymillonga#readme",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
-    "@emotion/babel-plugin": "^11.0.0",
-    "@emotion/react": "^11.0.0",
-    "antd": "^4.8.2",
-    "next": "^10.0.1",
+       "antd": "^4.8.2",
+        "next": "^10.0.1",
+        "@emotion/babel-plugin": "^11.0.0",
+        "@emotion/react": "^11.0.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
+    
   },
   "devDependencies": {
     "eslint": "^7.13.0",

@@ -2,12 +2,12 @@ import React from 'react';
 
 import AppLayout from '../components/AppLayout';
 
-const Profile = () => {
+const Map = () => {
     return (
         <AppLayout>
 
-            <div>profile</div>
+            <div>Map</div>
         </AppLayout>
     );
 };
-export default Profile; 
+export default Map; 
