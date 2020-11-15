@@ -1,24 +1,26 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import GoogleLoginBtn from './GoogleLoginBtn';
+import { css } from '@emotion/react';
+
 
 const layout = {
     wrapperCol: {
         span: 16,
-        offset: 8,
     },
 };
 const tailLayout = {
     wrapperCol: {
         span: 16,
-        offset: 16,
     },
+
 };
 
-const LoginForm = () => {
 
+const LoginForm = () => {
 
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -53,7 +55,6 @@ const LoginForm = () => {
             </Form.Item>
 
             <Form.Item
-
                 name="password"
                 rules={[
                     {
@@ -73,12 +74,27 @@ const LoginForm = () => {
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item {...tailLayout} >
-                <Button type="primary" htmlType="submit"
-                >
-                    로그인
+            <Form.Item {...tailLayout} justify="end"  >
+                <Row gutter={8} >
+                    <Col xs={12} md={6}>
+                        <Button type="primary" htmlType="submit"
+                        >
+                            로그인
             </Button>
+                    </Col>
+                    <Col xs={12} md={6}>
+                        <Link href="/signup"><a><Button>
+                            회원가입
+            </Button></a></Link>
+                    </Col>
+                </Row>
             </Form.Item>
+
+            <Row gutter={8}>
+                <Form.Item {...tailLayout} >
+                    <GoogleLoginBtn />
+                </Form.Item>
+            </Row>
         </Form>
     );
 
