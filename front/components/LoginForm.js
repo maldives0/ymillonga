@@ -20,15 +20,16 @@ const tailLayout = {
 };
 
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggedIn }) => {
+    const [id, onChangeId] = useInput('');
+    const [password, onChangePassword] = useInput('');
 
-    const onFinish = (values) => {
-        console.log('Success:', values);
-    };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
+    const onSubmitForm = useCallback((errorInfo) => {
+        console.log(id, password);
+        console.error('login Failed:', errorInfo);
+        setIsLoggedIn(true);
+    }, [id, password]);
 
 
     return (
@@ -38,8 +39,8 @@ const LoginForm = () => {
             initialValues={{
                 remember: true,
             }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={onSubmitForm}
+
         >
             <Form.Item
 
@@ -51,7 +52,10 @@ const LoginForm = () => {
                     },
                 ]}
             >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                <Input prefix={<UserOutlined className="site-form-item-icon" />}
+                    placeholder="Username"
+                    value={id}
+                    onChange={onChangeId} />
             </Form.Item>
 
             <Form.Item
@@ -67,6 +71,8 @@ const LoginForm = () => {
                     prefix={<LockOutlined className="site-form-item-icon" />}
                     type="password"
                     placeholder="Password"
+                    value={password}
+                    onChange={onChangePassword}
                 />
             </Form.Item>
 

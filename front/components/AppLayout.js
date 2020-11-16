@@ -32,6 +32,7 @@ text-align:cetner;
 `;
 
 const AppLayout = ({ children }) => {
+
     const [collapsed, setCollapsed] = useState(true);
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
@@ -98,8 +99,8 @@ const AppLayout = ({ children }) => {
                 >
                     {children}
                 </Content>
-                <Row justify="end">
-                    <Col xs={24} md={12}>
+                <Row >
+                    <Col justify="end" xs={24} md={12}>
                         <a
                             href="https://github.com/maldives0/ymillonga"
                             target="_blank"

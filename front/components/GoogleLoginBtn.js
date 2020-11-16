@@ -4,7 +4,7 @@ import refreshTokenSetup from '../utils/refreshToken';
 
 const GoogleLoginBtn = () => {
     const onSuccessLogin = (res) => {
-        console.log('google login success:', res.profileObj);
+        console.log('google login success:', res);
         // refreshTokenSetup(res);
     }
     const onFailureLogin = (res) => {

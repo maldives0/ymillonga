@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Proptypes from 'prop-types';
 import 'antd/dist/antd.css';
+import wrapper from '../store/configureStore';
 
 const Ymillonga = ({ Component }) => {
 
@@ -17,4 +18,4 @@ const Ymillonga = ({ Component }) => {
 Ymillonga.propTypes = {
     Component: Proptypes.elementType.isRequired,
 };
-export default Ymillonga;
+export default wrapper.withRedux(Ymillonga);
