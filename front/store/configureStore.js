@@ -8,11 +8,11 @@ const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
     return next(action);
 };
 const configureStore = (context) => {
-    const middleware = [];
+    const middleware = [loggerMiddleware];
     console.log('context', context);
     const enhancer = process.env.NODE_ENV === 'production' ?
-        compose(applyMiddleware) :
-        composeWithDevTools(applyMiddleware(loggerMiddleware)
+        compose(applyMiddleware(...middleware)) :
+        composeWithDevTools(applyMiddleware(...middleware)
         );
     const store = createStore(reducer, enhancer);
     return store;

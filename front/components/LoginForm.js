@@ -4,8 +4,9 @@ import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import GoogleLoginBtn from './GoogleLoginBtn';
-import { css } from '@emotion/react';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { LOG_IN_REQUEST } from '../../prepare/front/reducers/user';
 
 const layout = {
     wrapperCol: {
@@ -20,16 +21,25 @@ const tailLayout = {
 };
 
 
-const LoginForm = ({ setIsLoggedIn }) => {
-    const [id, onChangeId] = useInput('');
+const LoginForm = () => {
+    const { logInLoading, logInError, isLoggedIn } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
+    const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
 
+    useEffect(() => {
+        if (logInError) alert(logInError);
+    }, [logInError]);
 
-    const onSubmitForm = useCallback((errorInfo) => {
-        console.log(id, password);
-        console.error('login Failed:', errorInfo);
-        setIsLoggedIn(true);
-    }, [id, password]);
+    const onSubmitForm = useCallback(() => {
+        console.log(email, password);
+        dispatch({
+            type: LOG_IN_REQUEST,
+            data: { email, password },
+            isLoggedIn: true,
+        });
+
+    }, [email, password]);
 
 
     return (
@@ -43,7 +53,6 @@ const LoginForm = ({ setIsLoggedIn }) => {
 
         >
             <Form.Item
-
                 name="username"
                 rules={[
                     {
@@ -54,8 +63,8 @@ const LoginForm = ({ setIsLoggedIn }) => {
             >
                 <Input prefix={<UserOutlined className="site-form-item-icon" />}
                     placeholder="Username"
-                    value={id}
-                    onChange={onChangeId} />
+                    value={email}
+                    onChange={onChangeEmail} />
             </Form.Item>
 
             <Form.Item
@@ -84,6 +93,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
                 <Row gutter={8} >
                     <Col xs={12} md={6}>
                         <Button type="primary" htmlType="submit"
+                            loading={logInLoading}
                         >
                             로그인
             </Button>

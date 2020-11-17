@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 import AppLayout from '../components/AppLayout';
 import UserProfile from '../components/UserProfile';
@@ -6,7 +8,10 @@ import FollowList from '../components/FollowList';
 
 
 const Profile = () => {
-
+    const { me } = useSelector(state => state.me);
+    useEffect(() => {
+        if (!(me && me.id)) Router.push('/');
+    }, [me && me.id]);
     const loadMoreFollowings = useCallback(() => { }, []);
     const loadMoreFollowers = useCallback(() => { }, []);
     return (
@@ -14,11 +19,11 @@ const Profile = () => {
             <UserProfile />
             <FollowList
                 header="following"
-                data="data"
+                data={me.Followings}
                 onClickMore={loadMoreFollowings} />
             <FollowList
                 header="follower"
-                data="data"
+                data={me.Followers}
                 onClickMore={loadMoreFollowers} />
         </AppLayout>
     );

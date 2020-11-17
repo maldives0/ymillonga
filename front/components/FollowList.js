@@ -3,7 +3,7 @@ import { Button, List, Avatar } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-const FollowList = ({ header, onClickMore }) => {
+const FollowList = ({ header, data, onClickMore }) => {
     const onCancel = (id) => () => {
         if (header === 'following') {
             console.log('following');
@@ -26,9 +26,9 @@ const FollowList = ({ header, onClickMore }) => {
 
         <List
             header={<div>{header}</div>}
+            dataSource={data}
             itemLayout="horizontal"
             loadMore={loadMore}
-
             renderItem={item => (
                 <List.Item
                     actions={[
@@ -53,6 +53,7 @@ const FollowList = ({ header, onClickMore }) => {
 
 FollowList.propTypes = {
     header: PropTypes.string.isRequire,
+    data: PropTypes.array.isRequire,
     onClickMore: PropTypes.func.isRequire,
 
 }
