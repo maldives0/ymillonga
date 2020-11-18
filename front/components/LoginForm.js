@@ -36,7 +36,7 @@ const LoginForm = () => {
         dispatch({
             type: LOG_IN_REQUEST,
             data: { email, password },
-            isLoggedIn: true,
+
         });
 
     }, [email, password]);

@@ -11,12 +11,16 @@ const PostImages = ({ images }) => {
     const onClose = useCallback(() => {
         setShowImagesZoom(false);
     }, []);
+
     if (images.length === 1) {
         return (
             <>
                 <img role="presentation"
                     src={images[0].src}
                     alt={images[0].src}
+                    style={{
+                        cursor: 'pointer'
+                    }}
                     onClick={onZoom} />
                 {showImagesZoom && <ImagesZoom
                     images={images} onClose={onClose} />}
@@ -29,7 +33,8 @@ const PostImages = ({ images }) => {
                 <img role="presentation"
                     style={{
                         width: '50%',
-                        display: 'inline-block'
+                        display: 'inline-block',
+                        cursor: 'pointer'
                     }}
                     src={images[0].src}
                     alt={images[0].src}
@@ -37,7 +42,8 @@ const PostImages = ({ images }) => {
                 <img role="presentation"
                     style={{
                         width: '50%',
-                        display: 'inline-block'
+                        display: 'inline-block',
+                        cursor: 'pointer'
                     }}
                     src={images[1].src}
                     alt={images[1].src}
@@ -53,7 +59,7 @@ const PostImages = ({ images }) => {
                 <img role="presentation"
                     style={{
                         width: '50%',
-                        display: 'inline-block'
+                        cursor: 'pointer'
                     }}
                     src={images[0].src}
                     alt={images[0].src}
@@ -63,16 +69,17 @@ const PostImages = ({ images }) => {
                         width: '50%',
                         display: 'inline-block',
                         textAlign: 'center',
-                        verticalAlign: 'middle'
+                        verticalAlign: 'middle',
+                        cursor: 'pointer'
                     }}
                     onClick={onZoom}>
                     <PlusOutlined />
                     <br />
                     {images.length - 1}개의 사진 더 보기
         </div>
-                {showImagesZoom && <ImagesZoom
-                    images={images} onClose={onClose} />}
             </div>
+            {showImagesZoom && <ImagesZoom
+                images={images} onClose={onClose} />}
         </>
     );
 };

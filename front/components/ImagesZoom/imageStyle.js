@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Global, css } from '@emotion/react';
 
 export const ImageGlobal = () => (
-    <ImageGlobal
+    <Global
         styles={css`
     .slick-slide{
         display: inline-block;

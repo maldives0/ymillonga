@@ -1,5 +1,6 @@
 import produce from '../utils/produce';
 
+
 export const initialState = {
     signupData: {},
     loginData: {},
@@ -29,7 +30,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case LOG_IN_REQUEST:
             draft.logInLoading = true;
             draft.logInDone = false;
-            draft.me = dummyUser(action.data);
+
             draft.logInError = null;
             break;
         case LOG_IN_SUCCESS:

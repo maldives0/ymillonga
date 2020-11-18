@@ -42,7 +42,7 @@ const ImagesZoom = ({ images, onClose }) => {
         </Overlay>
     );
 };
-ImagesZoom.PropTypes = {
+ImagesZoom.propTypes = {
     images: PropTypes.arrayOf(PropTypes.object).isRequired,
     onClose: PropTypes.func.isRequired,
 };
