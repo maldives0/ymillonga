@@ -4,6 +4,7 @@ import Proptypes from 'prop-types';
 import 'antd/dist/antd.css';
 import wrapper from '../store/configureStore';
 
+
 const Ymillonga = ({ Component }) => {
 
     return (
@@ -11,6 +12,7 @@ const Ymillonga = ({ Component }) => {
             <Head>
                 <title>Ymillonga</title>
             </Head>
+
             <Component />
         </>
     );

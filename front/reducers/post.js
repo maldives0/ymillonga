@@ -18,6 +18,7 @@ export const initialState = {
         }, {
             src: faker.image.image(),
         }],
+        Likers: [],
         Comments: [{
             User: {
                 id: nanoid(),
@@ -27,8 +28,7 @@ export const initialState = {
         }],
     }],
     imagePaths: [],
-    Likers: [],
-    Retweet: [],
+
 };
 export const generateDummyPost = (number) => Array(number).fill().map(() => ({
     id: nanoid(),

@@ -6,6 +6,7 @@ import useInput from '../hooks/useInput';
 
 
 const PostForm = () => {
+
     const [text, onChangeText, setText] = useInput('');
     const imageInput = useRef();
     // const onChangeText =useCallback(()=>{
