@@ -19,6 +19,7 @@ const PostImages = ({ images }) => {
                     src={images[0].src}
                     alt={images[0].src}
                     style={{
+                        height: '300px',
                         cursor: 'pointer'
                     }}
                     onClick={onZoom} />

@@ -13,11 +13,12 @@ export const initialState = {
         Images: [{
             src: faker.image.image(),
         },
-        {
-            src: faker.image.image(),
-        }, {
-            src: faker.image.image(),
-        }],
+            // {
+            //     src: faker.image.image(),
+            // }, {
+            //     src: faker.image.image(),
+            // }
+        ],
         Likers: [],
         Comments: [{
             User: {
