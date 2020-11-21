@@ -1,9 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
+import { useSelector, useDispatch } from 'react-redux';
+import { SIGN_UP_REQUEST } from '../reducers/user';
+import Router from 'next/router';
 
 const Signup = () => {
+    const dispatch = useDispatch();
+    const { signUpLoading, me } = useSelector(state => state.user);
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -11,6 +16,11 @@ const Signup = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [term, setTerm] = useState(false);
     const [termError, setTermError] = useState(false);
+
+    useEffect(() => {
+        if (me) alert('로그인 중입니다. 메인페이지로 이동합니다.');
+        Router.push('/');
+    }, [me?.id]);
 
     const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
@@ -25,6 +35,12 @@ const Signup = () => {
     const onSubmit = useCallback(() => {
         if (password !== passwordCheck) setPasswordError(true);
         if (!term) setTermError(true);
+        dispatch({
+            type: SIGN_UP_REQUEST,
+            data: {
+                email, password, nickname
+            }
+        })
     }, [password, passwordCheck, term]);
     return (
         <AppLayout>
@@ -63,7 +79,7 @@ const Signup = () => {
                     <Form.Item >
                         <Button
                             type="primary" htmlType="submit"
-
+                            loading={signUpLoading}
                         >가입하기</Button>
                     </Form.Item>
                 </Form>

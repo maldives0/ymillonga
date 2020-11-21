@@ -10,11 +10,14 @@ import {
     UserOutlined,
     LoginOutlined
 } from '@ant-design/icons';
+
+import { css, jsx } from '@emotion/react'
 import styled from '@emotion/styled';
 import GlobalLayout from './GlobalLayout';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import Image from 'next/image';
+
 const { Header, Sider, Content } = Layout;
 
 const InputSearch = styled(Input.Search)`
@@ -23,15 +26,16 @@ margin-right:5px;`
     ;
 const Logo = styled.div`
 height: 60px;
-
 margin:15px 10px;
 display:flex;
 justify-content:center;
 text-align:cetner;
-
+background-color:rgba(255,255,255,0.5);
+border-radius:50%;
 `;
 
 const AppLayout = ({ children }) => {
+
 
     const [collapsed, setCollapsed] = useState(true);
     const [searchInput, onChangeSearchInput] = useInput('');
@@ -42,14 +46,19 @@ const AppLayout = ({ children }) => {
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
+
     return (
         <Layout>
             <GlobalLayout />
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <Logo>
                     <Image
-                        src="/images/logo.png"
+                        src="/images/ic_logo.png"
                         alt="logo"
+                        css={css`
+                        width:150px;
+                        height:60px;
+                                              `}
                         width={150}
                         height={60}
                     />
@@ -59,7 +68,8 @@ const AppLayout = ({ children }) => {
                     defaultSelectedKeys={['1']}
                     mode="inline"
                 >
-                    <Menu.Item key="1" icon={<HomeOutlined />}>
+                    <Menu.Item
+                        key="1" icon={<HomeOutlined />}>
                         <Link href="/"><a>Home</a></Link>
                     </Menu.Item>
 

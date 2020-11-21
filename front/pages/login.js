@@ -4,10 +4,10 @@ import LoginForm from '../components/LoginForm';
 import UserProfile from '../components/UserProfile';
 import { useSelector } from 'react-redux';
 const Login = () => {
-    const { isLoggedIn } = useSelector(state => state.user);
+    const { logInDone } = useSelector(state => state.user);
     return (
         <AppLayout>
-            {isLoggedIn ? <UserProfile /> : <LoginForm />}
+            {logInDone ? <UserProfile /> : <LoginForm />}
         </AppLayout>
     );
 };

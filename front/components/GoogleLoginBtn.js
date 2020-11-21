@@ -1,24 +1,19 @@
-import React from 'react';
-import { GoogleLogin } from 'react-social-login';
-import refreshTokenSetup from '../utils/refreshToken';
+import React, { useCallback } from 'react';
+import { GoogleLoginButton } from 'react-social-login-buttons';
+import { useRouter } from 'next/router';
 
 const GoogleLoginBtn = () => {
-    const onSuccessLogin = (res) => {
-        console.log('google login success:', res);
-        // refreshTokenSetup(res);
-    }
-    const onFailureLogin = (res) => {
-        console.error('google login failure:', res);
-    }
+
+    const router = useRouter();
+    const onClickGoogleLogin = useCallback(() => {
+        router.push('/user/google');
+    });
     return (
 
-        <GoogleLogin
-            clientId={process.env.GOOGLE_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={onSuccessLogin}
-            onFailure={onFailureLogin}
-            cookiePolicy={'single_host_origin'}
-            isSignedIn={true}
+        <GoogleLoginButton
+            onClick={onClickGoogleLogin}
+            align="center"
+            size="40px"
         />
 
     );

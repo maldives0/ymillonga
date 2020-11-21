@@ -6,7 +6,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import GoogleLoginBtn from './GoogleLoginBtn';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_IN_REQUEST } from '../../prepare/front/reducers/user';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 const layout = {
     wrapperCol: {
@@ -22,7 +22,7 @@ const tailLayout = {
 
 
 const LoginForm = () => {
-    const { logInLoading, logInError, isLoggedIn } = useSelector((state) => state.user);
+    const { logInLoading, logInError, } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -32,11 +32,9 @@ const LoginForm = () => {
     }, [logInError]);
 
     const onSubmitForm = useCallback(() => {
-        console.log(email, password);
         dispatch({
             type: LOG_IN_REQUEST,
             data: { email, password },
-
         });
 
     }, [email, password]);
