@@ -14,6 +14,8 @@ const GoogleLoginBtn = () => {
             onClick={onClickGoogleLogin}
             align="center"
             size="40px"
+            text="Google"
+            style={{ width: '150px' }}
         />
 
     );

@@ -20,7 +20,14 @@ export const initialState = {
     changeNicknameLoading: false, // 닉네임 변경 시도중
     changeNicknameDone: false,
     changeNicknameError: null,
-    me: null,
+    me: {
+        nickname: 'soso',
+        id: 2,
+        Posts: [{ id: 1 }],
+        Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
+        Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },]
+    },
+    // me: null,
     signUpData: {},
     loginData: {},
 };
@@ -80,18 +87,60 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.logInLoading = false;
             draft.logInError = acton.error;
             break;
+        case LOG_OUT_REQUEST:
+            draft.logOutLoading = true;
+            draft.logOutDone = false;
+            draft.logOutError = null;
+            break;
+        case LOG_OUT_SUCCESS:
+            draft.logOutLoading = false;
+            draft.me = dummyUser(action.data);
+            draft.logOutDone = true;
+            break;
+        case LOG_OUT_FAILURE:
+            draft.logOutLoading = false;
+            draft.logOutError = acton.error;
+            break;
         case SIGN_UP_REQUEST:
-            draft.logInLoading = true;
-            draft.logInDone = false;
-            draft.logInError = null;
+            draft.signUpLoading = true;
+            draft.signUpDone = false;
+            draft.signUpError = null;
             break;
         case SIGN_UP_SUCCESS:
-            draft.logInLoading = false;
-            draft.logInDone = true;
+            draft.signUpLoading = false;
+            draft.signUpDone = true;
             break;
         case SIGN_UP_FAILURE:
-            draft.logInLoading = false;
-            draft.logInError = acton.error;
+            draft.signUpLoading = false;
+            draft.signUpError = acton.error;
+            break;
+        case FOLLOW_REQUEST:
+            draft.followLoading = true;
+            draft.followDone = false;
+            draft.followError = null;
+            break;
+        case FOLLOW_SUCCESS:
+            draft.followLoading = false;
+            draft.followDone = true;
+            draft.me.Followings.push({ id: action.data });
+            break;
+        case FOLLOW_FAILURE:
+            draft.followLoading = false;
+            draft.followError = acton.error;
+            break;
+        case UNFOLLOW_REQUEST:
+            draft.unfollowLoading = true;
+            draft.unfollowDone = false;
+            draft.unfollowError = null;
+            break;
+        case UNFOLLOW_SUCCESS:
+            draft.unfollowLoading = false;
+            draft.unfollowDone = true;
+            draft.me.Followings = draft.me.Followings.filter(v => v.id !== action.data)
+            break;
+        case UNFOLLOW_FAILURE:
+            draft.unfollowLoading = false;
+            draft.unfollowError = acton.error;
             break;
         default:
             break;

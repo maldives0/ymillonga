@@ -8,7 +8,8 @@ import {
     MenuFoldOutlined,
     AimOutlined,
     UserOutlined,
-    LoginOutlined
+    LoginOutlined,
+    LogoutOutlined
 } from '@ant-design/icons';
 
 import { css, jsx } from '@emotion/react'
@@ -17,6 +18,8 @@ import GlobalLayout from './GlobalLayout';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const { Header, Sider, Content } = Layout;
 
@@ -35,8 +38,8 @@ border-radius:50%;
 `;
 
 const AppLayout = ({ children }) => {
-
-
+    const { me } = useSelector(state => state.user);
+    const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
@@ -46,7 +49,11 @@ const AppLayout = ({ children }) => {
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
-
+    const onLogout = useCallback(() => {
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
+    }, []);
     return (
         <Layout>
             <GlobalLayout />
@@ -75,8 +82,17 @@ const AppLayout = ({ children }) => {
 
                     <Menu.Item key="2" icon={<AimOutlined />}>
                         <Link href="/map"><a>Map</a></Link> </Menu.Item>
-                    <Menu.Item key="3" icon={<LoginOutlined />}>
-                        <Link href="/login"><a>Login</a></Link> </Menu.Item>
+                    <Menu.Item key="3" icon={
+                        me && me.id ? <LogoutOutlined /> : <LoginOutlined />
+                    }>
+                        {
+                            me && me.id ?
+                                (<Link href="/login" ><a onClick={onLogout}>Logout</a></Link>)
+                                :
+                                (<Link href="/login"><a>Login</a></Link>)
+                        }
+                    </Menu.Item>
+
                     <Menu.Item key="4" icon={<UserOutlined />}>
                         <Link href="/profile"><a>Profile</a></Link> </Menu.Item>
                 </Menu>

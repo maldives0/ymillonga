@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { CardWrapper } from './style';
 import moment from 'moment';
 import Link from 'next/link';
@@ -16,15 +16,17 @@ import {
 import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
-import PostCardContent from '../components/PostCardContent';
+import PostCardContent from './PostCardContent';
+import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 moment.locale('ko');
 const PostCard = ({ post }) => {
+    const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
     const [liked, setLiked] = useState(false);
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    // const { removePostLoading, updatePostLoading } = useSelector(state => state.post);
+    const { removePostLoading, updatePostLoading } = useSelector(state => state.post);
     // const liked = post.Likers.find((v) => v.id === id);
 
     const onLike = useCallback(() => {
@@ -35,6 +37,10 @@ const PostCard = ({ post }) => {
     }, [id]);
     const onRemovePost = useCallback(() => {
         if (!id) alert('로그인이 필요합니다');
+        dispatch({
+            type: REMOVE_POST_REQUEST,
+            data: post.id,
+        })
     }, [id]);
     const onRetweet = useCallback(() => {
         if (!id) alert('로그인이 필요합니다');
@@ -83,7 +89,8 @@ const PostCard = ({ post }) => {
                                                 onClick={onClickUpdate}>수정</Button>}
                                             <Button
                                                 type="danger"
-                                                onClick={onRemovePost}>삭제</Button>
+                                                onClick={onRemovePost}
+                                                loading={removePostLoading} >삭제</Button>
                                         </>
                                     ) :
                                     <Button>신고하기</Button>}
@@ -93,7 +100,7 @@ const PostCard = ({ post }) => {
                     </Popover>,
                 ]}
                 extra={id && <FollowButton post={post} />}
-            // title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
+                title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
             >
                 {post.RetweetId && post.Retweet ?
                     (
@@ -107,7 +114,7 @@ const PostCard = ({ post }) => {
                                 avatar={(
                                     <Link href={`/`}
                                         prefetch={false}><a><Avatar>
-                                            {/* {post.Retweet.User.nickname[0]} */}
+                                            {post.Retweet.User.nickname[0]}
                                         </Avatar></a></Link>
                                 )}
                                 title={post.Retweet.User.nickname}
@@ -130,16 +137,16 @@ const PostCard = ({ post }) => {
                                 avatar={(
                                     <Link href={`/user/${post.User.id}`}
                                         prefetch={false}><a><Avatar>
-                                            {post.User.nickname}
+                                            {post.User.nickname[0]}
                                         </Avatar></a></Link>
                                 )}
                                 title={post.User.nickname}
                                 description={
                                     <PostCardContent
-                                        // onCancelUpdate={
-                                        //     onCancelUpdate
-                                        // }
-                                        // onChangePost={onChangePost}
+                                        onCancelUpdate={
+                                            onCancelUpdate
+                                        }
+                                        onChangePost={onChangePost}
                                         postData={post.content}
                                     />
                                 }
@@ -147,33 +154,31 @@ const PostCard = ({ post }) => {
                         </>
                     )}
             </Card>
-            {
-                commentFormOpened && (
-                    <>
-                        <CommentForm post={post} />
-                        <List
-                            header={`${post.Comments ? post.Comments.length : 0}댓글`}
-                            itemLayout='horizontal'
-                            dataSource={post.Comments || []}
-                            renderItem={(item) => (
-                                <li>
-                                    <Comment
-                                        author={item.User.nickname}
-                                        avatar={(
-                                            <Link
-                                                href={`/user/${item.User.id}`}
-                                                prefetch={false}>
-                                                <a>
-                                                    <Avatar>{item.User.nickname[0]}</Avatar>
-                                                </a>
-                                            </Link>
-                                        )}
-                                        content={item.content} />
-                                </li>
-                            )} />
-                    </>
-                )
-            }
+            {commentFormOpened && (
+                <>
+                    <CommentForm post={post} />
+                    <List
+                        header={`댓글: ${post.Comments ? post.Comments.length : 0}개`}
+                        itemLayout='horizontal'
+                        dataSource={post.Comments || []}
+                        renderItem={(item) => (
+                            <li>
+                                <Comment
+                                    author={item.User.nickname}
+                                    avatar={(
+                                        <Link
+                                            href={`/user/${item.User.id}`}
+                                            prefetch={false}>
+                                            <a>
+                                                <Avatar>{item.User.nickname[0]}</Avatar>
+                                            </a>
+                                        </Link>
+                                    )}
+                                    content={item.content} />
+                            </li>
+                        )} />
+                </>
+            )}
         </CardWrapper >
     );
 };
@@ -182,7 +187,7 @@ PostCard.propTypes = {
         id: PropTypes.number,
         User: PropTypes.object,
         content: PropTypes.string,
-        // createdAt: PropTypes.string,
+        createdAt: PropTypes.string,
         Comments: PropTypes.arrayOf(PropTypes.any),
         Images: PropTypes.arrayOf(PropTypes.any),
         Likers: PropTypes.arrayOf(PropTypes.object),

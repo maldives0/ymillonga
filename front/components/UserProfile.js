@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Card, Divider } from 'antd';
-import { LoginOutlined, SettingOutlined } from '@ant-design/icons';
+import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { CardWrapper } from './style';
 import NicknameEditForm from '../components/NicknameEditForm';
 
 
-const UserProfile = ({ setIsLoggedIn }) => {
+const UserProfile = () => {
     const [editNickname, setEditNickname] = useState(false);
     const onClickEditNickname = useCallback(() => {
         setEditNickname((prev) => !prev);
@@ -21,7 +21,7 @@ const UserProfile = ({ setIsLoggedIn }) => {
                 style={{ width: 300, marginTop: 16 }}
                 type="inner"
                 extra={[
-                    <LoginOutlined key="logout" onClick={onLogout} />,
+                    <LogoutOutlined key="logout" onClick={onLogout} />,
                     <Divider type="vertical" />,
                     <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} />
                 ]}

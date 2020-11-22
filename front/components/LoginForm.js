@@ -1,24 +1,20 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
+import { Form, Input, Button, Checkbox, Row, Divider } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import GoogleLoginBtn from './GoogleLoginBtn';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
+import FacebookLoginBtn from './FacebookLoginBtn';
+import GoogleLoginBtn from './GoogleLoginBtn';
 
 const layout = {
     wrapperCol: {
         span: 16,
     },
 };
-const tailLayout = {
-    wrapperCol: {
-        span: 16,
-    },
 
-};
 
 
 const LoginForm = () => {
@@ -87,28 +83,25 @@ const LoginForm = () => {
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
-            <Form.Item {...tailLayout} justify="end"  >
-                <Row gutter={8} >
-                    <Col xs={12} md={6}>
-                        <Button type="primary" htmlType="submit"
-                            loading={logInLoading}
-                        >
-                            로그인
+            <Form.Item justify="end"  >
+                <Row>
+                    <Button type="primary" htmlType="submit"
+                        loading={logInLoading}
+                    >
+                        로그인
             </Button>
-                    </Col>
-                    <Col xs={12} md={6}>
-                        <Link href="/signup"><a><Button>
-                            회원가입
+                    <Divider type="vertical" style={{ border: 'none' }} />
+                    <Link href="/signup"><a><Button>
+                        회원가입
             </Button></a></Link>
-                    </Col>
                 </Row>
             </Form.Item>
-
-            <Row gutter={8}>
-                <Form.Item {...tailLayout} >
+            <Form.Item justify="end"  >
+                <Row>
                     <GoogleLoginBtn />
-                </Form.Item>
-            </Row>
+                    <FacebookLoginBtn />
+                </Row>
+            </Form.Item>
         </Form>
     );
 

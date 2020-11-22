@@ -34,13 +34,32 @@ function* login(action) {
     } catch (err) {
         console.error(err);
         yield put({
+            type: LOG_IN_FAILURE,
+            error: err.response.data,
+        });
+    }
+};
+function logoutAPI(data) {
+    return axios.post('/user/login');
+}
+function* logout() {
+    try {
+
+        // const result = yield call(logoutAPI);
+        yield delay(1000);
+        yield put({
+            type: LOG_OUT_SUCCESS,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
             type: LOG_OUT_FAILURE,
             error: err.response.data,
         });
     }
 };
 function signupAPI() {
-    // return axios.post('/user/signup',data);
+    return axios.post('/user/signup', data);
 }
 function* signup(action) {
     try {
@@ -57,16 +76,68 @@ function* signup(action) {
         });
     }
 };
+function followAPI() {
+    return axios.post(`/user/${data.userId}/follow/`, data);
+}
+function* follow(action) {
+    try {
+        // const result = yield call(followAPI);
+        yield delay(1000);
+        yield put({
+            type: FOLLOW_SUCCESS,
+            data: action.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: FOLLOW_FAILURE,
+            error: err.response.data,
+        });
+    }
+};
+function unfollowAPI() {
+    return axios.post('/user/unFollow', data);
+}
+function* unfollow(action) {
+    try {
+        // const result = yield call(unfollowAPI);
+        yield delay(1000);
+        yield put({
+            type: UNFOLLOW_SUCCESS,
+            data: action.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UNFOLLOW_FAILURE,
+            error: err.response.data,
+        });
+    }
+};
+
 function* watchSignup() {
     yield takeLatest(SIGN_UP_REQUEST, signup);
+}
+function* watchFollow() {
+    yield takeLatest(FOLLOW_REQUEST, follow);
+}
+function* watchUnfollow() {
+    yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 function* watchLogin() {
     yield takeLatest(LOG_IN_REQUEST, login);
 }
+function* watchLogout() {
+    yield takeLatest(LOG_OUT_REQUEST, logout);
+}
+
 export default function* userSaga() {
     yield all([
         fork(watchSignup),
+        fork(watchFollow),
+        fork(watchUnfollow),
         fork(watchLogin),
+        fork(watchLogout),
     ]);
 
 }

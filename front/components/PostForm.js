@@ -1,23 +1,26 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Button } from 'antd';
-import AppLayout from '../components/AppLayout';
+
 import useInput from '../hooks/useInput';
+import { ADD_POST_REQUEST } from '../reducers/post';
 
 
 const PostForm = () => {
-
+    const { imagePaths, addPostDone } = useSelector(state => state.post);
+    const dispatch = useDispatch();
     const [text, onChangeText, setText] = useInput('');
     const imageInput = useRef();
-    // const onChangeText =useCallback(()=>{
 
-    // },[]);
+    useEffect(() => {
+        if (addPostDone) setText('');
+    }, [addPostDone]);
     const onChangeImages = useCallback((e) => {
         console.log('clickImgInfo', e.target.files);
-        const imageFormData = new FormData();
-        [].forEach.call(e.target.files, (f) => {
-            imageFormData.append('image', f);
-        })
+        // const imageFormData = new FormData();
+        // [].forEach.call(e.target.files, (f) => {
+        //     imageFormData.append('image', f);
+        // })
     }, []);
 
     const onClickImageUpload = useCallback(() => {
@@ -26,7 +29,12 @@ const PostForm = () => {
     const onRemoveImage = useCallback((i) => () => {
 
     }, []);
-    const onSubmit = useCallback(() => { }, []);
+    const onSubmit = useCallback(() => {
+        dispatch({
+            type: ADD_POST_REQUEST,
+            data: text,
+        });
+    }, [text]);
     return (
         <Form
             style={{ margin: '10px 0 20px' }}

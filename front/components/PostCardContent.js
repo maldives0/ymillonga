@@ -7,6 +7,7 @@ const { TextArea } = Input;
 
 
 const PostCardContent = ({ postData, editMode, onCalcelUpdate, onChangePost }) => {
+
     const [editText, setEditText] = useState(postData);
     const onChangeText = useCallback((e) => {
         setEditText(e.target.value);
@@ -26,8 +27,8 @@ const PostCardContent = ({ postData, editMode, onCalcelUpdate, onChangePost }) =
                     </Button.Group>
                 </>
             ) :
-                postData.split(/(#[^\s#]+)/g).map((v) => {
-                    if (v.match(/(#[^\s#]+)/g)) {
+                postData?.split(/(#[^\s#]+)/g).map((v) => {
+                    if (v.match(/(#[^\s#]+)/)) {
                         return (
                             <Link
                                 href={{
@@ -43,8 +44,8 @@ const PostCardContent = ({ postData, editMode, onCalcelUpdate, onChangePost }) =
                         );
                     }
                     return v;
-                })
-            }
+                })}
+
         </div>
     );
 };
