@@ -2,6 +2,9 @@ import produce from '../utils/produce';
 
 
 export const initialState = {
+    loadUserLoading: false, // 유저 정보 가져오기 시도중
+    loadUserDone: false,
+    loadUserError: null,
     followLoading: false, // 팔로우 시도중
     followDone: false,
     followError: null,
@@ -20,17 +23,24 @@ export const initialState = {
     changeNicknameLoading: false, // 닉네임 변경 시도중
     changeNicknameDone: false,
     changeNicknameError: null,
-    me: {
-        nickname: 'soso',
-        id: 2,
-        Posts: [{ id: 1 }],
-        Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
-        Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },]
-    },
-    // me: null,
+    loadFollowingsLoading: false,
+    loadFollowingsDone: false,
+    loadFollowingsError: null,
+    loadFollowersLoading: false,
+    loadFollowersDone: false,
+    loadFollowersError: null,
+    removeFollowerLoading: false,
+    removeFollowerDone: false,
+    removeFollowerError: null,
+    me: null,
     signUpData: {},
     loginData: {},
+
 };
+
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -56,8 +66,21 @@ export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
+
+export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
+export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
+export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
+
+export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
+export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
+export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
+
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
 
 const dummyUser = (data) => ({
     ...data,
@@ -94,12 +117,26 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOG_OUT_SUCCESS:
             draft.logOutLoading = false;
-            draft.me = dummyUser(action.data);
             draft.logOutDone = true;
+            draft.me = null;
             break;
         case LOG_OUT_FAILURE:
             draft.logOutLoading = false;
             draft.logOutError = acton.error;
+            break;
+        case CHANGE_NICKNAME_REQUEST:
+            draft.changeNicknameLoading = true;
+            draft.changeNicknameDone = false;
+            draft.changeNicknameError = null;
+            break;
+        case CHANGE_NICKNAME_SUCCESS:
+            draft.changeNicknameLoading = false;
+            draft.changeNicknameDone = true;
+            draft.me.nickname = action.data;
+            break;
+        case CHANGE_NICKNAME_FAILURE:
+            draft.changeNicknameLoading = false;
+            draft.changeNicknameError = acton.error;
             break;
         case SIGN_UP_REQUEST:
             draft.signUpLoading = true;
@@ -141,6 +178,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case UNFOLLOW_FAILURE:
             draft.unfollowLoading = false;
             draft.unfollowError = acton.error;
+            break;
+        case REMOVE_FOLLOWER_REQUEST:
+            draft.removeFollowerLoading = true;
+            draft.removeFollowerDone = false;
+            draft.removeFollowerError = null;
+            break;
+        case REMOVE_FOLLOWER_SUCCESS:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerDone = true;
+            draft.me.Followers = draft.me.Followers.filter(v => v.id !== action.data)
+            break;
+        case REMOVE_FOLLOWER_FAILURE:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerError = acton.error;
             break;
         default:
             break;

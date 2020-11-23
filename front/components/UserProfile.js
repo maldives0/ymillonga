@@ -2,18 +2,26 @@ import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Card, Divider } from 'antd';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
-import { CardWrapper } from './style';
+
 import NicknameEditForm from '../components/NicknameEditForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { LOG_OUT_REQUEST } from '../reducers/user';
+import styled from '@emotion/styled';
 
-
+const CardWrapper = styled.div`
+margin-bottom: 20px;`
 const UserProfile = () => {
+    const dispatch = useDispatch();
+    const { me } = useSelector(state => state.user);
     const [editNickname, setEditNickname] = useState(false);
     const onClickEditNickname = useCallback(() => {
         setEditNickname((prev) => !prev);
     }, []);
 
     const onLogout = useCallback(() => {
-        setIsLoggedIn(false);
+        dispatch({
+            type: LOG_OUT_REQUEST
+        });
     }, []);
     return (
         <CardWrapper>
@@ -26,17 +34,29 @@ const UserProfile = () => {
                     <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} />
                 ]}
                 actions={[
-                    <div key="twit"><Link href="#"><a>게시글<br />1</a></Link></div>,
-                    <div key="following"><Link href="#"><a>팔로잉<br />1</a></Link></div>,
-                    <div key="follower"><Link href="#"><a>팔로어<br />1</a></Link></div>,
+                    <div key="twit">
+                        <Link href={`/user/${me.id}`}><a>게시글<br />{me.Posts.length}</a>
+                        </Link>
+                    </div>,
+                    <div key="following">
+                        <Link href="/profile">
+                            <a>팔로잉<br />{me.Followings.length}</a>
+                        </Link>
+                    </div>,
+                    <div key="follower">
+                        <Link href="/profile">
+                            <a>팔로어<br />{me.Followers.length}</a>
+                        </Link>
+                    </div>,
                 ]}
             >
                 <Card.Meta
                     avatar={
                         (<Link
-                            href="#"><a><Avatar></Avatar></a></Link>)
+                            href="/profile"><a><Avatar>
+                                {me.nickname[0]}</Avatar></a></Link>)
                     }
-                    title="Card title"
+                    title={me.nickname}
                 />
                 {editNickname && <NicknameEditForm />}
             </Card>

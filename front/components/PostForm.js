@@ -7,7 +7,7 @@ import { ADD_POST_REQUEST } from '../reducers/post';
 
 
 const PostForm = () => {
-    const { imagePaths, addPostDone } = useSelector(state => state.post);
+    const { imagePaths, addPostLoading, addPostDone } = useSelector(state => state.post);
     const dispatch = useDispatch();
     const [text, onChangeText, setText] = useInput('');
     const imageInput = useRef();
@@ -37,36 +37,46 @@ const PostForm = () => {
     }, [text]);
     return (
         <Form
-            style={{ margin: '10px 0 20px' }}
+            style={{ margin: '10px 0 30px' }}
             encType="multipart/form-data"
             onFinish={onSubmit}
         >
-            <Input.TextArea
-                value={text}
-                onChange={onChangeText}
-                maxLength={140}
-                placeholder="오늘은 어떤 일이 있었나요?"
-            />
-            <div>
-                <input type="file" name="image" multiple hidden
-                    ref={imageInput} onChange={onChangeImages} />
-                <Button onClick={onClickImageUpload}>이미지 업로드하기</Button>
-                <Button type="primary" style={{ float: 'right' }}
-                    htmlType="submit">게시하기</Button>
-            </div>
-            <div>
-                {imagePaths.map((v, i) => {
-                    return (
-                        <div key={v} style={{ display: 'inline-block' }}>
-                            <img src={v} style={{ width: '200px' }} alt={v} />
-                            <div>
-                                <Button
-                                    onClick={onRemoveImage(i)}>삭제하기</Button>
+            <Form.Item>
+                <Input.TextArea
+                    value={text}
+                    onChange={onChangeText}
+                    maxLength={140}
+                    placeholder="오늘은 어떤 일이 있었나요?"
+                    style={{
+                        height: '80px',
+                        marginBottom: '5px'
+                    }}
+                />
+                <div>
+                    <input
+                        type="file" name="image" multiple hidden
+                        ref={imageInput}
+                        onChange={onChangeImages} />
+                    <Button onClick={onClickImageUpload}>이미지 업로드하기</Button>
+                    <Button type="primary"
+                        style={{ float: 'right' }}
+                        loading={addPostLoading}
+                        htmlType="submit">게시하기</Button>
+                </div>
+                <div>
+                    {imagePaths.map((v, i) => {
+                        return (
+                            <div key={v} style={{ display: 'inline-block' }}>
+                                <img src={v} style={{ width: '200px' }} alt={v} />
+                                <div>
+                                    <Button
+                                        onClick={onRemoveImage(i)}>삭제하기</Button>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        );
+                    })}
+                </div>
+            </Form.Item>
         </Form>
     );
 };

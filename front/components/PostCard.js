@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { CardWrapper } from './style';
+import styled from '@emotion/styled';
 import moment from 'moment';
 import Link from 'next/link';
 import {
@@ -20,6 +20,8 @@ import PostCardContent from './PostCardContent';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 moment.locale('ko');
+const CardWrapper = styled.div`
+margin-bottom: 20px;`
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);

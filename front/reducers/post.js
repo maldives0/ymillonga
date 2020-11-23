@@ -4,34 +4,7 @@ import { nanoid } from 'nanoid';
 
 export const initialState = {
 
-    mainPosts: [
-        {
-            id: 1,//게시글 아이디
-            User: {//게시글 작성자 
-                id: 1,
-                nickname: 'momo',
-            },
-            content: '첫 번째 게시글 #first',
-            Images: [{
-                src: faker.image.image(),
-            },
-            {
-                src: faker.image.image(),
-            }, {
-                src: faker.image.image(),
-            }
-            ],
-            Likers: [],
-            Comments: [{
-                User: {
-                    id: nanoid(),
-                    nickname: faker.name.findName(),
-                },
-                content: faker.lorem.sentence(),
-            }],
-        }
-    ],
-    // mainPosts: [],
+    mainPosts: [],
     imagePaths: [],
     hasMorePosts: true,
     likePostLoading: false,
@@ -140,6 +113,22 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case LOAD_POSTS_REQUEST:
+            draft.loadPostsLoading = true;
+            draft.loadPostsDone = false;
+            draft.loadPostsError = null;
+            break;
+        case LOAD_POSTS_SUCCESS:
+            draft.loadPostsLoading = false;
+            draft.loadPostsDone = true;
+            draft.mainPosts = action.data.concat(draft.mainPosts);
+            //mainPosts 앞으로 최신글 순으로 새로운 게시글 더해주기
+            draft.hasMorePosts = draft.mainPosts.length < 30;
+            break;
+        case LOAD_POSTS_FAILURE:
+            draft.loadPostsLoading = false;
+            draft.loadPostsError = action.error;
+            break;
         case ADD_POST_REQUEST:
             draft.addPostLoading = true;
             draft.addPostDone = false;
