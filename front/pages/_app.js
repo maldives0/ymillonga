@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import Proptypes from 'prop-types';
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 import wrapper from '../store/configureStore';
 import withReduxSaga from 'next-redux-saga';
 
