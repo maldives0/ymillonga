@@ -96,6 +96,20 @@ const dummyUser = (data) => ({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case LOAD_USER_REQUEST:
+            draft.loadUserLoading = true;
+            draft.loadUserError = null;
+            draft.loadUserDone = false;
+            break;
+        case LOAD_USER_SUCCESS:
+            draft.loadUserLoading = false;
+            draft.me = action.data;
+            draft.loadUserDone = true;
+            break;
+        case LOAD_USER_FAILURE:
+            draft.loadUserLoading = false;
+            draft.loadUserError = action.error;
+            break;
         case LOG_IN_REQUEST:
             draft.logInLoading = true;
             draft.logInDone = false;
@@ -103,7 +117,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOG_IN_SUCCESS:
             draft.logInLoading = false;
-            draft.me = dummyUser(action.data);
+            draft.me = action.data;
             draft.logInDone = true;
             break;
         case LOG_IN_FAILURE:

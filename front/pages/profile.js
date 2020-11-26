@@ -15,7 +15,7 @@ const Profile = () => {
     useEffect(() => {
         if (!(me && me.id)) {
             alert('로그인이 필요합니다.');
-            Router.push('/')
+            Router.replace('/login')
         };
     }, [me && me.id]);
     if (!me) { return null };

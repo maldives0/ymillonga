@@ -32,17 +32,35 @@ import {
     UNFOLLOW_SUCCESS,
 } from '../reducers/user';
 
+function loadUserAPI() {
+    return axios.get('/user');
+}
+
+function* loadUser(action) {
+    try {
+        const result = yield call(loadUserAPI, action.data);
+        yield put({
+            type: LOAD_USER_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_USER_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 function loginAPI(data) {
     return axios.post('/user/login', data);
 }
 function* login(action) {
     try {
-        console.log('saga login', action);
-        // const result = yield call(loginAPI);
+        const result = yield call(loginAPI, action.data);
         yield delay(1000);
         yield put({
             type: LOG_IN_SUCCESS,
-            data: action.data,
+            data: result.data,
         });
     } catch (err) {
         console.error(err);
@@ -53,13 +71,12 @@ function* login(action) {
     }
 };
 function logoutAPI(data) {
-    return axios.post('/user/login');
+    return axios.post('/user/logout');
 }
 function* logout() {
     try {
-
-        // const result = yield call(logoutAPI);
-        yield delay(1000);
+        const result = yield call(logoutAPI);
+        // yield delay(1000);
         yield put({
             type: LOG_OUT_SUCCESS,
         });
@@ -71,13 +88,15 @@ function* logout() {
         });
     }
 };
-function signupAPI() {
-    return axios.post('/user/signup', data);
+function signupAPI(data) {
+    return axios.post('/user', data);
+    //data={email,password,nickname}, post,put,patch는 data를 넘길 수 있다
 }
 function* signup(action) {
     try {
-        // const result = yield call(signupAPI);
-        yield delay(1000);
+        const result = yield call(signupAPI, action.data);
+        console.log(result);
+        // yield delay(1000);
         yield put({
             type: SIGN_UP_SUCCESS
         });
@@ -166,6 +185,10 @@ function* removeFollow(action) {
     }
 };
 
+function* watchLoadUser() {
+    yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
+
 function* watchSignup() {
     yield takeLatest(SIGN_UP_REQUEST, signup);
 }
@@ -191,6 +214,7 @@ function* watchLogout() {
 
 export default function* userSaga() {
     yield all([
+        fork(watchLoadUser),
         fork(watchSignup),
         fork(watchChangeNickname),
         fork(watchFollow),

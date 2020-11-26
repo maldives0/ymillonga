@@ -10,7 +10,7 @@ import Router from 'next/router';
 
 const Signup = () => {
     const dispatch = useDispatch();
-    const { signUpLoading, me } = useSelector(state => state.user);
+    const { signUpLoading, signUpDone, signUpError, me } = useSelector(state => state.user);
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -22,10 +22,19 @@ const Signup = () => {
     useEffect(() => {
         if (me && me.id) {
             alert('로그인 중입니다. 메인페이지로 이동합니다.');
-            Router.push('/');
+            Router.replace('/');//push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
         }
     }, [me && me.id]);
-
+    useEffect(() => {
+        if (signUpDone) {
+            Router.replace('/');
+        }
+    }, [signUpDone]);
+    useEffect(() => {
+        if (signUpError) {
+            alert(signUpError);
+        }
+    }, [signUpError]);
     const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
         setPasswordError(e.target.value !== password);
@@ -45,7 +54,7 @@ const Signup = () => {
                 email, password, nickname
             }
         })
-    }, [password, passwordCheck, term]);
+    }, [email, password, passwordCheck, term]);
     return (
         <AppLayout>
             <Head>

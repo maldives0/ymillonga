@@ -8,21 +8,31 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
 import FacebookLoginBtn from './FacebookLoginBtn';
 import GoogleLoginBtn from './GoogleLoginBtn';
-
+import { useRouter } from 'next/router';
 const layout = {
     wrapperCol: {
         span: 16,
     },
 };
 
-
-
 const LoginForm = () => {
-    const { logInLoading, logInError, } = useSelector((state) => state.user);
+    const Router = useRouter();
+    const { logInLoading, logInError, me, loadUserDone } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
-
+    useEffect(() => {
+        if (me && me.id) {
+            alert('로그인 중입니다. 메인페이지로 이동합니다.');
+            Router.replace('/');//push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
+        }
+    }, [me && me.id]);
+    // useEffect(() => {
+    //     if (loadUserDone) {
+    //         alert('로그인 중입니다. 메인페이지로 이동합니다.');
+    //         Router.replace('/');
+    //     }
+    // }, [loadUserDone]);
     useEffect(() => {
         if (logInError) alert(logInError);
     }, [logInError]);
