@@ -3,6 +3,7 @@ const passport = require('passport');
 const { User } = require('../models');
 const local = require('./local');
 const google = require('./google');
+const facebook = require('./facebook');
 
 //로그인 설정
 module.exports = () => {
@@ -24,4 +25,5 @@ module.exports = () => {
     });
     local();
     google();
+    facebook();
 };

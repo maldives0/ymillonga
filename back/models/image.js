@@ -3,7 +3,7 @@ const { Model } = DataTypes;
 module.exports = class User extends Model {
     static init(sequelize) {
         return super.init({
-            email: {
+            src: {
                 type: DataTypes.STRING(200),
                 allowNull: false,
             },

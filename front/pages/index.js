@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux';
-
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -28,9 +26,10 @@ const Home = () => {
 
             if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
                 if (hasMorePosts && !loadPostsLoading) {
+                    const lastId = mainPosts[mainPosts.length - 1]?.id;
                     dispatch({
                         type: LOAD_POSTS_REQUEST,
-                        // data: mainPosts[mainPosts.length - 1].id,
+                        lastId,
                     });
                 }
             }
@@ -48,7 +47,7 @@ const Home = () => {
             {me && <PostForm />}
             {mainPosts?.map((post) => {
                 return (
-                    <PostCard key={post.id} post={post} />
+                    <PostCard key={post?.id} post={post} />
                 );
             })}
 

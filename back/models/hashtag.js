@@ -3,10 +3,10 @@ const { Model } = DataTypes;
 module.exports = class User extends Model {
     static init(sequelize) {
         return super.init({
-            email: {
+            name: {
                 type: DataTypes.STRING(20),
                 allowNull: false,
-            },
+            }
         },
             {
                 modelName: 'Hashtag',

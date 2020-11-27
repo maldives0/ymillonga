@@ -3,7 +3,10 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const db = require('./models');
 const morgan = require('morgan');
+const path = require('path');
 const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passportConfig = require('./passport');
@@ -14,22 +17,24 @@ dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 const port = prod ? 80 : 3051;
-
+const frontUrl = prod ? "https://ymillonga.kr" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {
         console.log('db연결 성공');
     })
     .catch(console.error);
-
+app.use(morgan('dev'));
 app.use(cors({
-    origin: true,//해당주소에서 온 요청만 허용한다
-    credentials: true,
+    origin: frontUrl,//해당주소에서 온 요청만 허용한다
+    credentials: true,//도메인이 다르면 cookie가 전달되지 않는다, true면 cookie전달할 수 있다, origin에 '*'이 아닌 정확한 주소를 적어주어야 한다('Access-Control-Allow-Origin'값이 'http://localhost:3050')
+    //front에서는 axios.post('',data,{withCredentials:true})
 }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));//app.use안에 들어가는 middleware,
 //FE로 부터 넘어온 데이터를 req.body안에 넣어준다, router보다 먼저 실행되도록 위에 위치시키기
 //form submit data를 urlencoded방식으로 처리해준다
+app.use('/', express.static(path.join(__dirname, 'uploads')));//'http://localhost:3050/'로 접근하면 uploads파일로 이동한다, fe에서 이미지로 접근할 수 있도록 주소 제공하기
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     saveUninitialized: false,
@@ -40,8 +45,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/user', userRouter);
-app.use('/post', userRouter);
-app.use('/posts', userRouter);
+app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 
 app.get('/', (req, res) => {
     res.send('hello express');
@@ -52,7 +57,7 @@ app.use((req, res, next) => {
     error.status = 404;
     next(error);
 });
-// app.use((err, req, res, next) => {
+// app.use((err, req, res, next) => {//err처리 middleware은 매개변수가 4개
 //     res.locals.message = err.message;
 //     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
 //     res.status(err.status || 500);

@@ -6,7 +6,7 @@ const FacebookLoginBtn = () => {
 
     const router = useRouter();
     const onClickFacebookLogin = useCallback(() => {
-        router.push('/user/facebook');
+        router.push('/api/facebook');
     });
     return (
 

@@ -2,10 +2,43 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');//비밀번호 암호화 라이브러리
 const passport = require('passport');
-const { User, Post, } = require('../models');
+const { User, Post, Image } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const frontUrl = require('../app');
+router.get('/', async (req, res, next) => {
+    try {
+        if (req.user) {//사용자가 있을 때
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id },
+                attributes: ['id', 'nickname'],
+                include: [{//데이터효율을 위해 게시글수, 팔로잉수, 팔로워수만 가져오면 된다
+                    model: Post,
+                    attributes: ['id'],
+                },
+                {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id']
+                },
+                {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id']
+                }]
+            })
+            res.status(200).json(fullUserWithoutPassword);
 
+        } else {
+            res.status(200).json(null);
+        }
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => {
     //POST/user
     try {
         const exUser = await User.findOne({
@@ -38,7 +71,7 @@ router.post('/', async (req, res, next) => {
     }
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             console.error(err);
@@ -76,7 +109,7 @@ router.post('/login', (req, res, next) => {
         });
     })(req, res, next);
 });
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
     req.logout();
     req.session.destroy();
     res.redirect('/');
@@ -92,45 +125,14 @@ router.get('/google/callback', passport.authenticate('google', {
     return res.status(200).redirect('http://localhost:3050');
 
 });
+router.get('/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
 
-router.get('/', async (req, res, next) => {
-    try {
-        if (req.user) {
-            const fullUserWithoutPassword = await User.findOne({
-                where: { id: req.user.id },
-                attributes: {
-                    exclude: ['password']
-                },
-                include: [{
-                    model: Post,
-                    attributes: ['id'],
-                },
-                {
-                    model: User,
-                    as: 'Followings',
-                    attributes: ['id']
-                },
-                {
-                    model: User,
-                    as: 'Followers',
-                    attributes: ['id']
-                }]
-            })
-            res.status(200).json(fullUserWithoutPassword);
+router.get('/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/',
+}), async (req, res, next) => {
+    return res.status(200).redirect('http://localhost:3050');
 
-        } else {
-            res.status(200).json(null);
-        }
-    }
-    catch (err) {
-        console.error(err);
-        next(err);
-    }
 });
-
-
-
-
 
 
 // GET '/user/google'

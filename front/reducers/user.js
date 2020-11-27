@@ -82,14 +82,14 @@ export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 
-const dummyUser = (data) => ({
-    ...data,
-    nickname: 'momo',
-    id: 1,
-    Posts: [{ id: 1 }],
-    Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
-    Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
-});
+// const dummyUser = (data) => ({
+//     ...data,
+//     nickname: 'momo',
+//     id: 1,
+//     Posts: [{ id: 1 }],
+//     Followings: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
+//     Followers: [{ nickname: 'aa' }, { nickname: 'bb' }, { nickname: 'cc' },],
+// });
 
 
 

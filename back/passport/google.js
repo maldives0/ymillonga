@@ -1,6 +1,5 @@
 const passport = require('passport');
 const dotenv = require('dotenv');
-const { callbackUrl } = require('../config/config');
 const bcrypt = require('bcrypt');
 
 //구글 로그인 전략

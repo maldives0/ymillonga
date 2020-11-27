@@ -17,33 +17,34 @@ const layout = {
 
 const LoginForm = () => {
     const Router = useRouter();
-    const { logInLoading, logInError, me, loadUserDone } = useSelector((state) => state.user);
+    const { logInLoading, logInError, me } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
+    const [basicButtonClicked, setBasicButtonClicked] = useState(false);
     useEffect(() => {
         if (me && me.id) {
             alert('로그인 중입니다. 메인페이지로 이동합니다.');
             Router.replace('/');//push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
         }
     }, [me && me.id]);
-    // useEffect(() => {
-    //     if (loadUserDone) {
-    //         alert('로그인 중입니다. 메인페이지로 이동합니다.');
-    //         Router.replace('/');
-    //     }
-    // }, [loadUserDone]);
+
     useEffect(() => {
         if (logInError) alert(logInError);
     }, [logInError]);
 
-    const onSubmitForm = useCallback(() => {
-        dispatch({
-            type: LOG_IN_REQUEST,
-            data: { email, password },
-        });
+    const onClickBasicButton = useCallback(() => {
+        setBasicButtonClicked(true);
+    }, []);
 
-    }, [email, password]);
+    const onSubmitForm = useCallback(() => {
+        if (basicButtonClicked) {
+            dispatch({
+                type: LOG_IN_REQUEST,
+                data: { email, password },
+            });
+        }
+    }, [email, password, basicButtonClicked]);
 
 
     return (
@@ -54,13 +55,12 @@ const LoginForm = () => {
                 remember: true,
             }}
             onFinish={onSubmitForm}
-
         >
             <Form.Item
                 name="username"
                 rules={[
                     {
-                        required: true,
+                        required: basicButtonClicked,
                         message: 'Please input your username!',
                     },
                 ]}
@@ -75,7 +75,7 @@ const LoginForm = () => {
                 name="password"
                 rules={[
                     {
-                        required: true,
+                        required: basicButtonClicked,
                         message: 'Please input your password!',
                     },
                 ]}
@@ -97,6 +97,7 @@ const LoginForm = () => {
                 <Row>
                     <Button type="primary" htmlType="submit"
                         loading={logInLoading}
+                        onClick={onClickBasicButton}
                     >
                         로그인
             </Button>
