@@ -17,7 +17,7 @@ import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST } from '../reducers/post';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
 
 moment.locale('ko');
 const CardWrapper = styled.div`
@@ -25,21 +25,32 @@ margin-bottom: 20px;`
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
-    const [liked, setLiked] = useState(false);
+
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const { removePostLoading, updatePostLoading } = useSelector(state => state.post);
-    // const liked = post.?Likers.find((v) => v.id === id);
 
     const onLike = useCallback(() => {
-        if (!id) alert('로그인이 필요합니다');
+        if (!id) {
+            return alert('로그인이 필요합니다.');
+        }
+        return dispatch({
+            type: LIKE_POST_REQUEST,
+            data: post.id,
+        });
     }, [id]);
     const onUnlike = useCallback(() => {
         if (!id) alert('로그인이 필요합니다');
+        return dispatch({
+            type: UNLIKE_POST_REQUEST,
+            data: post.id,
+        });
     }, [id]);
     const onRemovePost = useCallback(() => {
-        if (!id) alert('로그인이 필요합니다');
-        dispatch({
+        if (!id) {
+            return alert('로그인이 필요합니다');
+        }
+        return dispatch({
             type: REMOVE_POST_REQUEST,
             data: post.id,
         })
@@ -47,9 +58,8 @@ const PostCard = ({ post }) => {
     const onRetweet = useCallback(() => {
         if (!id) alert('로그인이 필요합니다');
     }, [id]);
-    const onToggleLike = useCallback(() => {
-        setLiked((prev) => !prev);
-    }, [id]);
+
+
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
     }, [id]);
@@ -62,7 +72,7 @@ const PostCard = ({ post }) => {
     const onChangePost = useCallback((editText) => {
         setCommentFormOpened((prev) => !prev);
     }, [post]);
-
+    const liked = post.Likers.find((v) => v.id === id);
     return (
         <CardWrapper key={post?.id}>
             <Card
@@ -73,10 +83,10 @@ const PostCard = ({ post }) => {
                         <HeartTwoTone
                             key="heart"
                             twoToneColor="#eb2f96"
-                            onClick={onToggleLike} /> :
+                            onClick={onUnlike} /> :
                         <HeartOutlined
                             key="heart"
-                            onClick={onToggleLike} />,
+                            onClick={onLike} />,
                     <MessageOutlined
                         key="message"
                         onClick={onToggleComment} />,
@@ -109,9 +119,9 @@ const PostCard = ({ post }) => {
                         <Card
                             cover={post?.Retweet.Images[0] &&
                                 <PostImages images={post?.Retweet.Images} />}>
-                            {/* <div style={{float: 'right'}}>
-                            {moment(post?.createdAt).startOf('day').fromNow()}
-                        </div> */}
+                            <div style={{ float: 'right' }}>
+                                {moment(post?.createdAt).startOf('hour').fromNow()}
+                            </div>
                             <Card.Meta
                                 avatar={(
                                     <Link href={`/`}
@@ -132,9 +142,9 @@ const PostCard = ({ post }) => {
                         </Card>
                     ) : (
                         <>
-                            {/* <div style={{float: 'right'}}>
-                            {moment(post?.createdAt).startOf('day').fromNow()}
-                        </div> */}
+                            <div style={{ float: 'right' }}>
+                                {moment(post?.createdAt).startOf('hour').fromNow()}
+                            </div>
                             <Card.Meta
                                 avatar={(
                                     <Link href={`/user/${post?.User.id}`}

@@ -1,17 +1,26 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import UserProfile from '../components/UserProfile';
 import FollowList from '../components/FollowList';
+import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
 
 
 const Profile = () => {
-
+    const dispatch = useDispatch();
     const { me } = useSelector(state => state.user);
-    const loadMoreFollowings = useCallback(() => { }, []);
-    const loadMoreFollowers = useCallback(() => { }, []);
+    const loadMoreFollowings = useCallback(() => {
+        dispatch({
+            type: LOAD_FOLLOWERS_REQUEST,
+        });
+    }, []);
+    const loadMoreFollowers = useCallback(() => {
+        dispatch({
+            type: LOAD_FOLLOWINGS_REQUEST,
+        });
+    }, []);
     useEffect(() => {
         if (!(me && me.id)) {
             alert('로그인이 필요합니다.');

@@ -30,9 +30,9 @@ app.use(cors({
     credentials: true,//도메인이 다르면 cookie가 전달되지 않는다, true면 cookie전달할 수 있다, origin에 '*'이 아닌 정확한 주소를 적어주어야 한다('Access-Control-Allow-Origin'값이 'http://localhost:3050')
     //front에서는 axios.post('',data,{withCredentials:true})
 }))
+//FE로 부터 넘어온 데이터를 req.body안에 넣어준다, router보다 먼저 실행되도록 위에 위치시키기 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));//app.use안에 들어가는 middleware,
-//FE로 부터 넘어온 데이터를 req.body안에 넣어준다, router보다 먼저 실행되도록 위에 위치시키기
+app.use(express.urlencoded({ extended: true }));
 //form submit data를 urlencoded방식으로 처리해준다
 app.use('/', express.static(path.join(__dirname, 'uploads')));//'http://localhost:3050/'로 접근하면 uploads파일로 이동한다, fe에서 이미지로 접근할 수 있도록 주소 제공하기
 app.use(cookieParser(process.env.COOKIE_SECRET));

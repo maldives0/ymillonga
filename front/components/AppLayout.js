@@ -12,7 +12,7 @@ import {
     LogoutOutlined
 } from '@ant-design/icons';
 
-import { css, jsx } from '@emotion/react'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled';
 import GlobalLayout from './GlobalLayout';
 import useInput from '../hooks/useInput';
@@ -41,11 +41,15 @@ const AppLayout = ({ children }) => {
     const { me } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
+    // const [defaultKey, setDefaultKey] = useState('1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
-
+    // const onChangeDefaultKey = useCallback((e) => {
+    //     console.log('key', e.key)
+    //     setDefaultKey(e.key);
+    // }, []);
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
@@ -64,8 +68,7 @@ const AppLayout = ({ children }) => {
                         alt="logo"
                         css={css`
                         width:150px;
-                        height:60px;
-                                              `}
+                        height:60px;`}
                         width={150}
                         height={60}
                     />

@@ -18,7 +18,7 @@ const FollowList = ({ header, data, onClickMore }) => {
         }
         dispatch({
             type: REMOVE_FOLLOWER_REQUEST,
-            data: id
+            data: id,
         });
     };
     const loadMore = (
@@ -60,17 +60,6 @@ const FollowList = ({ header, data, onClickMore }) => {
                         title={item.nickname}
                     />
                 </List.Item>
-                // <List.Item>
-
-                //     {/* <div>
-                //         <Link href="/post" style={{ marginRight: '2px' }}>
-                //             <a key="post">게시글 보기</a>
-                //         </Link>
-                //         {`  `}
-                //         <a key="stop" onClick={onCancel(item.id)}>연결 끊기</a>
-
-                //     </div> */}
-                // </List.Item>
             )}
         />
 

@@ -23,7 +23,7 @@ const CommentForm = ({ post }) => {
             data: {
                 content: commentText,
                 userId: id,
-                postId: post.id
+                postId: post.id,
             },
         });
     }, [commentText, id]);

@@ -19,12 +19,12 @@ const FollowButton = ({ post }) => {
                 data: post.User.id,
             });
         }
-
     }, [isFollowing]);
-
+    if (post.User.id === me.id) {
+        return null;
+    }
     return (
         <div>
-
             <Button
                 loading={followLoading || unfollowLoading}
                 onClick={ToggleFollow}

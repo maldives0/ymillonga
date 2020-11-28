@@ -18,9 +18,9 @@ const PostForm = () => {
         imageInput.current.click();
     }, [imageInput.current]);
     const onChangeImages = useCallback((e) => {
-        console.log('clickImgInfo', e.target.files);//선택한 이미지 파일 형식이 담겨있다,유사배열
+        console.log('clickImgInfo', e.target.files);//선택한 이미지 파일 형식이 담겨있다(1개)
         const imageFormData = new FormData();//멀티파트형식으로 백서버로 보낸다
-        [].forEach.call(e.target.files, (f) => {
+        [].forEach.call(e.target.files, (f) => {//유사배열이므로 forEach method를 배열에서 빌려온다
             imageFormData.append('image', f);//백서버의 키 값과 'image' 일치시켜야 함
         });
         dispatch({
@@ -33,7 +33,7 @@ const PostForm = () => {
     const onRemoveImage = useCallback((index) => () => {
         dispatch({
             type: REMOVE_IMAGE,
-            index,
+            data: index,
         });
     }, []);
     const onSubmit = useCallback(() => {

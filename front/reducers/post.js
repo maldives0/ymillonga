@@ -132,7 +132,7 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         case REMOVE_IMAGE:
-            draft.imagePaths.filter((v, i) => i !== action.data);//FE에서만 이미지를 지우고 BE에서는 간직하고 있기
+            draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);//FE에서만 이미지를 지우고 BE에서는 간직하고 있기
         case LOAD_POSTS_REQUEST:
             draft.loadPostsLoading = true;
             draft.loadPostsDone = false;
@@ -148,6 +148,38 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case LOAD_POSTS_FAILURE:
             draft.loadPostsLoading = false;
             draft.loadPostsError = action.error;
+            break;
+        case LIKE_POST_REQUEST:
+            draft.likePostLoading = true;
+            draft.likePostDone = false;
+            draft.likePostError = null;
+            break;
+        case LIKE_POST_SUCCESS: {
+            const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+            post.Likers.push({ id: action.data.UserId });
+            draft.likePostLoading = false;
+            draft.likePostDone = true;
+            break;
+        }
+        case LIKE_POST_FAILURE:
+            draft.likePostLoading = false;
+            draft.likePostError = action.error;
+            break;
+        case UNLIKE_POST_REQUEST:
+            draft.unlikePostLoading = true;
+            draft.unlikePostDone = false;
+            draft.unlikePostError = null;
+            break;
+        case UNLIKE_POST_SUCCESS: {
+            const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+            post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+            draft.unlikePostLoading = false;
+            draft.unlikePostDone = true;
+            break;
+        }
+        case UNLIKE_POST_FAILURE:
+            draft.unlikePostLoading = false;
+            draft.unlikePostError = action.error;
             break;
         case ADD_POST_REQUEST:
             draft.addPostLoading = true;
@@ -185,7 +217,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.uploadImagesError = null;
             break;
         case UPLOAD_IMAGES_SUCCESS: {
-            draft.imagePaths = action.data;
+            draft.imagePaths = draft.imagePaths.concat(action.data);
             draft.uploadImagesLoading = false;
             draft.uploadImagesDone = true;
             break;
@@ -200,7 +232,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.removePostError = null;
             break;
         case REMOVE_POST_SUCCESS:
-            draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+            draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data.PostId);
             draft.removePostLoading = false;
             draft.removePostDone = true;
             break;
