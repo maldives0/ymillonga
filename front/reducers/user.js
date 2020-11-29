@@ -205,7 +205,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case FOLLOW_FAILURE:
             draft.followLoading = false;
-            draft.followError = acton.error;
+            draft.followError = action.error;
             break;
         case UNFOLLOW_REQUEST:
             draft.unfollowLoading = true;
@@ -219,7 +219,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case UNFOLLOW_FAILURE:
             draft.unfollowLoading = false;
-            draft.unfollowError = acton.error;
+            draft.unfollowError = action.error;
             break;
         case REMOVE_FOLLOWER_REQUEST:
             draft.removeFollowerLoading = true;
@@ -229,7 +229,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case REMOVE_FOLLOWER_SUCCESS:
             draft.removeFollowerLoading = false;
             draft.removeFollowerDone = true;
-            draft.me.Followers = draft.me.Followers.filter(v => v.id !== action.data)
+            draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data.UserId);
             break;
         case REMOVE_FOLLOWER_FAILURE:
             draft.removeFollowerLoading = false;

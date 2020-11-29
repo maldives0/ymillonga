@@ -109,7 +109,7 @@ function* login(action) {
             error: err.response.data,
         });
     }
-};
+}
 function logoutAPI(data) {
     return axios.post('/user/logout');
 }
@@ -127,7 +127,7 @@ function* logout() {
             error: err.response.data,
         });
     }
-};
+}
 function signupAPI(data) {
     return axios.post('/user', data);
     //data={email,password,nickname}, post,put,patch는 data를 넘길 수 있다
@@ -135,8 +135,7 @@ function signupAPI(data) {
 function* signup(action) {
     try {
         const result = yield call(signupAPI, action.data);
-        console.log(result);
-        // yield delay(1000);
+
         yield put({
             type: SIGN_UP_SUCCESS
         });
@@ -168,7 +167,7 @@ function* changeNickname(action) {
     }
 };
 function followAPI(data) {
-    return axios.patch(`/user/${data}/follow/`);
+    return axios.patch(`/user/${data}/follow`);
 }
 function* follow(action) {
     try {
@@ -185,9 +184,9 @@ function* follow(action) {
             error: err.response.data,
         });
     }
-};
+}
 function unfollowAPI(data) {
-    return axios.delete(`/user/${data}/follow/`);
+    return axios.delete(`/user/${data}/follow`);
 }
 function* unfollow(action) {
     try {
@@ -204,13 +203,13 @@ function* unfollow(action) {
             error: err.response.data,
         });
     }
-};
-function removeFollowAPI(data) {
-    return axios.delete(`/user/follower/${data}`, data);
 }
-function* removeFollow(action) {
+function removeFollowerAPI(data) {
+    return axios.delete(`/user/follower/${data}`);
+}
+function* removeFollower(action) {
     try {
-        const result = yield call(removeFollowAPI, action.data);
+        const result = yield call(removeFollowerAPI, action.data);
 
         yield put({
             type: REMOVE_FOLLOWER_SUCCESS,
@@ -223,7 +222,7 @@ function* removeFollow(action) {
             error: err.response.data,
         });
     }
-};
+}
 
 function* watchLoadUser() {
     yield takeLatest(LOAD_USER_REQUEST, loadUser);
@@ -249,8 +248,8 @@ function* watchFollow() {
 function* watchUnfollow() {
     yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
-function* watchRemovefollow() {
-    yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollow);
+function* watchRemovefollower() {
+    yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
 }
 function* watchLogin() {
     yield takeLatest(LOG_IN_REQUEST, login);
@@ -267,9 +266,8 @@ export default function* userSaga() {
         fork(watchSignup),
         fork(watchChangeNickname),
         fork(watchFollow),
-        fork(watchFollow),
         fork(watchUnfollow),
-        fork(watchRemovefollow),
+        fork(watchRemovefollower),
         fork(watchLogin),
         fork(watchLogout),
     ]);

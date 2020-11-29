@@ -27,7 +27,7 @@ const Signup = () => {
     }, [me && me.id]);
     useEffect(() => {
         if (signUpDone) {
-            Router.replace('/');
+            Router.replace('/login');
         }
     }, [signUpDone]);
     useEffect(() => {
@@ -62,7 +62,7 @@ const Signup = () => {
             </Head>
             <>
                 <Form
-                    labelCol={{ span: 4 }}
+                    labelCol={{ span: 6 }}
                     wrapperCol={{ span: 14 }}
                     layout="horizontal"
                     onFinish={onSubmit}

@@ -34,6 +34,13 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
             UserId: req.user.id,
             content: req.body.content,
         });
+        const hashtags = req.body.content.match(/#[^\s#]+/g);
+        if (hashtags) {
+            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+                where: { name: tag.slice(1).toLowerCase() },
+            })));// [[노드, true], [리액트, true]]
+            await post.addHashtags(result.map((v) => v[0]));
+        }
         if (req.body.image) {//FE의 key값, 이미지나 파일이 아니면 req.body에 넣어준다, 배열로 보낸다 
             if (Array.isArray(req.body.image)) {
                 //더할 이미지가 여러 개이면 image: [제로초.png, 부기초.png]
@@ -77,7 +84,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
     }
 });
 
-router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {//POST/post/images
+router.post('/images', isLoggedIn, upload.array('image'), (req, res) => {//POST/post/images
     //upload.array('image')에서 이미 이미지를 올려준다
     console.log(req.files);
     res.json(req.files.map(v => v.filename));
@@ -104,6 +111,67 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {//POST/1/
             }],//특이사항은 조건으로 적고 나머지 값은 그대로 가져오기
         });
         res.status(201).json(fullComment);
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/retweet
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.postId },
+            include: [{
+                model: Post,
+                as: 'Retweet',
+            }],
+        });
+        if (!post) {
+            res.status(403).send('존재하지 않는 게시글입니다.');
+        }
+        if (post.UserId === req.user.id || post.Retweet && post.Retweet.UserId === req.user.id) {//게시글 작성자가 자신의 글을 리트윗하거나 또는 다른 사람이 리트윗한 자신의 게시글 다시 리트윗할 경우
+            res.status(403).send('자신의 게시글은 리트윗할 수 없습니다.');
+        }
+        const retweetTargetId = post.RetweetId || post.id;//다른 사람이 리트윗한 게시글인지 찾아보고 아니라면 값을 넣어준다
+        const exPost = await Post.findOne({
+            where: {
+                UserId: req.user.id,
+                RetweetId: retweetTargetId,
+            },
+        });
+        if (exPost) {
+            return res.status(403).send('이미 리트윗한 게시글입니다.');
+        }
+        const retweet = await Post.create({
+            UserId: req.user.id,
+            RetweetId: retweetTargetId,
+            content: 'retweet',
+        });
+        const retweetWithPrevPost = await Post.findOne({
+            where: { id: retweet.id },
+            include: [{
+                model: Post,
+                as: 'Retweet',
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }, {
+                    model: Image,
+                }]
+            }, {
+                model: User,
+                attributes: ['id', 'nickname'],
+            }, {
+                model: Image,
+            }, {
+                model: Comment,
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }],
+            }],
+        });
+        res.status(201).json(retweetWithPrevPost);
     }
     catch (err) {
         console.error(err);

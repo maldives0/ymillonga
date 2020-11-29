@@ -7,6 +7,7 @@ module.exports = class User extends Model {
                 type: DataTypes.TEXT,
                 allowNull: false,
             },
+
         },
             {//Cor
                 modelName: 'Post',

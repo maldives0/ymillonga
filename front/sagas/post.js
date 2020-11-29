@@ -21,7 +21,7 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 function loadPostsAPI(lastId) {
-    return axios.get(`/posts?lastId=${lastId || 0}`);
+    return axios.get(`/posts?lastId=${lastId || 0}`);//get은 주소를 cashing하면 데이터까지 cashing 할 수 있다//lastId가 undefined면 0으로 보내기
 }
 
 function* loadPosts(action) {
@@ -78,6 +78,25 @@ function* addComment(action) {
             type: ADD_COMMENT_FAILURE,
             error: err.response.data,
         })
+    }
+}
+function retweetAPI(data) {
+    return axios.post(`/post/${data}/retweet`);
+}
+
+function* retweet(action) {
+    try {
+        const result = yield call(retweetAPI, action.data);
+        yield put({
+            type: RETWEET_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: RETWEET_FAILURE,
+            error: err.response.data,
+        });
     }
 }
 function uploadImagesAPI(data) {
@@ -170,10 +189,9 @@ function* watchLikePost() {
 function* watchUnlikePost() {
     yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
-// function* watchRetweet() {
-//     yield takeLatest(RETWEET_REQUEST, retweet);
-// }
-
+function* watchRetweet() {
+    yield takeLatest(RETWEET_REQUEST, retweet);
+}
 function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -196,7 +214,7 @@ export default function* postSaga() {
         fork(watchUploadImages),
         fork(watchLikePost),
         fork(watchUnlikePost),
-        //    fork(watchRetweet),
+        fork(watchRetweet),
         fork(watchLoadPosts),
         fork(watchRemovePost),
         fork(watchAddComment),

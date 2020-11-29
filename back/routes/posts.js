@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {//GET/posts
     try {
-        const where = {};
-        if (parseInt(req.query.lastId, 10)) {
-            where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }
+        const where = {};//초기 로딩일 때는 빈 객체
+        if (parseInt(req.query.lastId, 10)) {//초기 로딩이 아닐 때(스크롤 내려 불러오기)
+            where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }//Op:연산자, lt:보다 작은, lastId보다 작은 id 불러오기
         }
         const posts = await Post.findAll({
             where,

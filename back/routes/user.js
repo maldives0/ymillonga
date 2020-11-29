@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');//비밀번호 암호화 라이브러리
 const passport = require('passport');
-const { User, Post, Image } = require('../models');
+const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const frontUrl = require('../app');
+
 router.get('/', async (req, res, next) => {
     try {
         if (req.user) {//사용자가 있을 때
@@ -18,12 +18,12 @@ router.get('/', async (req, res, next) => {
                 {
                     model: User,
                     as: 'Followings',
-                    attributes: ['id']
+                    attributes: ['id', 'nickname']
                 },
                 {
                     model: User,
                     as: 'Followers',
-                    attributes: ['id']
+                    attributes: ['id', 'nickname']
                 }]
             })
             res.status(200).json(fullUserWithoutPassword);
@@ -40,7 +40,7 @@ router.get('/', async (req, res, next) => {
 router.get('/followers', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
-            where: { id: req.user.id },
+            where: { id: req.user.id }
         });
         if (!user) {
             res.status(403).send('존재하지 않는 사용자입니다.');
@@ -56,12 +56,12 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
 router.get('/followings', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
-            where: { id: req.user.id },
+            where: { id: req.user.id }
         });
         if (!user) {
             res.status(403).send('존재하지 않는 사용자입니다.');
         }
-        const followings = await user.getFollowers();
+        const followings = await user.getFollowings();
         res.status(200).json(followings);
     }
     catch (err) {
@@ -93,7 +93,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
         await User.create({
             email: req.body.email,
             password: hashedPassword,
-            nickname: req.body.nickname
+            nickname: req.body.nickname,
         });// res.json 전에 실행되도록 await붙여주기
         res.status(201).send('ok');
     }
@@ -160,7 +160,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
-            where: { id: req.params.userId },
+            where: { id: req.params.userId }
         });
         if (!user) {
             res.status(403).send('존재하지 않는 사용자는 팔로잉할 수 없습니다.');

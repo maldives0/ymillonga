@@ -17,7 +17,8 @@ import CommentForm from './CommentForm';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
 import PostCardContent from './PostCardContent';
-import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+
 
 moment.locale('ko');
 const CardWrapper = styled.div`
@@ -57,12 +58,17 @@ const PostCard = ({ post }) => {
     }, [id]);
     const onRetweet = useCallback(() => {
         if (!id) alert('로그인이 필요합니다');
+        dispatch({
+            type: RETWEET_REQUEST,
+            data: post.id,
+        })
     }, [id]);
 
 
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
     }, [id]);
+
     const onClickUpdate = useCallback(() => {
         setEditMode(true);
     }, []);
@@ -72,13 +78,15 @@ const PostCard = ({ post }) => {
     const onChangePost = useCallback((editText) => {
         setCommentFormOpened((prev) => !prev);
     }, [post]);
-    const liked = post.Likers.find((v) => v.id === id);
+    const liked = post.Likers?.find((v) => v.id === id);
     return (
-        <CardWrapper key={post?.id}>
+        <CardWrapper key={post.id}>
             <Card
                 cover={post?.Images[0] && <PostImages images={post?.Images} />}
                 actions={[
-                    <RetweetOutlined key="retweet" />,
+                    <RetweetOutlined
+                        onClick={onRetweet}
+                        key="retweet" />,
                     liked ?
                         <HeartTwoTone
                             key="heart"
@@ -112,24 +120,24 @@ const PostCard = ({ post }) => {
                     </Popover>,
                 ]}
                 extra={id && <FollowButton post={post} />}
-                title={post?.RetweetId ? `${post?.User.nickname}님이 리트윗하셨습니다.` : null}
+                title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
             >
-                {post?.RetweetId && post?.Retweet ?
+                {post.RetweetId && post.Retweet ?
                     (
                         <Card
-                            cover={post?.Retweet.Images[0] &&
-                                <PostImages images={post?.Retweet.Images} />}>
+                            cover={post.Retweet.Images[0] &&
+                                <PostImages images={post.Retweet.Images} />}>
                             <div style={{ float: 'right' }}>
-                                {moment(post?.createdAt).startOf('hour').fromNow()}
+                                {moment(post.createdAt).startOf('hour').fromNow()}
                             </div>
                             <Card.Meta
                                 avatar={(
                                     <Link href={`/`}
                                         prefetch={false}><a><Avatar>
-                                            {post?.Retweet.User.nickname[0]}
+                                            {post.Retweet.User.nickname[0]}
                                         </Avatar></a></Link>
                                 )}
-                                title={post?.Retweet.User.nickname}
+                                title={post.Retweet.User.nickname}
                                 description={
                                     <PostCardContent
                                         onCancelUpdate={
@@ -143,23 +151,23 @@ const PostCard = ({ post }) => {
                     ) : (
                         <>
                             <div style={{ float: 'right' }}>
-                                {moment(post?.createdAt).startOf('hour').fromNow()}
+                                {moment(post.createdAt).startOf('hour').fromNow()}
                             </div>
                             <Card.Meta
                                 avatar={(
-                                    <Link href={`/user/${post?.User.id}`}
+                                    <Link href={`/user/${post.User.id}`}
                                         prefetch={false}><a><Avatar>
-                                            {post?.User.nickname[0]}
+                                            {post.User.nickname[0]}
                                         </Avatar></a></Link>
                                 )}
-                                title={post?.User.nickname}
+                                title={post.User.nickname}
                                 description={
                                     <PostCardContent
                                         onCancelUpdate={
                                             onCancelUpdate
                                         }
                                         onChangePost={onChangePost}
-                                        postData={post?.content}
+                                        postData={post.content}
                                     />
                                 }
                             />
@@ -170,9 +178,9 @@ const PostCard = ({ post }) => {
                 <>
                     <CommentForm post={post} />
                     <List
-                        header={`댓글: ${post?.Comments ? post?.Comments.length : 0}개`}
+                        header={`댓글: ${post.Comments ? post.Comments.length : 0}개`}
                         itemLayout='horizontal'
-                        dataSource={post?.Comments || []}
+                        dataSource={post.Comments || []}
                         renderItem={(item) => (
                             <li>
                                 <Comment

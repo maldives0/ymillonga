@@ -142,7 +142,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.loadPostsLoading = false;
             draft.loadPostsDone = true;
             draft.mainPosts = draft.mainPosts.concat(action.data);
-            //mainPosts 앞으로 최신글 순으로 새로운 게시글 더해주기
+            //스크롤 시 mainPosts 뒤로 새로운 게시글 더해주기
             draft.hasMorePosts = draft.mainPosts.length === 10;
             break;
         case LOAD_POSTS_FAILURE:
@@ -195,6 +195,21 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case ADD_POST_FAILURE:
             draft.addPostLoading = true;
             draft.addPostError = action.error;
+            break;
+        case RETWEET_REQUEST:
+            draft.retweetLoading = true;
+            draft.retweetDone = false;
+            draft.retweetError = null;
+            break;
+        case RETWEET_SUCCESS: {
+            draft.retweetLoading = false;
+            draft.retweetDone = true;
+            draft.mainPosts.unshift(action.data);
+            break;
+        }
+        case RETWEET_FAILURE:
+            draft.retweetLoading = false;
+            draft.retweetError = action.error;
             break;
         case ADD_COMMENT_REQUEST:
             draft.addCommentLoading = true;

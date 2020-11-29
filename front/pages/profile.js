@@ -36,11 +36,11 @@ const Profile = () => {
             </Head>
             <UserProfile />
             <FollowList
-                header="following"
+                header="팔로잉"
                 data={me.Followings}
                 onClickMore={loadMoreFollowings} />
             <FollowList
-                header="follower"
+                header="팔로워"
                 data={me.Followers}
                 onClickMore={loadMoreFollowers} />
         </AppLayout>

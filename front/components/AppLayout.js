@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Row, Col, Input } from 'antd';
@@ -19,7 +19,7 @@ import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LOG_OUT_REQUEST, LOAD_USER_REQUEST } from '../reducers/user';
 
 const { Header, Sider, Content } = Layout;
 
@@ -56,6 +56,11 @@ const AppLayout = ({ children }) => {
     const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
+        });
+    }, []);
+    useEffect(() => {
+        dispatch({
+            type: LOAD_USER_REQUEST,
         });
     }, []);
     return (

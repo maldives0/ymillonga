@@ -10,10 +10,10 @@ const FollowList = ({ header, data, onClickMore }) => {
     const dispatch = useDispatch();
     const onCancel = (id) => () => {
         console.log(id);
-        if (header === 'following') {
+        if (header === '팔로잉') {
             dispatch({
                 type: UNFOLLOW_REQUEST,
-                data: id
+                data: id,
             });
         }
         dispatch({
@@ -37,7 +37,7 @@ const FollowList = ({ header, data, onClickMore }) => {
 
         <List
             style={{ marginBottom: 20 }}
-            header={<div>{header.toUpperCase()}</div>}
+            header={<div>{header}</div>}
             dataSource={data}
             itemLayout="horizontal"
             loadMore={loadMore}
@@ -53,7 +53,7 @@ const FollowList = ({ header, data, onClickMore }) => {
                         avatar={
                             (<Link href={`/user/${item.id}`}>
                                 <a><Avatar>
-                                    {item.nickname[0]}
+                                    {item.nickname}
                                 </Avatar></a>
                             </Link>)
                         }
