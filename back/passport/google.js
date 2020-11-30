@@ -14,7 +14,7 @@ module.exports = () => {
         callbackURL: '/user/google/callback',
     },
         async (accessToken, refreshToken, profile, done) => {
-            console.log('profile', profile);
+            // console.log('profile', profile);
             try {
                 const exUser = await User.findOne({
                     where: {

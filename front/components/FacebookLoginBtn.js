@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { FacebookLoginButton } from 'react-social-login-buttons';
 import { useRouter } from 'next/router';
-
+import { backUrl } from '../config/config';
 const FacebookLoginBtn = () => {
 
     const router = useRouter();
     const onClickFacebookLogin = useCallback(() => {
-        router.push('/api/facebook');
+        router.push(`${backUrl}/user/facebook`);
     });
     return (
 

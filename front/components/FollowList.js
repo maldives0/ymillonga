@@ -45,15 +45,17 @@ const FollowList = ({ header, data, onClickMore }) => {
             renderItem={(item) => (
                 <List.Item
                     actions={[
-                        <a key="post">게시글 보기</a>,
-                        <a key="stop" onClick={onCancel(item.id)}>연결 끊기</a>]}
+                        <a key="post"
+                            href={`/user/${item.id}`}>게시글 보기</a>,
+                        <a key="stop"
+                            onClick={onCancel(item.id)}>연결 끊기</a>]}
                 >
 
                     <List.Item.Meta
                         avatar={
                             (<Link href={`/user/${item.id}`}>
                                 <a><Avatar>
-                                    {item.nickname}
+                                    {item.nickname[0]}
                                 </Avatar></a>
                             </Link>)
                         }

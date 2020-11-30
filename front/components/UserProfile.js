@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Card, Divider } from 'antd';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
@@ -12,10 +12,10 @@ const CardWrapper = styled.div`
 margin-bottom: 20px;`
 const UserProfile = () => {
     const dispatch = useDispatch();
-    const { me } = useSelector(state => state.user);
+    const { me, changeNicknameDone } = useSelector(state => state.user);
     const [editNickname, setEditNickname] = useState(false);
     const onClickEditNickname = useCallback(() => {
-        setEditNickname((prev) => !prev);
+        setEditNickname((prev) => !prev)
     }, []);
 
     const onLogout = useCallback(() => {
@@ -23,6 +23,11 @@ const UserProfile = () => {
             type: LOG_OUT_REQUEST
         });
     }, []);
+    useEffect(() => {
+        if (changeNicknameDone) {
+            setEditNickname((prev) => !prev)
+        }
+    }, [changeNicknameDone]);
     return (
         <CardWrapper>
             <Card
@@ -57,6 +62,7 @@ const UserProfile = () => {
                                 {me.nickname[0]}</Avatar></a></Link>)
                     }
                     title={me.nickname}
+                    style={{ marginBottom: "10px" }}
                 />
                 {editNickname && <NicknameEditForm />}
             </Card>

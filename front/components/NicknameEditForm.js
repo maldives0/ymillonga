@@ -21,8 +21,7 @@ const NicknameEditForm = () => {
         });
     }, [nickname]);
     return (
-        <Form
-            style={{ margin: "2px 0" }}>
+        <Form>
             <InputSearch
                 value={nickname}
                 onChange={onChangeNickname}

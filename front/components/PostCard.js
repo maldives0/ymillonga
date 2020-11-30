@@ -128,7 +128,7 @@ const PostCard = ({ post }) => {
                             cover={post.Retweet.Images[0] &&
                                 <PostImages images={post.Retweet.Images} />}>
                             <div style={{ float: 'right' }}>
-                                {moment(post.createdAt).startOf('hour').fromNow()}
+                                {moment(post.Retweet.createdAt).startOf('hour').fromNow()}
                             </div>
                             <Card.Meta
                                 avatar={(

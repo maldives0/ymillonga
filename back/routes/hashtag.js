@@ -1,9 +1,9 @@
 const express = require('express');
 const { Op } = require('sequelize');
-const { Post, Image, User, Comment } = require('../models');
+const { Post, Image, User, Hashtag, Comment } = require('../models');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {//GET/posts
+router.get('/:tag', async (req, res, next) => {//GET/노드
     try {
         const where = {};//초기 로딩일 때는 빈 객체
         if (parseInt(req.query.lastId, 10)) {//초기 로딩이 아닐 때(스크롤 내려 불러오기)
@@ -17,6 +17,11 @@ router.get('/', async (req, res, next) => {//GET/posts
                 [Comment, 'createdAt', 'DESC'],
             ],
             include: [{
+                model: Hashtag,
+                where: {
+                    name: decodeURIComponent(req.params.tag)
+                },
+            }, {
                 model: User,
                 attributes: ['id', 'nickname'],
             },

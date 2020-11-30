@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Row, Col, Input } from 'antd';
@@ -19,7 +19,7 @@ import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_OUT_REQUEST, LOAD_USER_REQUEST } from '../reducers/user';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const { Header, Sider, Content } = Layout;
 
@@ -41,15 +41,14 @@ const AppLayout = ({ children }) => {
     const { me } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
-    // const [defaultKey, setDefaultKey] = useState('1');
+    const [defaultKey, setDefaultKey] = useState('1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
-    // const onChangeDefaultKey = useCallback((e) => {
-    //     console.log('key', e.key)
-    //     setDefaultKey(e.key);
-    // }, []);
+    const onChangeDefaultKey = useCallback((e) => {
+        setDefaultKey(e.key);
+    }, [defaultKey]);
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
@@ -58,11 +57,7 @@ const AppLayout = ({ children }) => {
             type: LOG_OUT_REQUEST,
         });
     }, []);
-    useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-    }, []);
+
     return (
         <Layout>
             <GlobalLayout />
@@ -80,7 +75,8 @@ const AppLayout = ({ children }) => {
                 </Logo>
                 <Menu
                     theme="dark"
-                    defaultSelectedKeys={['1']}
+                    onClick={onChangeDefaultKey}
+                    defaultSelectedKeys={[defaultKey]}
                     mode="inline"
                 >
                     <Menu.Item
@@ -134,7 +130,7 @@ const AppLayout = ({ children }) => {
                     {children}
                 </Content>
                 <Row >
-                    <Col justify="end" xs={24} md={12}>
+                    <Col span={6} offset={18}>
                         <a
                             href="https://github.com/maldives0/ymillonga"
                             target="_blank"

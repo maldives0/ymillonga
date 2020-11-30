@@ -2,10 +2,33 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');//비밀번호 암호화 라이브러리
 const passport = require('passport');
-const { User, Post } = require('../models');
+const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
+router.get('/google', function (req, res, next) {
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
+
+router.get('/google/callback', passport.authenticate('google', {
+    failureRedirect: '/',
+}), async (req, res, next) => {
+    return res.status(200).redirect('http://localhost:3050');
+
+});
+router.get('/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
+
+router.get('/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/',
+}), async (req, res, next) => {
+    return res.status(200).redirect('http://localhost:3050');
+
+});
+// GET '/user/google'
+// : 여기로 접근하면 로그인 과정이 실행된다. 로그인 창으로 리다이렉트를 하고 결과를 GET '/user/google/callback'으로 받는다.
+// passport.authenticate 메서드에 콜백 함수를 제공하지 않는다. 
+// 카카오 로그인은 내부적으로 req.login을 호출하므로 직접 호출할 필요가 없다.
 router.get('/', async (req, res, next) => {
+    // console.log(req.headers);//fe에서 보낸 쿠키 확인하기
     try {
         if (req.user) {//사용자가 있을 때
             const fullUserWithoutPassword = await User.findOne({
@@ -37,6 +60,8 @@ router.get('/', async (req, res, next) => {
         next(err);
     }
 });
+
+
 router.get('/followers', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -45,7 +70,10 @@ router.get('/followers', isLoggedIn, async (req, res, next) => {
         if (!user) {
             res.status(403).send('존재하지 않는 사용자입니다.');
         }
-        const followers = await user.getFollowers();
+        const followers = await user.getFollowers({
+            attributes: ['id', 'nickname'],
+            limit: parseInt(req.query.limit, 10),
+        });
         res.status(200).json(followers);
     }
     catch (err) {
@@ -61,7 +89,10 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
         if (!user) {
             res.status(403).send('존재하지 않는 사용자입니다.');
         }
-        const followings = await user.getFollowings();
+        const followings = await user.getFollowings({
+            attributes: ['id', 'nickname'],
+            limit: parseInt(req.query.limit, 10),
+        });
         res.status(200).json(followings);
     }
     catch (err) {
@@ -211,28 +242,106 @@ router.post('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
-router.get('/google', function (req, res, next) {
-    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+router.get('/:id/', async (req, res, next) => {
+    //GET/user/1
+    try {
+        const fullUserWithoutPassword = await User.findOne({
+            where: { id: req.params.id },
+            attributes: {
+                exclude: ['password']
+            },
+            include: [{
+                model: Post,
+                attributes: ['id'],
+            },
+            {
+                model: User,
+                as: 'Followings',
+                attributes: ['id']
+            },
+            {
+                model: User,
+                as: 'Followers',
+                attributes: ['id']
+            }]
+        })
+        if (fullUserWithoutPassword) {//다른 유저의 개인 정보를 보호하기 위해 데이터 갯수만 보낸다
+            const data = fullUserWithoutPassword.toJSON();//mysql 데이터를 json형식으로 바꾸기
+            data.Posts = data.Posts.length;
+            data.Followings = data.Followings.length;
+            data.Followers = data.Followers.length;
+            res.status(200).json(data);
+        } else {
+            res.status(404).json('존재하지 않는 사용자입니다.');
+        }
+
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+router.get('/:id/posts', async (req, res, next) => {
+    //와일드 카드는 가장 아래로 내려주기
+    //GET/user/1/posts
+    try {
+        const user = await User.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+        if (user) {
+            const where = {};
+            if (parseInt(req.query.lastId, 10)) {
+                where.id = { [Op.lt]: parsetInt(req.query.lastId, 10) };
+            }
+            const otherUserPosts = await user.getPosts({
+                where,
+                limit: 10,
+                order: [
+                    ['createdAt', 'DESC'],
+                    [Comment, 'createdAt', 'DESC'],
+                ],
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }, {
+                    model: Image,
+                }, {
+                    model: Post,
+                    as: 'Retweet',
+                    includes: [{
+                        model: User,//유저가 리트윗한 게시글의 주인
+                        attributes: ['id', 'nickname'],
+                    }, {
+                        model: Image,
+                    }],
+                },
+                {
+                    model: User,
+                    through: 'Like',
+                    as: 'Likers',
+                    attributes: ['id']
+                },
+                {
+                    model: Comment,
+                    include: [{
+                        model: User,
+                        attributes: ['id', 'nickname']
+                    }]
+                }]
+            });
+            res.status(200).json(otherUserPosts);
+        } else {
+            res.status(404).json('존재하지 않는 사용자입니다.');
+        }
+
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
 });
 
-router.get('/google/callback', passport.authenticate('google', {
-    failureRedirect: '/',
-}), async (req, res, next) => {
-    return res.status(200).redirect('http://localhost:3050');
 
-});
-router.get('/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
-
-router.get('/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/',
-}), async (req, res, next) => {
-    return res.status(200).redirect('http://localhost:3050');
-
-});
-
-
-// GET '/user/google'
-// : 여기로 접근하면 로그인 과정이 실행된다. 로그인 창으로 리다이렉트를 하고 결과를 GET '/user/google/callback'으로 받는다.
-// passport.authenticate 메서드에 콜백 함수를 제공하지 않는다. 
-// 카카오 로그인은 내부적으로 req.login을 호출하므로 직접 호출할 필요가 없다.
 module.exports = router;

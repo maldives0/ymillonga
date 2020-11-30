@@ -41,9 +41,11 @@ background: #090909;
 export const CloseButton = styled(CloseOutlined)`position: absolute;
 right:0;
 top:0;
-padding: 15px;
+padding: 10px;
+margin-right:10px;
 line-height: 14px;
 cursor: pointer;
+font-size:25px;
 `;
 export const Indicator = styled.div`
 text-align: center;
