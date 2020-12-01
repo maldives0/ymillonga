@@ -12,6 +12,17 @@ import wrapper from '../store/configureStore';
 import useSWR from 'swr';
 import { backUrl } from '../config/config';
 import fetcher from '../utils/fetcher';
+import styled from '@emotion/styled';
+const LoadingDiv = styled.div`
+width:100%;
+height:100vh;
+background:rgba(0,0,0,0.9);
+padding-top:15%;
+text-align: center;
+line-height:2em;
+font-size:20px;
+color:white;
+`;
 
 const Profile = () => {
     const [followingsLimit, setFollowingsLimit] = useState(3);
@@ -22,8 +33,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (!(me && me.id)) {
-            alert('로그인이 필요합니다.');
-            Router.replace('/login')
+            Router.replace('/')
         };
     }, [me && me.id]);
     const loadMoreFollowings = useCallback(() => {
@@ -33,13 +43,14 @@ const Profile = () => {
         setFollowersLimit((prev) => prev + 3);
     }, []);
 
-    if (!me) { return <div style={{ width: '100%', marginTop: '20px', textAlign: 'center' }}>'로그인 페이지로 이동합니다'</div> };
+    if (!me) {
+        return (<LoadingDiv>이 페이지는 로그인이 필요합니다.
+            <br /> Home으로 이동합니다.</LoadingDiv>)
+    };
     if (followerError || followingError) {
         console.error(followerError || followingError);
         return '팔로잉/팔로워 로딩 중 에러가 발생했습니다.';
     }
-
-
     return (
         <AppLayout>
             <Head>

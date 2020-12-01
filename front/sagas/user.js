@@ -95,7 +95,7 @@ function logoutAPI(data) {
 }
 function* logout() {
     try {
-        const result = yield call(logoutAPI);
+        yield call(logoutAPI);
         // yield delay(1000);
         yield put({
             type: LOG_OUT_SUCCESS,
@@ -147,7 +147,7 @@ function* changeNickname(action) {
     }
 };
 function changeMenuKeyAPI(data) {
-    return axios.post('/user/menuKey', { currentKey: data });
+    return axios.patch('/user/menuKey', { currentKey: data });
 }
 function* changeMenuKey(action) {
     try {

@@ -33,7 +33,9 @@ export const initialState = {
     menuKeyLoading: false,
     menuKeyDone: false,
     menuKeyError: null,
-    me: null,
+    me: {
+        menuKey: '1',
+    },
     userInfo: null,//다른 유저
 
 };
@@ -104,18 +106,18 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
         case CHANGE_MENUKEY_REQUEST:
-            draft.loadMyInfoLoading = true;
-            draft.loadMyInfoError = null;
-            draft.loadMyInfoDone = false;
+            draft.menuKeyLoading = true;
+            draft.menuKeyError = null;
+            draft.menuKeyDone = false;
             break;
         case CHANGE_MENUKEY_SUCCESS:
-            draft.loadMyInfoLoading = false;
-            draft.menuKey.currentKey = action.data.currentKey;
-            draft.loadMyInfoDone = true;
+            draft.menuKeyLoading = false;
+            draft.me.menuKey = action.data.currentKey;
+            draft.menuKeyDone = true;
             break;
         case CHANGE_MENUKEY_FAILURE:
-            draft.loadMyInfoLoading = false;
-            draft.loadMyInfoError = action.error;
+            draft.menuKeyLoading = false;
+            draft.menuKeyError = action.error;
             break;
         case LOAD_MY_INFO_REQUEST:
             draft.loadMyInfoLoading = true;
@@ -158,7 +160,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOG_IN_FAILURE:
             draft.logInLoading = false;
-            draft.logInError = acton.error;
+            draft.logInError = action.error;
             break;
         case LOG_OUT_REQUEST:
             draft.logOutLoading = true;
@@ -172,7 +174,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOG_OUT_FAILURE:
             draft.logOutLoading = false;
-            draft.logOutError = acton.error;
+            draft.logOutError = action.error;
             break;
         case CHANGE_NICKNAME_REQUEST:
             draft.changeNicknameLoading = true;
@@ -186,7 +188,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case CHANGE_NICKNAME_FAILURE:
             draft.changeNicknameLoading = false;
-            draft.changeNicknameError = acton.error;
+            draft.changeNicknameError = action.error;
             break;
         case SIGN_UP_REQUEST:
             draft.signUpLoading = true;
@@ -199,7 +201,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
-            draft.signUpError = acton.error;
+            draft.signUpError = action.error;
             break;
         case FOLLOW_REQUEST:
             draft.followLoading = true;
@@ -241,7 +243,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case REMOVE_FOLLOWER_FAILURE:
             draft.removeFollowerLoading = false;
-            draft.removeFollowerError = acton.error;
+            draft.removeFollowerError = action.error;
             break;
         default:
             break;

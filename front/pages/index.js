@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
+import LoginForm from '../components/LoginForm';
+import UserProfile from '../components/UserProfile';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST, } from '../reducers/user';
 import wrapper from '../store/configureStore';
@@ -36,7 +38,7 @@ const Home = () => {
 
     return (
         <AppLayout>
-
+            {me && me.id && <UserProfile />}
             {me && <PostForm />}
             {mainPosts?.map((post) => {
                 return (

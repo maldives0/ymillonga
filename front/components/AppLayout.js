@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col, Input } from 'antd';
+import { Layout, Menu, Row, Col } from 'antd';
 import {
     HomeOutlined,
     MenuUnfoldOutlined,
@@ -11,46 +11,43 @@ import {
     LoginOutlined,
     LogoutOutlined
 } from '@ant-design/icons';
-
-import { css } from '@emotion/react'
-import styled from '@emotion/styled';
-import GlobalLayout from './GlobalLayout';
+import { GlobalLayout, InputSearch, Logo } from './style';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 
 const { Header, Sider, Content } = Layout;
-
-const InputSearch = styled(Input.Search)`
-vertical-align: middle;
-margin-right:5px;`
-    ;
-const Logo = styled.div`
-height: 60px;
-margin:15px 10px;
-display:flex;
-justify-content:center;
-text-align:cetner;
-background-color:rgba(255,255,255,0.5);
-border-radius:50%;
-`;
 
 const AppLayout = ({ children }) => {
     const { me } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
-
+    const [currentKey, setCurrentKey] = useState('1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
+    const onClickDefaultKey = useCallback((e) => {
+        if (me && me.id && e.key !== '3') {
+            dispatch({
+                type: CHANGE_MENUKEY_REQUEST,
+                data: e.key,
+            });
+        }
+    }, [me && me.id]);
+    useEffect(() => {
+        if (me && me.id) {
+            setCurrentKey(me.menuKey);
+        }
+    }, [me && me.id]);
 
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
     const onLogout = useCallback(() => {
+
         dispatch({
             type: LOG_OUT_REQUEST,
         });
@@ -64,16 +61,13 @@ const AppLayout = ({ children }) => {
                     <Image
                         src="/images/ic_logo.png"
                         alt="logo"
-                        css={css`
-                        width:150px;
-                        height:60px;`}
                         width={150}
-                        height={60}
-                    />
+                        height={60} />
                 </Logo>
                 <Menu
                     theme="dark"
-                    defaultSelectedKeys={['1']}
+                    onClick={onClickDefaultKey}
+                    selectedKeys={[currentKey]}
                     mode="inline"
                 >
                     <Menu.Item

@@ -40,17 +40,17 @@ const UserProfile = () => {
                 ]}
                 actions={[
                     <div key="twit">
-                        <Link href={`/user/${me.id}`}><a>게시글<br />{me.Posts.length}</a>
+                        <Link href={`/user/${me?.id}`}><a>게시글<br />{me?.Posts.length}</a>
                         </Link>
                     </div>,
                     <div key="following">
                         <Link href="/profile">
-                            <a>팔로잉<br />{me.Followings.length}</a>
+                            <a>팔로잉<br />{me?.Followings.length}</a>
                         </Link>
                     </div>,
                     <div key="follower">
                         <Link href="/profile">
-                            <a>팔로어<br />{me.Followers.length}</a>
+                            <a>팔로어<br />{me?.Followers.length}</a>
                         </Link>
                     </div>,
                 ]}

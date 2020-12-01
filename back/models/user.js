@@ -25,7 +25,11 @@ module.exports = class User extends Model {
                 allowNull: false,
                 defaultValue: 'local',
             },
-
+            menuKey: {
+                type: DataTypes.STRING(10),
+                allowNull: false,
+                defaultValue: '1',
+            },
 
         },
             {

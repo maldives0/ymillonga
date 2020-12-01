@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');//비밀번호 암호화 라이브러리
 const passport = require('passport');
 const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const frontUrl = require('../config/frontUrl');
 
 router.get('/google', function (req, res, next) {
     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
@@ -12,7 +13,7 @@ router.get('/google', function (req, res, next) {
 router.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/',
 }), async (req, res, next) => {
-    return res.status(200).redirect('http://localhost:3050');
+    return res.status(200).redirect(frontUrl);
 
 });
 router.get('/facebook', passport.authenticate('facebook', { scope: ['public_profile', 'email'] }));
@@ -20,7 +21,7 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['public_prof
 router.get('/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/',
 }), async (req, res, next) => {
-    return res.status(200).redirect('http://localhost:3050');
+    return res.status(200).redirect(frontUrl);
 
 });
 // GET '/user/google'
@@ -33,7 +34,7 @@ router.get('/', async (req, res, next) => {
         if (req.user) {//사용자가 있을 때
             const fullUserWithoutPassword = await User.findOne({
                 where: { id: req.user.id },
-                attributes: ['id', 'nickname'],
+                attributes: ['id', 'nickname', 'menuKey'],
                 include: [{//데이터효율을 위해 게시글수, 팔로잉수, 팔로워수만 가져오면 된다
                     model: Post,
                     attributes: ['id'],
@@ -49,7 +50,6 @@ router.get('/', async (req, res, next) => {
                     attributes: ['id', 'nickname']
                 }]
             })
-            console.log('fullUserWithoutPassword?', fullUserWithoutPassword);
             res.status(200).json(fullUserWithoutPassword);
 
         } else {
@@ -154,7 +154,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             const fullUserWithoutPassword = await User.findOne({
                 where: { id: user.id },
                 attributes: {
-                    exclude: ['password']
+                    include: ['id', 'nickname']
                 },
                 include: [{
                     model: Post,
@@ -171,6 +171,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     attributes: ['id']
                 }]
             })
+
             return res.status(200).json(fullUserWithoutPassword);
         });
     })(req, res, next);
@@ -191,7 +192,25 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     }
 
 });
+router.patch('/menuKey', async (req, res, next) => {
+    try {
+        if (req.user) {
+            await User.update({
+                menuKey: req.body.currentKey,
+            }, {
+                where: { id: req.user.id },
+            });
 
+            res.status(200).json({ currentKey: req.body.currentKey });
+        } else {
+            res.status(200).json({ currentKey: '1' });
+        }
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -240,7 +259,12 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
-router.post('/logout', isLoggedIn, (req, res) => {
+router.post('/logout', isLoggedIn, async (req, res) => {
+    await User.update({
+        menuKey: '1',
+    }, {
+        where: { id: req.user.id },
+    });
     req.logout();
     req.session.destroy();
     res.redirect('/');
