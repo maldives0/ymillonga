@@ -25,6 +25,8 @@ module.exports = class User extends Model {
                 allowNull: false,
                 defaultValue: 'local',
             },
+
+
         },
             {
                 modelName: 'User',
@@ -38,6 +40,7 @@ module.exports = class User extends Model {
         db.User.hasMany(db.Post);
         db.User.hasMany(db.Comment);
         db.User.belongsToMany(db.Post, { through: 'Like', as: 'Likers' }); //중간 테이블 이름: Like, 별칭:'Likers;
+
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });//foreignKey:col의 값을 정해준다//나=FollowingId, 내가 따라다니는 사람목록=Followers 
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });//나=FollowerId
     }

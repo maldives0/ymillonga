@@ -5,6 +5,9 @@ import {
     CHANGE_NICKNAME_FAILURE,
     CHANGE_NICKNAME_REQUEST,
     CHANGE_NICKNAME_SUCCESS,
+    CHANGE_MENUKEY_FAILURE,
+    CHANGE_MENUKEY_REQUEST,
+    CHANGE_MENUKEY_SUCCESS,
     FOLLOW_FAILURE,
     FOLLOW_REQUEST,
     FOLLOW_SUCCESS,
@@ -143,6 +146,25 @@ function* changeNickname(action) {
         });
     }
 };
+function changeMenuKeyAPI(data) {
+    return axios.post('/user/menuKey', { currentKey: data });
+}
+function* changeMenuKey(action) {
+    try {
+        const result = yield call(changeMenuKeyAPI, action.data);
+
+        yield put({
+            type: CHANGE_MENUKEY_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: CHANGE_MENUKEY_FAILURE,
+            error: err.response.data,
+        });
+    }
+};
 function followAPI(data) {
     return axios.patch(`/user/${data}/follow`);
 }
@@ -213,6 +235,9 @@ function* watchSignup() {
 function* watchChangeNickname() {
     yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
+function* watchChangeMenuKey() {
+    yield takeLatest(CHANGE_MENUKEY_REQUEST, changeMenuKey);
+}
 function* watchFollow() {
     yield takeLatest(FOLLOW_REQUEST, follow);
 }
@@ -236,6 +261,7 @@ export default function* userSaga() {
         fork(watchLoadUser),
         fork(watchSignup),
         fork(watchChangeNickname),
+        fork(watchChangeMenuKey),
         fork(watchFollow),
         fork(watchUnfollow),
         fork(watchRemovefollower),

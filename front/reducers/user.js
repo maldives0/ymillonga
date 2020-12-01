@@ -30,13 +30,21 @@ export const initialState = {
     removeFollowerLoading: false,
     removeFollowerDone: false,
     removeFollowerError: null,
+    menuKeyLoading: false,
+    menuKeyDone: false,
+    menuKeyError: null,
     me: null,
     userInfo: null,//다른 유저
 
 };
+export const CHANGE_MENUKEY_REQUEST = 'CHANGE_MENUKEY_REQUEST';
+export const CHANGE_MENUKEY_SUCCESS = 'CHANGE_MENUKEY_SUCCESS';
+export const CHANGE_MENUKEY_FAILURE = 'CHANGE_MENUKEY_FAILURE';
+
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
+
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
@@ -95,6 +103,20 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case CHANGE_MENUKEY_REQUEST:
+            draft.loadMyInfoLoading = true;
+            draft.loadMyInfoError = null;
+            draft.loadMyInfoDone = false;
+            break;
+        case CHANGE_MENUKEY_SUCCESS:
+            draft.loadMyInfoLoading = false;
+            draft.menuKey.currentKey = action.data.currentKey;
+            draft.loadMyInfoDone = true;
+            break;
+        case CHANGE_MENUKEY_FAILURE:
+            draft.loadMyInfoLoading = false;
+            draft.loadMyInfoError = action.error;
+            break;
         case LOAD_MY_INFO_REQUEST:
             draft.loadMyInfoLoading = true;
             draft.loadMyInfoError = null;

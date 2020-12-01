@@ -49,9 +49,11 @@ router.get('/', async (req, res, next) => {
                     attributes: ['id', 'nickname']
                 }]
             })
+            console.log('fullUserWithoutPassword?', fullUserWithoutPassword);
             res.status(200).json(fullUserWithoutPassword);
 
         } else {
+
             res.status(200).json(null);
         }
     }
@@ -100,6 +102,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
+
 
 router.post('/', isNotLoggedIn, async (req, res, next) => {
     //POST/user
@@ -188,6 +191,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     }
 
 });
+
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({

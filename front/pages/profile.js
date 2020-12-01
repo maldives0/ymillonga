@@ -33,7 +33,7 @@ const Profile = () => {
         setFollowersLimit((prev) => prev + 3);
     }, []);
 
-    if (!me) { return <div style={{ width: 100, height: 100, textAlign: center, verticalAlign: center }}>'로그인 페이지로 이동합니다'</div> };
+    if (!me) { return <div style={{ width: '100%', marginTop: '20px', textAlign: 'center' }}>'로그인 페이지로 이동합니다'</div> };
     if (followerError || followingError) {
         console.error(followerError || followingError);
         return '팔로잉/팔로워 로딩 중 에러가 발생했습니다.';

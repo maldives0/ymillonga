@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Row, Col, Input } from 'antd';
@@ -41,14 +41,12 @@ const AppLayout = ({ children }) => {
     const { me } = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
-    const [defaultKey, setDefaultKey] = useState('1');
+
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
-    const onChangeDefaultKey = useCallback((e) => {
-        setDefaultKey(e.key);
-    }, [defaultKey]);
+
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
@@ -75,8 +73,7 @@ const AppLayout = ({ children }) => {
                 </Logo>
                 <Menu
                     theme="dark"
-                    onClick={onChangeDefaultKey}
-                    defaultSelectedKeys={[defaultKey]}
+                    defaultSelectedKeys={['1']}
                     mode="inline"
                 >
                     <Menu.Item
