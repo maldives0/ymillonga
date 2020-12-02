@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Checkbox, Row, Divider } from 'antd';
+import { Form, Input, Button, Row, Divider } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -11,7 +11,8 @@ import GoogleLoginBtn from './GoogleLoginBtn';
 import { useRouter } from 'next/router';
 const layout = {
     wrapperCol: {
-        span: 16,
+        xs: { span: 12 },
+        sm: { span: 16 },
     },
 };
 
@@ -89,10 +90,6 @@ const LoginForm = () => {
                 />
             </Form.Item>
 
-            <Form.Item {...layout} name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
             <Form.Item justify="end"  >
                 <Row>
                     <Button type="primary" htmlType="submit"
@@ -107,7 +104,7 @@ const LoginForm = () => {
             </Button></a></Link>
                 </Row>
             </Form.Item>
-            <Form.Item justify="end"  >
+            <Form.Item justify="center"  >
                 <Row>
                     <GoogleLoginBtn />
                     <FacebookLoginBtn />

@@ -129,6 +129,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/
         if (!post) {
             res.status(403).send('존재하지 않는 게시글입니다.');
         }
+        console.log('retweet?', post);
         if (post.UserId === req.user.id || post.Retweet && post.Retweet.UserId === req.user.id) {//게시글 작성자가 자신의 글을 리트윗하거나 또는 다른 사람이 리트윗한 자신의 게시글 다시 리트윗할 경우
             res.status(403).send('자신의 게시글은 리트윗할 수 없습니다.');
         }
@@ -157,10 +158,15 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/
                     attributes: ['id', 'nickname'],
                 }, {
                     model: Image,
-                }]
+                }],
             }, {
                 model: User,
                 attributes: ['id', 'nickname'],
+            }, {
+                model: User,
+                through: 'Like',
+                as: 'Likers',
+                attributes: ['id'],
             }, {
                 model: Image,
             }, {
@@ -179,6 +185,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/
     }
 });
 
+
 router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
     try {
         const post = await Post.findOne({
@@ -194,8 +201,6 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
         console.error(err);
         next(err);
     }
-
-
 });
 router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
     try {
@@ -217,6 +222,34 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
         where: { id: req.params.postId }
     });
 
+});
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
+    try {
+
+        await Post.update({
+            content: req.body.content
+        }, {
+            where: {
+                id: req.params.postId,
+                UserID: req.user.id,
+            }
+        });
+        const updatePost = await Post.findOne({
+            where: { id: req.params.postId },
+        });
+        if (hashtags) {
+            const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+                where: { name: tag.slice(1).toLowerCase() },
+            })));
+            await updatePost.setHashtags(result.map((v) => v[0]));
+        }
+        res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
 });
 router.delete('/:postId', isLoggedIn, async (req, res, next) => {
     try {

@@ -1,25 +1,32 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { Input, Button } from 'antd';
+import { useSelector } from 'react-redux';
 const { TextArea } = Input;
 
-
-const PostCardContent = ({ postData, editMode, onCalcelUpdate, onChangePost }) => {
-
+const PostCardContent = ({ postData, editMode, onCancelUpdate, onChangePost }) => {
+    const { updatePostLoading, updatePostDone } = useSelector((state) => state.post);
     const [editText, setEditText] = useState(postData);
+
+    useEffect(() => {
+        if (updatePostDone) {
+            onCancelUpdate();
+        }
+    }, [updatePostDone]);
     const onChangeText = useCallback((e) => {
         setEditText(e.target.value);
     }, []);
-
+    //prefetch를 false로 해야 미리 build 되지 않는다
     return (
         <div>
             {editMode ? (
                 <>
                     <TextArea value={editText} onChange={onChangeText} />
                     <Button.Group>
-                        <Button onClick={onChangePost(editText)}>수정하기</Button>
+                        <Button
+                            loading={updatePostLoading}
+                            onClick={onChangePost(editText)}>수정하기</Button>
                         <Button type="danger"
                             onClick={onCancelUpdate}>
                             취소하기

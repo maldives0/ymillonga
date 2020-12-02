@@ -16,7 +16,7 @@ const User = () => {
     const { id } = router.query;//next 다이나믹 라우팅으로 특정 사용자id값을 query로 가져올 수 있다
     const dispatch = useDispatch();
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(state => state.post);
-    const { userInfo } = useSelector(state => state.user);
+    const { me, userInfo } = useSelector(state => state.user);
 
 
     useEffect(() => {
@@ -52,7 +52,7 @@ const User = () => {
                     <meta property="og:url" content={`https://ymillonga.com/user/${id}`} />
                 </Head>
             )}
-            {userInfo ? (
+            {userInfo && (userInfo.id !== me?.id) ? (
                 <Card
                     style={{ marginBottom: 20 }}
                     actions={[

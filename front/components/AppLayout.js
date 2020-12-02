@@ -29,6 +29,7 @@ const AppLayout = ({ children }) => {
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
+
     const onClickDefaultKey = useCallback((e) => {
         if (me && me.id && e.key !== '3') {
             dispatch({
@@ -47,7 +48,6 @@ const AppLayout = ({ children }) => {
         setCollapsed((prev) => !prev);
     }, []);
     const onLogout = useCallback(() => {
-
         dispatch({
             type: LOG_OUT_REQUEST,
         });
@@ -74,7 +74,6 @@ const AppLayout = ({ children }) => {
                         key="1" icon={<HomeOutlined />}>
                         <Link href="/"><a>Home</a></Link>
                     </Menu.Item>
-
                     <Menu.Item key="2" icon={<AimOutlined />}>
                         <Link href="/map"><a>Map</a></Link> </Menu.Item>
                     <Menu.Item key="3" icon={

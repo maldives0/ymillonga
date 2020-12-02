@@ -211,6 +211,33 @@ router.patch('/menuKey', async (req, res, next) => {
         next(err);
     }
 });
+
+router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.params.userId },
+        });
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자를 차단할 수 없습니다.');
+        }
+        await user.removeFollowings(req.user.id);//나를 following하는 user의 followings목록에서 나를 지우기
+        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+router.post('/logout', isLoggedIn, async (req, res) => {
+    await User.update({
+        menuKey: '1',
+    }, {
+        where: { id: req.user.id },
+    });
+    req.logout();
+    req.session.destroy();
+    res.redirect('/');
+});
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -243,33 +270,6 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
-router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
-    try {
-        const user = await User.findOne({
-            where: { id: req.params.userId },
-        });
-        if (!user) {
-            res.status(403).send('존재하지 않는 사용자를 차단할 수 없습니다.');
-        }
-        await user.removeFollowings(req.user.id);//나를 following하는 user의 followings목록에서 나를 지우기
-        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
-    }
-    catch (err) {
-        console.error(err);
-        next(err);
-    }
-});
-router.post('/logout', isLoggedIn, async (req, res) => {
-    await User.update({
-        menuKey: '1',
-    }, {
-        where: { id: req.user.id },
-    });
-    req.logout();
-    req.session.destroy();
-    res.redirect('/');
-});
-
 router.get('/:id/', async (req, res, next) => {
     //GET/user/1
     try {
@@ -328,7 +328,6 @@ router.get('/:id/posts', async (req, res, next) => {
                 limit: 10,
                 order: [
                     ['createdAt', 'DESC'],
-                    [Comment, 'createdAt', 'DESC'],
                 ],
                 include: [{
                     model: User,
@@ -338,7 +337,7 @@ router.get('/:id/posts', async (req, res, next) => {
                 }, {
                     model: Post,
                     as: 'Retweet',
-                    includes: [{
+                    include: [{
                         model: User,//유저가 리트윗한 게시글의 주인
                         attributes: ['id', 'nickname'],
                     }, {
@@ -355,7 +354,8 @@ router.get('/:id/posts', async (req, res, next) => {
                     model: Comment,
                     include: [{
                         model: User,
-                        attributes: ['id', 'nickname']
+                        attributes: ['id', 'nickname'],
+                        order: ['createdAt', 'DESC'],
                     }]
                 }]
             });

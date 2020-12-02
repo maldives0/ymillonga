@@ -15,6 +15,12 @@ export const initialState = {
     unfollowLoading: false, // 언팔로우 시도중
     unfollowDone: false,
     unfollowError: null,
+    ignoreLoading: false, // 팔로우 시도중
+    ignoreDone: false,
+    ignoreError: null,
+    unIgnoreLoading: false, // 언팔로우 시도중
+    unIgnoreDone: false,
+    unIgnoreError: null,
     logInLoading: false, // 로그인 시도중
     logInDone: false,
     logInError: null,
@@ -74,6 +80,14 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const IGNORE_REQUEST = 'IGNORE_REQUEST';
+export const IGNORE_SUCCESS = 'IGNORE_SUCCESS';
+export const IGNORE_FAILURE = 'IGNORE_FAILURE';
+
+export const UNIGNORE_REQUEST = 'UNIGNORE_REQUEST';
+export const UNIGNORE_SUCCESS = 'UNIGNORE_SUCCESS';
+export const UNIGNORE_FAILURE = 'UNIGNORE_FAILURE';
 
 export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
 export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
@@ -230,6 +244,34 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case UNFOLLOW_FAILURE:
             draft.unfollowLoading = false;
             draft.unfollowError = action.error;
+            break;
+        case IGNORE_REQUEST:
+            draft.ignoreLoading = true;
+            draft.ignoreDone = false;
+            draft.ignoreError = null;
+            break;
+        case IGNORE_SUCCESS:
+            draft.ignoreLoading = false;
+            draft.ignoreDone = true;
+            draft.me.Ignoring.push({ id: action.data.UserId });
+            break;
+        case IGNORE_FAILURE:
+            draft.ignoreLoading = false;
+            draft.ignoreError = action.error;
+            break;
+        case UNIGNORE_REQUEST:
+            draft.unIgnoreLoading = true;
+            draft.unIgnoreDone = false;
+            draft.unIgnoreError = null;
+            break;
+        case UNIGNORE_SUCCESS:
+            draft.unIgnoreLoading = false;
+            draft.unIgnoreDone = true;
+            draft.me.Ignoring = draft.me.Ignoring.filter(v => v.id !== action.data.UserId)
+            break;
+        case UNIGNORE_FAILURE:
+            draft.unIgnoreLoading = false;
+            draft.unIgnoreError = action.error;
             break;
         case REMOVE_FOLLOWER_REQUEST:
             draft.removeFollowerLoading = true;

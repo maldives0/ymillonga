@@ -19,6 +19,7 @@ const PostImages = ({ images }) => {
                     src={`${backUrl}/${images[0].src}`}
                     alt={images[0].src}
                     style={{
+                        width: '300px',
                         height: '300px',
                         cursor: 'pointer'
                     }}

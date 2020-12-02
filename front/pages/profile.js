@@ -32,10 +32,10 @@ const Profile = () => {
     const { me } = useSelector(state => state.user);
 
     useEffect(() => {
-        if (!(me && me.id)) {
+        if (!(me && me.id) || (followerError || followingError)) {
             Router.replace('/')
         };
-    }, [me && me.id]);
+    }, [me && me.id, followerError, followingError]);
     const loadMoreFollowings = useCallback(() => {
         setFollowingsLimit((prev) => prev + 3);
     }, []);
@@ -49,7 +49,7 @@ const Profile = () => {
     };
     if (followerError || followingError) {
         console.error(followerError || followingError);
-        return '팔로잉/팔로워 로딩 중 에러가 발생했습니다.';
+        return (<LoadingDiv>팔로잉/팔로워 로딩 중 에러가 발생했습니다</LoadingDiv>);
     }
     return (
         <AppLayout>

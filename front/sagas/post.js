@@ -11,12 +11,12 @@ import {
     LIKE_POST_REQUEST,
     LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
     LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
+    LOAD_POST_FAILURE,
+    LOAD_POST_REQUEST,
+    LOAD_POST_SUCCESS,
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
-    LOAD_POSTS_SUCCESS,
-    LOAD_USER_POSTS_FAILURE,
-    LOAD_USER_POSTS_REQUEST,
-    LOAD_USER_POSTS_SUCCESS,
+    LOAD_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
     REMOVE_POST_FAILURE,
     REMOVE_POST_REQUEST,
     REMOVE_POST_SUCCESS,
@@ -25,7 +25,7 @@ import {
     RETWEET_SUCCESS,
     UNLIKE_POST_FAILURE,
     UNLIKE_POST_REQUEST,
-    UNLIKE_POST_SUCCESS,
+    UNLIKE_POST_SUCCESS, UPDATE_POST_FAILURE, UPDATE_POST_REQUEST, UPDATE_POST_SUCCESS,
     UPLOAD_IMAGES_FAILURE,
     UPLOAD_IMAGES_REQUEST,
     UPLOAD_IMAGES_SUCCESS,
@@ -134,7 +134,25 @@ function* addComment(action) {
         })
     }
 }
+function updatePostAPI(data) {
+    return axios.patch(`/post/${data.PostId}`, data);
+}
 
+function* updatePost(action) {
+    try {
+        const result = yield call(updatePostAPI, action.data);
+        yield put({
+            type: UPDATE_POST_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UPDATE_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 function retweetAPI(data) {
     return axios.post(`/post/${data}/retweet`);
 }
@@ -236,6 +254,9 @@ function* removePost(action) {
     }
 }
 
+function* watchUpdatePost() {
+    yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+}
 function* watchUploadImages() {
     yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
@@ -274,6 +295,7 @@ function* watchAddComment() {
 
 export default function* postSaga() {
     yield all([
+        fork(watchUpdatePost),
         fork(watchAddPost),
         fork(watchUploadImages),
         fork(watchLikePost),

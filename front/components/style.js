@@ -20,11 +20,19 @@ export const GlobalLayout = () => (
       }
       .ant-card-type-inner .ant-card-head,
       .ant-card-head{
-        background :#fffcfc;
+        background :#fafafa;
       }
-           
+      .ant-card-bordered .ant-card-cover{
+        margin:0;
+      }
       .site-layout .site-layout-background {
         background: #fff;
+      }
+      .ant-card-bordered .ant-card-cover {
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        padding:3px;
       }
          `
     } />

@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 
-const User = () => {
+const Hashtag = () => {
     const router = useRouter();
     const { tag } = router.query;//next 다이나믹 라우팅으로 특정 사용자id값을 query로 가져올 수 있다
     const dispatch = useDispatch();
@@ -63,4 +63,4 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     await context.store.sagaTask.toPromise();
 });
 
-export default User; 
+export default Hashtag; 

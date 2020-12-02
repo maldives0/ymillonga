@@ -47,5 +47,6 @@ module.exports = class User extends Model {
 
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });//foreignKey:col의 값을 정해준다//나=FollowingId, 내가 따라다니는 사람목록=Followers 
         db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });//나=FollowerId
+        db.User.belongsToMany(db.User, { through: 'Ignore', as: 'Ignoring' });
     }
 };

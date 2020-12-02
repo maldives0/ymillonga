@@ -31,7 +31,8 @@ const UserProfile = () => {
     return (
         <CardWrapper>
             <Card
-                style={{ width: 300, marginTop: 16 }}
+                key="profile"
+                style={{ width: 400, marginTop: 16, marginLeft: 30 }}
                 type="inner"
                 extra={[
                     <LogoutOutlined key="logout" onClick={onLogout} />,
@@ -40,17 +41,17 @@ const UserProfile = () => {
                 ]}
                 actions={[
                     <div key="twit">
-                        <Link href={`/user/${me?.id}`}><a>게시글<br />{me?.Posts.length}</a>
+                        <Link href={`/user/${me.id}`}><a>게시글<br />{me.Posts.length}</a>
                         </Link>
                     </div>,
                     <div key="following">
                         <Link href="/profile">
-                            <a>팔로잉<br />{me?.Followings.length}</a>
+                            <a>팔로잉<br />{me.Followings.length}</a>
                         </Link>
                     </div>,
                     <div key="follower">
                         <Link href="/profile">
-                            <a>팔로어<br />{me?.Followers.length}</a>
+                            <a>팔로어<br />{me.Followers.length}</a>
                         </Link>
                     </div>,
                 ]}
@@ -58,7 +59,7 @@ const UserProfile = () => {
                 <Card.Meta
                     avatar={
                         (<Link
-                            href="/profile"><a><Avatar>
+                            href={`/user/${me.id}`}><a><Avatar>
                                 {me.nickname[0]}</Avatar></a></Link>)
                     }
                     title={me.nickname}

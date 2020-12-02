@@ -8,9 +8,6 @@ import {
     CHANGE_MENUKEY_FAILURE,
     CHANGE_MENUKEY_REQUEST,
     CHANGE_MENUKEY_SUCCESS,
-    FOLLOW_FAILURE,
-    FOLLOW_REQUEST,
-    FOLLOW_SUCCESS,
     LOAD_USER_FAILURE,
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
@@ -25,9 +22,18 @@ import {
     SIGN_UP_FAILURE,
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
+    FOLLOW_FAILURE,
+    FOLLOW_REQUEST,
+    FOLLOW_SUCCESS,
     UNFOLLOW_FAILURE,
     UNFOLLOW_REQUEST,
     UNFOLLOW_SUCCESS,
+    IGNORE_FAILURE,
+    IGNORE_REQUEST,
+    IGNORE_SUCCESS,
+    UNIGNORE_FAILURE,
+    UNIGNORE_REQUEST,
+    UNIGNORE_SUCCESS,
     LOAD_MY_INFO_FAILURE,
     LOAD_MY_INFO_REQUEST,
     LOAD_MY_INFO_SUCCESS,
@@ -165,6 +171,44 @@ function* changeMenuKey(action) {
         });
     }
 };
+function ignoreAPI(data) {
+    return axios.patch(`/user/${data}/ignore`);
+}
+function* ignore(action) {
+    try {
+        const result = yield call(ignoreAPI, action.data);
+
+        yield put({
+            type: IGNORE_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: IGNORE_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+function unIgnoreAPI(data) {
+    return axios.delete(`/user/${data}/ignore`);
+}
+function* unIgnore(action) {
+    try {
+        const result = yield call(unIgnoreAPI, action.data);
+
+        yield put({
+            type: UNIGNORE_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: UNIGNORE_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 function followAPI(data) {
     return axios.patch(`/user/${data}/follow`);
 }
@@ -238,6 +282,13 @@ function* watchChangeNickname() {
 function* watchChangeMenuKey() {
     yield takeLatest(CHANGE_MENUKEY_REQUEST, changeMenuKey);
 }
+function* watchIgnore() {
+    yield takeLatest(IGNORE_REQUEST, ignore);
+}
+
+function* watchUnIgnore() {
+    yield takeLatest(UNIGNORE_REQUEST, unIgnore);
+}
 function* watchFollow() {
     yield takeLatest(FOLLOW_REQUEST, follow);
 }
@@ -262,6 +313,8 @@ export default function* userSaga() {
         fork(watchSignup),
         fork(watchChangeNickname),
         fork(watchChangeMenuKey),
+        fork(watchIgnore),
+        fork(watchUnIgnore),
         fork(watchFollow),
         fork(watchUnfollow),
         fork(watchRemovefollower),
