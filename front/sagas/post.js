@@ -11,9 +11,7 @@ import {
     LIKE_POST_REQUEST,
     LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
     LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
-    LOAD_POST_FAILURE,
-    LOAD_POST_REQUEST,
-    LOAD_POST_SUCCESS,
+    REPORT_POST_FAILURE, REPORT_POST_REQUEST, REPORT_POST_SUCCESS,
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
     LOAD_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
@@ -232,6 +230,25 @@ function* unlikePost(action) {
         });
     }
 }
+function reportPostAPI(data) {
+    return axios.post(`/post/${data.postId}/report`, data); // POST /post/1/comment
+}
+
+function* reportPost(action) {
+    try {
+        const result = yield call(reportPostAPI, action.data);
+        yield put({
+            type: REPORT_POST_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: REPORT_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 
 function removePostAPI(data) {
     return axios.delete(`/post/${data}`);
@@ -292,7 +309,9 @@ function* watchRemovePost() {
 function* watchAddComment() {
     yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
-
+function* watchReportPost() {
+    yield takeLatest(REPORT_POST_REQUEST, reportPost);
+}
 export default function* postSaga() {
     yield all([
         fork(watchUpdatePost),
@@ -306,5 +325,6 @@ export default function* postSaga() {
         fork(watchLoadPosts),
         fork(watchRemovePost),
         fork(watchAddComment),
+        fork(watchReportPost),
     ]);
 }

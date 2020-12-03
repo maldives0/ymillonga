@@ -30,6 +30,9 @@ export const initialState = {
     signUpLoading: false, // 회원가입 시도중
     signUpDone: false,
     signUpError: null,
+    reportLoading: false, // 신고하기 시도중
+    reportDone: false,
+    reportError: null,
     changeNicknameLoading: false, // 닉네임 변경 시도중
     changeNicknameDone: false,
     changeNicknameError: null,
@@ -217,6 +220,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.signUpLoading = false;
             draft.signUpError = action.error;
             break;
+
         case FOLLOW_REQUEST:
             draft.followLoading = true;
             draft.followDone = false;
@@ -253,7 +257,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case IGNORE_SUCCESS:
             draft.ignoreLoading = false;
             draft.ignoreDone = true;
-            draft.me.Ignoring.push({ id: action.data.UserId });
+            draft.me.Ignorings.push({ id: action.data.UserId });
             break;
         case IGNORE_FAILURE:
             draft.ignoreLoading = false;
@@ -267,7 +271,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case UNIGNORE_SUCCESS:
             draft.unIgnoreLoading = false;
             draft.unIgnoreDone = true;
-            draft.me.Ignoring = draft.me.Ignoring.filter(v => v.id !== action.data.UserId)
+            draft.me.Ignoring = draft.me.Ignorings.filter(v => v.id !== action.data.UserId)
             break;
         case UNIGNORE_FAILURE:
             draft.unIgnoreLoading = false;

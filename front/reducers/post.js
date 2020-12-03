@@ -37,7 +37,9 @@ export const initialState = {
     retweetLoading: false,
     retweetDone: false,
     retweetError: null,
-
+    reportPostLoading: false,
+    reportPostDone: false,
+    reportPostError: null,
 };
 // mainPosts: [{
 //     id: 1,//게시글 아이디
@@ -100,6 +102,10 @@ export const initialState = {
 //         content: faker.lorem.sentence(),
 //     }],
 // }));
+
+export const REPORT_POST_REQUEST = 'REPORT_POST_REQUEST';
+export const REPORT_POST_SUCCESS = 'REPORT_POST_SUCCESS';
+export const REPORT_POST_FAILURE = 'REPORT_POST_FAILURE';
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
@@ -295,6 +301,19 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case REMOVE_POST_FAILURE:
             draft.removePostLoading = true;
             draft.removePostError = action.error;
+            break;
+        case REPORT_POST_REQUEST:
+            draft.reportPostLoading = true;
+            draft.reportPostDone = false;
+            draft.reportPostError = null;
+            break;
+        case REPORT_POST_SUCCESS:
+            draft.reportPostLoading = false;
+            draft.reportPostDone = true;
+            break;
+        case REPORT_POST_FAILURE:
+            draft.reportPostLoading = false;
+            draft.reportPostError = action.error;
             break;
         default:
             break;

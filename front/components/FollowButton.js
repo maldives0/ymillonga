@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST, UNIGNORE_REQUEST, IGNORE_REQUEST } from '../reducers/user';
 const FollowButton = ({ post }) => {
     const { me, followLoading, unfollowLoading, ignoreLoading, unIgnoreLoading } = useSelector(state => state.user);
-    const isFollowing = me?.Followings.find((v) => v.id === post.User.id);
-    const isIgnoring = me?.Ignoring.find((v) => v.id === post.User.id);
+    const isFollowing = me.Followings?.find((v) => v.id === post.User.id);
+    const isIgnoring = me.Ignorings?.find((v) => v.id === post.User.id);
     const dispatch = useDispatch();
     const ToggleFollow = useCallback(() => {
         if (isFollowing) {
@@ -47,7 +47,7 @@ const FollowButton = ({ post }) => {
             >{isFollowing ? '언팔로우' : '팔로우'}</Button>
             <Button
                 loading={ignoreLoading || unIgnoreLoading}
-                onClick={onIgnore}>{isIgnoring ? '차단하기' : '차단해제'}</Button>
+                onClick={onIgnore}>{isIgnoring ? '차단풀기' : '차단하기'}</Button>
         </div>
     );
 };

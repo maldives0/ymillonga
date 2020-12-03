@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Row, Divider } from 'antd';
+import { Form, Input, Button, Row, Col, Divider } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -11,11 +11,17 @@ import GoogleLoginBtn from './GoogleLoginBtn';
 import { useRouter } from 'next/router';
 const layout = {
     wrapperCol: {
-        xs: { span: 12 },
-        sm: { span: 16 },
+        xs: { span: 12, offset: 2 },
+        sm: { span: 12, offset: 3 },
+        md: { span: 8, offset: 8 },
     },
 };
-
+const tailLayout = {
+    wrapperCol: { offset: 12, span: 16 },
+};
+const btnLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+};
 const LoginForm = () => {
     const Router = useRouter();
     const { logInLoading, logInError, me } = useSelector((state) => state.user);
@@ -90,8 +96,8 @@ const LoginForm = () => {
                 />
             </Form.Item>
 
-            <Form.Item justify="end"  >
-                <Row>
+            <Form.Item {...tailLayout} >
+                <Row >
                     <Button type="primary" htmlType="submit"
                         loading={logInLoading}
                         onClick={onClickBasicButton}
@@ -104,8 +110,8 @@ const LoginForm = () => {
             </Button></a></Link>
                 </Row>
             </Form.Item>
-            <Form.Item justify="center"  >
-                <Row>
+            <Form.Item {...btnLayout}>
+                <Row >
                     <GoogleLoginBtn />
                     <FacebookLoginBtn />
                 </Row>

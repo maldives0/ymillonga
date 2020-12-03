@@ -19,6 +19,7 @@ module.exports = class User extends Model {
     }
     static associate(db) {
         db.Post.belongsTo(db.User);// post.addUser, post.getUser, post.setUser
+        db.Post.hasMany(db.Report);
         db.Post.hasMany(db.Comment);
         db.Post.hasMany(db.Image);
         db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });

@@ -3,19 +3,36 @@ import { useSelector, useDispatch } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
-import LoginForm from '../components/LoginForm';
 import UserProfile from '../components/UserProfile';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST, } from '../reducers/user';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 import axios from 'axios';
+import { message } from 'antd';
 const Home = () => {
     const dispatch = useDispatch();
-    const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(state => state.post);
-    const { me } = useSelector(state => state.user);
+    const mainPosts = useSelector((state) => state.post.mainPosts);
+    const hasMorePosts = useSelector((state) => state.post.hasMorePosts);
+    const loadPostsLoading = useSelector((state) => state.post.loadPostsLoading);
+    const reportPostDone = useSelector((state) => state.post.reportPostDone);
+    const reportPostError = useSelector((state) => state.post.reportPostError);
+    const retweetError = useSelector((state) => state.post.retweetError);
+    const me = useSelector(state => state.user.me);
 
-
+    useEffect(() => {
+        if (reportPostDone) {
+            message.success('신고가 접수되었습니다. 빠른 시일 내로 조치하겠습니다.', 5);
+        }
+        if (reportPostError) {
+            message.error(reportPostError, 5);
+        }
+    }, [reportPostDone, reportPostError]);
+    useEffect(() => {
+        if (retweetError) {
+            alert(retweetError);
+        }
+    }, [retweetError]);
     useEffect(() => {
         function onScroll() {
 

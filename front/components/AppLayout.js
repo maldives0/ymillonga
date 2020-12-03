@@ -101,7 +101,7 @@ const AppLayout = ({ children }) => {
                                 style: { marginLeft: 10 }
                             })}
                         </Col>
-                        <Col xs={12} md={12}>
+                        <Col xs={12} sm={8} md={8}>
                             <InputSearch enterButton
                                 value={searchInput}
                                 onChange={onChangeSearchInput}

@@ -28,6 +28,7 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
 // : 여기로 접근하면 로그인 과정이 실행된다. 로그인 창으로 리다이렉트를 하고 결과를 GET '/user/google/callback'으로 받는다.
 // passport.authenticate 메서드에 콜백 함수를 제공하지 않는다. 
 // 카카오 로그인은 내부적으로 req.login을 호출하므로 직접 호출할 필요가 없다.
+
 router.get('/', async (req, res, next) => {
     // console.log(req.headers);//fe에서 보낸 쿠키 확인하기
     try {
@@ -35,20 +36,25 @@ router.get('/', async (req, res, next) => {
             const fullUserWithoutPassword = await User.findOne({
                 where: { id: req.user.id },
                 attributes: ['id', 'nickname', 'menuKey'],
-                include: [{//데이터효율을 위해 게시글수, 팔로잉수, 팔로워수만 가져오면 된다
+                include: [{
                     model: Post,
                     attributes: ['id'],
                 },
                 {
                     model: User,
                     as: 'Followings',
-                    attributes: ['id', 'nickname']
+                    attributes: ['id'],
                 },
                 {
                     model: User,
                     as: 'Followers',
-                    attributes: ['id', 'nickname']
-                }]
+                    attributes: ['id'],
+                },
+                {
+                    model: User,
+                    as: 'Ignorings',
+                    attributes: ['id'],
+                }],
             })
             res.status(200).json(fullUserWithoutPassword);
 
@@ -154,22 +160,27 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             const fullUserWithoutPassword = await User.findOne({
                 where: { id: user.id },
                 attributes: {
-                    include: ['id', 'nickname']
+                    include: ['id', 'nickname'],
                 },
-                include: [{
-                    model: Post,
-                    attributes: ['id'],
-                },
-                {
-                    model: User,
-                    as: 'Followings',
-                    attributes: ['id']
-                },
-                {
-                    model: User,
-                    as: 'Followers',
-                    attributes: ['id']
-                }]
+                include: [
+                    {//데이터효율을 위해 게시글수, 팔로잉수, 팔로워수만 가져오면 된다
+                        model: Post,
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followings',
+                        attributes: ['id', 'nickname'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followers',
+                        attributes: ['id', 'nickname'],
+                    }, {
+                        model: User,
+                        as: 'Ignorings',
+                        attributes: ['id'],
+                    }],
             })
 
             return res.status(200).json(fullUserWithoutPassword);
@@ -238,6 +249,8 @@ router.post('/logout', isLoggedIn, async (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
+
+
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -270,6 +283,38 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
+router.patch('/:userId/ignore', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자는 차단할 수 없습니다.');
+        }
+        await user.addIgnorings(req.params.userId);
+        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+router.delete('/:userId/ignore', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자는 차단풀기를 할 수 없습니다.');
+        }
+        await user.removeIgnorings(req.params.userId);
+        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 router.get('/:id/', async (req, res, next) => {
     //GET/user/1
     try {
@@ -291,6 +336,10 @@ router.get('/:id/', async (req, res, next) => {
                 model: User,
                 as: 'Followers',
                 attributes: ['id']
+            }, , {
+                model: User,
+                as: 'Ignorings',
+                attributes: ['id'],
             }]
         })
         if (fullUserWithoutPassword) {//다른 유저의 개인 정보를 보호하기 위해 데이터 갯수만 보낸다

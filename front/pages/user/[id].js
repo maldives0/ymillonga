@@ -15,7 +15,22 @@ const User = () => {
     const router = useRouter();
     const { id } = router.query;//next 다이나믹 라우팅으로 특정 사용자id값을 query로 가져올 수 있다
     const dispatch = useDispatch();
-    const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(state => state.post);
+    const mainPosts = useSelector((state) => state.post.mainPosts);
+    const hasMorePosts = useSelector((state) => state.post.hasMorePosts);
+    const loadPostsLoading = useSelector((state) => state.post.loadPostsLoading);
+    const reportPostDone = useSelector((state) => state.post.reportPostDone);
+    const reportPostError = useSelector((state) => state.post.reportPostError);
+    const me = useSelector(state => state.user.me);
+    const userInfo = useSelector(state => state.user.userInfo);
+
+    useEffect(() => {
+        if (reportPostDone) {
+            message.success('신고가 접수되었습니다. 빠른 시일 내로 조치하겠습니다.');
+        }
+        if (reportPostError) {
+            message.error(reportPostError);
+        }
+    }, [reportPostDone, reportPostError]);
     const { me, userInfo } = useSelector(state => state.user);
 
 

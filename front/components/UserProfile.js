@@ -32,7 +32,7 @@ const UserProfile = () => {
         <CardWrapper>
             <Card
                 key="profile"
-                style={{ width: 400, marginTop: 16, marginLeft: 30 }}
+                style={{ width: '300', marginTop: 16 }}
                 type="inner"
                 extra={[
                     <LogoutOutlined key="logout" onClick={onLogout} />,

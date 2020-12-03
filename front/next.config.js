@@ -18,17 +18,18 @@ module.exports = withLess({
     },
     distDir: '.next',
     webpack(config, { webpack }) {
-
         const prod = process.env.NODE_ENV === 'production';
-        const plugins = [
-            ...config.plugins,
-            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
-        ];
-        return {
+        const newConfig = {
             ...config,
             mode: prod ? 'production' : 'development',
-            devtool: prod ? 'hidden-source-map' : 'eval',
-            plugins,
-        };
+            plugins: [
+                ...config.plugins,
+                new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+            ],
+        }
+        if (prod) {
+            newConfig.devtool = 'hidden-source-map';
+        }
+        return newConfig;
     },
 });

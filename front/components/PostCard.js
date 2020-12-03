@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Card, Button, Avatar, Popover, List, Comment } from 'antd';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
@@ -23,8 +23,9 @@ import {
     UNLIKE_POST_REQUEST,
     RETWEET_REQUEST,
     UPDATE_POST_REQUEST,
+    REPORT_POST_REQUEST,
 } from '../reducers/post';
-
+import useInput from '../hooks/useInput';
 
 moment.locale('ko');
 const CardWrapper = styled.div`
@@ -32,10 +33,14 @@ margin-bottom: 20px;`
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
-
+    const [reportText, onChangeReportText] = useInput('');
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const { removePostLoading } = useSelector(state => state.post);
+    const reportPostLoading = useSelector((state) => state.post.reportLoading);
+    const reportPostDone = useSelector((state) => state.post.reportPostDone);
+    const reportPostError = useSelector((state) => state.post.reportPostError);
+    const removePostLoading = useSelector(state => state.post.removePostLoading);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const onLike = useCallback(() => {
         if (!id) {
@@ -70,7 +75,6 @@ const PostCard = ({ post }) => {
         })
     }, [id]);
 
-
     const onToggleComment = useCallback(() => {
         setCommentFormOpened((prev) => !prev);
     }, [id]);
@@ -82,6 +86,9 @@ const PostCard = ({ post }) => {
         setEditMode(false);;
     }, []);
     const onChangePost = useCallback((editText) => () => {
+        if (!id) {
+            return alert('로그인이 필요합니다.');
+        }
         dispatch({
             type: UPDATE_POST_REQUEST,
             data: {
@@ -90,6 +97,32 @@ const PostCard = ({ post }) => {
             },
         });
     }, [post]);
+    const onReport = useCallback(() => {
+        setModalVisible(true);
+    }, []);
+    const onsubmitReport = useCallback(() => {
+        if (!id) {
+            return alert('로그인이 필요합니다.');
+        }
+        dispatch({
+            type: REPORT_POST_REQUEST,
+            data: {
+                postId: post.id,
+                reason: reportText,
+            }
+        });
+    }, [reportText]);
+    const reportCancel = useCallback(() => {
+        setModalVisible(false);
+    }, []);
+    useEffect(() => {
+        if (reportPostDone) {
+            setModalVisible(false);
+        }
+        if (reportPostError) {
+            setModalVisible(false);
+        }
+    }, [reportPostDone, reportPostError]);
     const liked = post.Likers?.find((v) => v.id === id);
     return (
         <CardWrapper key={post.id}>
@@ -125,7 +158,8 @@ const PostCard = ({ post }) => {
                                                 loading={removePostLoading} >삭제</Button>
                                         </>
                                     ) :
-                                    <Button>신고하기</Button>}
+                                    <Button onClick={onReport}>신고하기</Button>
+                                }
                             </Button.Group>
                         )}>
                         <EllipsisOutlined />
@@ -134,6 +168,24 @@ const PostCard = ({ post }) => {
                 extra={id && <FollowButton post={post} />}
                 title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
             >
+                <Modal
+                    title="report"
+                    visible={modalVisible}
+                    onOk={onsubmitReport}
+                    confirmLoading={reportPostLoading}
+                    onCancel={reportCancel}
+                >
+                    <Form >
+                        <Input.TextArea
+                            style={{ position: 'relative', marginTop: '10px', marginBottom: '10px' }}
+                            rows={4}
+                            value={reportText}
+                            onChange={onChangeReportText}
+
+                        />
+                    </Form>
+                    <p>신고하실 경우 되돌릴 수 없습니다. 계속 진행하시겠습니까?</p>
+                </Modal>
                 {post.RetweetId && post.Retweet ?
                     (
                         <Card

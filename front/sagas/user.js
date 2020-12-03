@@ -114,9 +114,9 @@ function* logout() {
         });
     }
 }
+
 function signupAPI(data) {
     return axios.post('/user', data);
-    //data={email,password,nickname}, post,put,patch는 data를 넘길 수 있다
 }
 function* signup(action) {
     try {
@@ -272,6 +272,7 @@ function* watchLoadMyInfo() {
 function* watchLoadUser() {
     yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
+
 
 function* watchSignup() {
     yield takeLatest(SIGN_UP_REQUEST, signup);

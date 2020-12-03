@@ -14,8 +14,9 @@ const Hashtag = () => {
     const router = useRouter();
     const { tag } = router.query;//next 다이나믹 라우팅으로 특정 사용자id값을 query로 가져올 수 있다
     const dispatch = useDispatch();
-    const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(state => state.post);
-
+    const mainPosts = useSelector((state) => state.user.mainPosts);
+    const hasMorePosts = useSelector((state) => state.user.hasMorePosts);
+    const loadPostsLoading = useSelector((state) => state.user.loadPostsLoading);
 
     useEffect(() => {
         function onScroll() {

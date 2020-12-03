@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { Post, Image, Comment, User, Hashtag } = require('../models');
+const { Post, Image, Comment, User, Hashtag, Report } = require('../models');
 const multer = require('multer');//FE의 form-data형식을 받기 위해(이미지, 비디오 등등)
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 try {
     fs.accessSync('uploads');
@@ -111,6 +112,38 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {//POST/1/
             }],//특이사항은 조건으로 적고 나머지 값은 그대로 가져오기
         });
         res.status(201).json(fullComment);
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
+    //POST/user
+    try {
+        const post = await Post.findOne({
+            where: {
+                id: req.params.postId,
+            }
+        });
+        if (!post) {
+            return res.status(403).send('존재하지 않은 사용자입니다.');
+        }
+        const exReport = await Report.findOne({
+            where: {
+                UserId: req.user.id,
+                PostId: parseInt(req.params.postId, 10),
+            },
+        });
+        if (exReport) {
+            return res.status(403).send('이미 신고한 게시글입니다.');
+        }
+        await Report.create({
+            PostId: parseInt(req.params.postId, 10),
+            UserId: req.user.id,
+            reason: req.body.reason,
+        });
+        res.status(201).send('ok');
     }
     catch (err) {
         console.error(err);
