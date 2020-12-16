@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux';
 const { TextArea } = Input;
 
 const PostCardContent = ({ postData, editMode, onCancelUpdate, onChangePost }) => {
-    const { updatePostLoading, updatePostDone } = useSelector((state) => state.post);
+    const updatePostLoading = useSelector(state => state.post.updatePostLoading);
+    const updatePostDone = useSelector(state => state.post.updatePostDone);
+
     const [editText, setEditText] = useState(postData);
 
     useEffect(() => {

@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import Link from 'next/link';
+
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col } from 'antd';
+import { Layout, Menu, Row, Col, message } from 'antd';
 import {
     HomeOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
-    AimOutlined,
     UserOutlined,
     LoginOutlined,
     LogoutOutlined
@@ -14,6 +13,7 @@ import {
 import { GlobalLayout, InputSearch, Logo } from './style';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
+import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
@@ -21,9 +21,10 @@ import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = ({ children }) => {
-    const { me } = useSelector(state => state.user);
+    const me = useSelector(state => state.user.me);
+    const logOutDone = useSelector(state => state.user.logOutDone);
     const dispatch = useDispatch();
-    const [collapsed, setCollapsed] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
     const [currentKey, setCurrentKey] = useState('1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
@@ -31,7 +32,7 @@ const AppLayout = ({ children }) => {
     }, [searchInput]);
 
     const onClickDefaultKey = useCallback((e) => {
-        if (me && me.id && e.key !== '3') {
+        if (me && me.id && e.key !== '2') {
             dispatch({
                 type: CHANGE_MENUKEY_REQUEST,
                 data: e.key,
@@ -43,7 +44,12 @@ const AppLayout = ({ children }) => {
             setCurrentKey(me.menuKey);
         }
     }, [me && me.id]);
-
+    // useEffect(() => {
+    //     if (me && me.id && logOutDone) {
+    //         Router.replace('/')
+    //     }
+    //     message.success('로그아웃되었습니다.', 5);
+    // }, [logOutDone]);
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);
@@ -74,9 +80,8 @@ const AppLayout = ({ children }) => {
                         key="1" icon={<HomeOutlined />}>
                         <Link href="/"><a>Home</a></Link>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<AimOutlined />}>
-                        <Link href="/map"><a>Map</a></Link> </Menu.Item>
-                    <Menu.Item key="3" icon={
+
+                    <Menu.Item key="2" icon={
                         me && me.id ? <LogoutOutlined /> : <LoginOutlined />
                     }>
                         {
@@ -86,8 +91,7 @@ const AppLayout = ({ children }) => {
                                 (<Link href="/login"><a>Login</a></Link>)
                         }
                     </Menu.Item>
-
-                    <Menu.Item key="4" icon={<UserOutlined />}>
+                    <Menu.Item key="3" icon={<UserOutlined />}>
                         <Link href="/profile"><a>Profile</a></Link> </Menu.Item>
                 </Menu>
             </Sider>

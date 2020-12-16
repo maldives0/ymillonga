@@ -41,7 +41,7 @@ const Hashtag = () => {
     //og:카카오톡에 나오는 정보
     return (
         <AppLayout>
-            {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+            {mainPosts?.map((post) => <PostCard key={post.id} post={post} />)}
         </AppLayout>
     );
 };

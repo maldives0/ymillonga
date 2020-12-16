@@ -12,7 +12,7 @@ const InputSearch = styled(Input.Search)`
 `;
 const NicknameEditForm = () => {
     const dispatch = useDispatch();
-    const { me } = useSelector(state => state.user);
+    const me = useSelector(state => state.user.me);
     const [nickname, onChangeNickname] = useInput(me?.nickname || '');
     const onSubmit = useCallback(() => {
         dispatch({

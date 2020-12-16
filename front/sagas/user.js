@@ -273,7 +273,6 @@ function* watchLoadUser() {
     yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
-
 function* watchSignup() {
     yield takeLatest(SIGN_UP_REQUEST, signup);
 }

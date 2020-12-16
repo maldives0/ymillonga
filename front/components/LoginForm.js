@@ -24,7 +24,10 @@ const btnLayout = {
 };
 const LoginForm = () => {
     const Router = useRouter();
-    const { logInLoading, logInError, me } = useSelector((state) => state.user);
+
+    const me = useSelector(state => state.user.me);
+    const logInLoading = useSelector(state => state.user.logInLoading);
+    const logInError = useSelector(state => state.user.logInError);
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');

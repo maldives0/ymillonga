@@ -3,7 +3,7 @@ import produce from 'immer';
 import { nanoid } from 'nanoid';
 
 export const initialState = {
-
+    singlePost: null,
     mainPosts: [],
     imagePaths: [],
     hasMorePosts: true,
@@ -40,6 +40,9 @@ export const initialState = {
     reportPostLoading: false,
     reportPostDone: false,
     reportPostError: null,
+    loadPostLoading: false,
+    loadPostDone: false,
+    loadPostError: null,
 };
 // mainPosts: [{
 //     id: 1,//게시글 아이디
@@ -103,6 +106,12 @@ export const initialState = {
 //     }],
 // }));
 
+
+
+export const LOAD_RELATED_POSTS_REQUEST = 'LOAD_RELATED_POSTS_REQUEST';
+export const LOAD_RELATED_POSTS_SUCCESS = 'LOAD_RELATED_POSTS_SUCCESS';
+export const LOAD_RELATED_POSTS_FAILURE = 'LOAD_RELATED_POSTS_FAILURE';
+
 export const REPORT_POST_REQUEST = 'REPORT_POST_REQUEST';
 export const REPORT_POST_SUCCESS = 'REPORT_POST_SUCCESS';
 export const REPORT_POST_FAILURE = 'REPORT_POST_FAILURE';
@@ -159,8 +168,23 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
     switch (action.type) {
+        case LOAD_POST_REQUEST:
+            draft.loadPostLoading = true;
+            draft.loadPostDone = false;
+            draft.loadPostError = null;
+            break;
+        case LOAD_POST_SUCCESS:
+            draft.loadPostLoading = false;
+            draft.loadPostDone = true;
+            draft.singlePost = action.data;
+            break;
+        case LOAD_POST_FAILURE:
+            draft.loadPostLoading = false;
+            draft.loadPostError = action.error;
+            break;
         case REMOVE_IMAGE:
             draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);//FE에서만 이미지를 지우고 BE에서는 간직하고 있기
+        case LOAD_RELATED_POSTS_REQUEST:
         case LOAD_USER_POSTS_REQUEST:
         case LOAD_POSTS_REQUEST:
         case LOAD_HASHTAG_POSTS_REQUEST:
@@ -168,6 +192,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.loadPostsDone = false;
             draft.loadPostsError = null;
             break;
+        case LOAD_RELATED_POSTS_SUCCESS:
         case LOAD_USER_POSTS_SUCCESS:
         case LOAD_HASHTAG_POSTS_SUCCESS:
         case LOAD_POSTS_SUCCESS:
@@ -176,6 +201,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             draft.mainPosts = draft.mainPosts.concat(action.data);
             draft.hasMorePosts = action.data.length === 10;
             break;
+        case LOAD_RELATED_POSTS_FAILURE:
         case LOAD_USER_POSTS_FAILURE:
         case LOAD_HASHTAG_POSTS_FAILURE:
         case LOAD_POSTS_FAILURE:

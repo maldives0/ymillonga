@@ -31,8 +31,6 @@ const User = () => {
             message.error(reportPostError);
         }
     }, [reportPostDone, reportPostError]);
-    const { me, userInfo } = useSelector(state => state.user);
-
 
     useEffect(() => {
         function onScroll() {
@@ -94,7 +92,7 @@ const User = () => {
                     />
                 </Card>
             ) : null}
-            {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+            {mainPosts?.map((post) => <PostCard key={post.id} post={post} />)}
         </AppLayout>
     );
 };

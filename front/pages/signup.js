@@ -13,7 +13,11 @@ import wrapper from '../store/configureStore';
 
 const Signup = () => {
     const dispatch = useDispatch();
-    const { signUpLoading, signUpDone, signUpError, me } = useSelector(state => state.user);
+    const me = useSelector(state => state.user.me);
+    const signUpLoading = useSelector(state => state.user.signUpLoading);
+    const signUpDone = useSelector(state => state.user.signUpDone);
+    const signUpError = useSelector(state => state.user.signUpError);
+
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');

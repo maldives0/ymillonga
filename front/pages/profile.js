@@ -5,6 +5,7 @@ import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import UserProfile from '../components/UserProfile';
 import FollowList from '../components/FollowList';
+import IgnoreList from '../components/IgnoreList';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
@@ -12,44 +13,42 @@ import wrapper from '../store/configureStore';
 import useSWR from 'swr';
 import { backUrl } from '../config/config';
 import fetcher from '../utils/fetcher';
-import styled from '@emotion/styled';
-const LoadingDiv = styled.div`
-width:100%;
-height:100vh;
-background:rgba(0,0,0,0.9);
-padding-top:15%;
-text-align: center;
-line-height:2em;
-font-size:20px;
-color:white;
-`;
+import { LoadingDiv } from '../components/style';
+
 
 const Profile = () => {
     const [followingsLimit, setFollowingsLimit] = useState(3);
     const [followersLimit, setFollowersLimit] = useState(3);
+    const [ignoringsLimit, setIgnoringsLimit] = useState(3);
     const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher);
     const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher);
-    const { me } = useSelector(state => state.user);
+    const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher);
+
+    const me = useSelector(state => state.user.me);
 
     useEffect(() => {
-        if (!(me && me.id) || (followerError || followingError)) {
+        if (!(me && me.id) || (followerError || followingError || ignoringError)) {
             Router.replace('/')
         };
-    }, [me && me.id, followerError, followingError]);
+    }, [me && me.id, followerError, followingError, ignoringError]);
+
     const loadMoreFollowings = useCallback(() => {
         setFollowingsLimit((prev) => prev + 3);
     }, []);
     const loadMoreFollowers = useCallback(() => {
         setFollowersLimit((prev) => prev + 3);
     }, []);
+    const loadMoreIgnorers = useCallback(() => {
+        setIgnoringsLimit((prev) => prev + 3);
+    }, []);
 
     if (!me) {
         return (<LoadingDiv>이 페이지는 로그인이 필요합니다.
             <br /> Home으로 이동합니다.</LoadingDiv>)
     };
-    if (followerError || followingError) {
-        console.error(followerError || followingError);
-        return (<LoadingDiv>팔로잉/팔로워 로딩 중 에러가 발생했습니다</LoadingDiv>);
+    if (followerError || followingError || ignoringError) {
+        console.error(followerError || followingError || ignoringError);
+        return (<LoadingDiv>팔로잉/팔로워/차단자 로딩 중 에러가 발생했습니다</LoadingDiv>);
     }
     return (
         <AppLayout>
@@ -67,6 +66,11 @@ const Profile = () => {
                 data={followersData}
                 loading={!followersData && !followerError}
                 onClickMore={loadMoreFollowers} />
+            <IgnoreList
+                header="차단한 사용자"
+                data={ignoringsData}
+                loading={!ignoringsData && !ignoringError}
+                onClickMore={loadMoreIgnorers} />
         </AppLayout>
     );
 };

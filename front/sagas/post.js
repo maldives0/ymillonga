@@ -11,10 +11,18 @@ import {
     LIKE_POST_REQUEST,
     LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
     LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
-    REPORT_POST_FAILURE, REPORT_POST_REQUEST, REPORT_POST_SUCCESS,
+    REPORT_POST_FAILURE, REPORT_POST_REQUEST,
+    LOAD_POST_FAILURE,
+    LOAD_POST_REQUEST,
+    LOAD_POST_SUCCESS,
+    REPORT_POST_SUCCESS,
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
-    LOAD_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
+    LOAD_POSTS_SUCCESS,
+    LOAD_RELATED_POSTS_FAILURE,
+    LOAD_RELATED_POSTS_REQUEST,
+    LOAD_RELATED_POSTS_SUCCESS,
+    LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS,
     REMOVE_POST_FAILURE,
     REMOVE_POST_REQUEST,
     REMOVE_POST_SUCCESS,
@@ -28,9 +36,26 @@ import {
     UPLOAD_IMAGES_REQUEST,
     UPLOAD_IMAGES_SUCCESS,
 } from '../reducers/post';
-import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
+function loadPostAPI(data) {
+    return axios.get(`/post/${data}`);
+}
 
+function* loadPost(action) {
+    try {
+        const result = yield call(loadPostAPI, action.data);
+        yield put({
+            type: LOAD_POST_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_POST_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
 function loadUserPostsAPI(data, lastId) {
     return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
 }
@@ -70,6 +95,26 @@ function* loadHashtagPosts(action) {
     }
 }
 
+function loadRelatedPostsAPI(lastId) {
+    return axios.get(`/posts/related?lastId=${lastId || 0}`);//get은 주소를 cashing하면 데이터까지 cashing 할 수 있다//lastId가 undefined면 0으로 보내기
+}
+
+function* loadRelatedPosts(action) {
+    try {
+        const result = yield call(loadRelatedPostsAPI, action.lastId);
+
+        yield put({
+            type: LOAD_RELATED_POSTS_SUCCESS,
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LOAD_RELATED_POSTS_FAILURE,
+            data: err.response.data,
+        });
+    }
+}
 function loadPostsAPI(lastId) {
     return axios.get(`/posts?lastId=${lastId || 0}`);//get은 주소를 cashing하면 데이터까지 cashing 할 수 있다//lastId가 undefined면 0으로 보내기
 }
@@ -288,8 +333,14 @@ function* watchUnlikePost() {
 function* watchRetweet() {
     yield takeLatest(RETWEET_REQUEST, retweet);
 }
+function* watchLoadPost() {
+    yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
 function* watchLoadPosts() {
     yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+}
+function* watchLoadRelatedPosts() {
+    yield throttle(5000, LOAD_RELATED_POSTS_REQUEST, loadRelatedPosts);
 }
 function* watchLoadUserPosts() {
     yield throttle(5000, LOAD_USER_POSTS_REQUEST, loadUserPosts);
@@ -322,9 +373,11 @@ export default function* postSaga() {
         fork(watchRetweet),
         fork(watchLoadUserPosts),
         fork(watchLoadHashtagPosts),
+        fork(watchLoadRelatedPosts),
         fork(watchLoadPosts),
         fork(watchRemovePost),
         fork(watchAddComment),
         fork(watchReportPost),
+        fork(watchLoadPost),
     ]);
 }

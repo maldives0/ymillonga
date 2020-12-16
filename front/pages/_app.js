@@ -12,7 +12,6 @@ const Ymillonga = ({ Component }) => {
             <Head>
                 <title>Ymillonga</title>
             </Head>
-
             <Component />
         </>
     );

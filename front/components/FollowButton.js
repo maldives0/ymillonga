@@ -1,12 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST, UNIGNORE_REQUEST, IGNORE_REQUEST } from '../reducers/user';
 const FollowButton = ({ post }) => {
-    const { me, followLoading, unfollowLoading, ignoreLoading, unIgnoreLoading } = useSelector(state => state.user);
-    const isFollowing = me.Followings?.find((v) => v.id === post.User.id);
-    const isIgnoring = me.Ignorings?.find((v) => v.id === post.User.id);
+
+    const me = useSelector(state => state.user.me);
+    const followLoading = useSelector(state => state.user.followLoading);
+    const unfollowLoading = useSelector(state => state.user.unfollowLoading);
+    const ignoreLoading = useSelector(state => state.user.ignoreLoading);
+    const unIgnoreLoading = useSelector(state => state.user.unIgnoreLoading);
+    const isFollowing = me.Followings.find((v) => v.id === post.User.id);
+    const isIgnoring = me.Ignorings.find((v) => v.id === post.User.id);
     const dispatch = useDispatch();
     const ToggleFollow = useCallback(() => {
         if (isFollowing) {
@@ -21,7 +26,7 @@ const FollowButton = ({ post }) => {
             });
         }
     }, [isFollowing]);
-    const onIgnore = useCallback(() => {
+    const toggleIgnore = useCallback(() => {
         if (isIgnoring) {
             dispatch({
                 type: UNIGNORE_REQUEST,
@@ -34,10 +39,12 @@ const FollowButton = ({ post }) => {
             });
         }
 
-    }, []);
+    }, [isIgnoring]);
     if (post.User.id === me.id) {
         return null;
     }
+
+
     return (
         <div>
             <Button
@@ -47,7 +54,7 @@ const FollowButton = ({ post }) => {
             >{isFollowing ? '언팔로우' : '팔로우'}</Button>
             <Button
                 loading={ignoreLoading || unIgnoreLoading}
-                onClick={onIgnore}>{isIgnoring ? '차단풀기' : '차단하기'}</Button>
+                onClick={toggleIgnore}>{isIgnoring ? '차단풀기' : '차단하기'}</Button>
         </div>
     );
 };

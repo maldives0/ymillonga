@@ -1,6 +1,6 @@
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enable: process.env.ANALYZE === 'true',
+    enabled: process.env.ANALYZE === 'true',
 });
 const withLess = require('@zeit/next-less');
 

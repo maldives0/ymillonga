@@ -6,7 +6,10 @@ import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reduce
 import { backUrl } from '../config/config';
 
 const PostForm = () => {
-    const { imagePaths, addPostLoading, addPostDone } = useSelector(state => state.post);
+
+    const imagePaths = useSelector(state => state.post.imagePaths);
+    const addPostLoading = useSelector(state => state.post.addPostLoading);
+    const addPostDone = useSelector(state => state.post.addPostDone);
     const dispatch = useDispatch();
     const [text, onChangeText, setText] = useInput('');
     const imageInput = useRef();

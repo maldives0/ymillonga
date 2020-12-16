@@ -3,21 +3,14 @@ import { Button, List, Avatar } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
+import { UNIGNORE_REQUEST } from '../reducers/user';
 
-const FollowList = ({ header, data, onClickMore }) => {
+const IgnoreList = ({ header, data, onClickMore }) => {
 
     const dispatch = useDispatch();
     const onCancel = useCallback((id) => () => {
-
-        if (header === '팔로잉') {
-            dispatch({
-                type: UNFOLLOW_REQUEST,
-                data: id,
-            });
-        }
         dispatch({
-            type: REMOVE_FOLLOWER_REQUEST,
+            type: UNIGNORE_REQUEST,
             data: id,
         });
     }, []);
@@ -36,7 +29,6 @@ const FollowList = ({ header, data, onClickMore }) => {
     return (
 
         <List
-
             style={{ marginBottom: 20 }}
             header={<div>{header}</div>}
             dataSource={data}
@@ -45,13 +37,12 @@ const FollowList = ({ header, data, onClickMore }) => {
             bordered
             renderItem={(item) => (
                 <List.Item
-                    key={`followlist_${item.id}`}
+                    key={`ignoringlist_${item.id}`}
                     actions={[
-                        <a
-                            key={`post_${item.id}`}
+                        <a key={`post_${item.id}`}
                             href={`/user/${item.id}`}>게시글 보기</a>,
-                        <a key={`ignored_${item.id}`}
-                            onClick={onCancel(item.id)}>연결끊기</a>]}
+                        <a key={`unIngored_${item.id}`}
+                            onClick={onCancel(item.id)}>차단풀기</a>]}
                 >
 
                     <List.Item.Meta
@@ -73,10 +64,10 @@ const FollowList = ({ header, data, onClickMore }) => {
     );
 };
 
-FollowList.propTypes = {
+IgnoreList.propTypes = {
     header: PropTypes.string.isRequire,
     data: PropTypes.array.isRequire,
     onClickMore: PropTypes.func.isRequire,
 
 }
-export default FollowList; 
+export default IgnoreList; 

@@ -34,6 +34,9 @@ export const GlobalLayout = () => (
         align-items:center;
         padding:3px;
       }
+      .ant-page-header-heading-title{
+        overflow:visible;
+      }
          `
     } />
 );
@@ -50,4 +53,13 @@ text-align:cetner;
 background-color:rgba(255,255,255,0.5);
 border-radius:50%;
 `;
-
+export const LoadingDiv = styled.div`
+width:100%;
+height:100vh;
+background:rgba(0,0,0,0.9);
+padding-top:15%;
+text-align: center;
+line-height:2em;
+font-size:20px;
+color:white;
+`;

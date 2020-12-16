@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Avatar, Card, Divider } from 'antd';
+import { Avatar, Card, Divider, Tooltip, message } from 'antd';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 
 import NicknameEditForm from '../components/NicknameEditForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import styled from '@emotion/styled';
-
+import Router from 'next/router';
 const CardWrapper = styled.div`
 margin-bottom: 20px;`
 const UserProfile = () => {
     const dispatch = useDispatch();
-    const { me, changeNicknameDone } = useSelector(state => state.user);
+    const me = useSelector(state => state.user.me);
+
+    const changeNicknameDone = useSelector(state => state.user.changeNicknameDone);
     const [editNickname, setEditNickname] = useState(false);
+
     const onClickEditNickname = useCallback(() => {
         setEditNickname((prev) => !prev)
     }, []);
@@ -23,6 +26,7 @@ const UserProfile = () => {
             type: LOG_OUT_REQUEST
         });
     }, []);
+
     useEffect(() => {
         if (changeNicknameDone) {
             setEditNickname((prev) => !prev)
@@ -31,27 +35,40 @@ const UserProfile = () => {
     return (
         <CardWrapper>
             <Card
-                key="profile"
+                key={`${me.id}_profile`}
                 style={{ width: '300', marginTop: 16 }}
                 type="inner"
                 extra={[
-                    <LogoutOutlined key="logout" onClick={onLogout} />,
+                    <Tooltip title="로그아웃">
+                        <LogoutOutlined key="logout" onClick={onLogout} />
+                    </Tooltip>
+                    ,
                     <Divider type="vertical" />,
-                    <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} />
+                    <Tooltip title="닉네임 바꾸기">   <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} /></Tooltip>
+
                 ]}
                 actions={[
-                    <div key="twit">
-                        <Link href={`/user/${me.id}`}><a>게시글<br />{me.Posts.length}</a>
+                    <div key={`${me.id}_twit`}>
+                        <Link
+                            prefetch={false}
+                            href={`/user/${me.id}`}><a>게시글<br />{me.Posts.length}</a>
                         </Link>
                     </div>,
-                    <div key="following">
-                        <Link href="/profile">
+                    <div key={`${me.id}_following`}>
+                        <Link
+                            prefetch={false}
+                            href={`/posts/related`}>
                             <a>팔로잉<br />{me.Followings.length}</a>
                         </Link>
                     </div>,
-                    <div key="follower">
+                    <div key={`${me.id}_follower`}>
                         <Link href="/profile">
                             <a>팔로어<br />{me.Followers.length}</a>
+                        </Link>
+                    </div>,
+                    <div key={`${me.id}_ignoring`}>
+                        <Link href="/profile">
+                            <a>차단자<br />{me.Ignorings.length}</a>
                         </Link>
                     </div>,
                 ]}
@@ -59,6 +76,7 @@ const UserProfile = () => {
                 <Card.Meta
                     avatar={
                         (<Link
+                            prefetch={false}
                             href={`/user/${me.id}`}><a><Avatar>
                                 {me.nickname[0]}</Avatar></a></Link>)
                     }
@@ -66,6 +84,7 @@ const UserProfile = () => {
                     style={{ marginBottom: "10px" }}
                 />
                 {editNickname && <NicknameEditForm />}
+
             </Card>
         </CardWrapper>
     );

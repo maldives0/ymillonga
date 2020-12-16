@@ -42,9 +42,7 @@ export const initialState = {
     menuKeyLoading: false,
     menuKeyDone: false,
     menuKeyError: null,
-    me: {
-        menuKey: '1',
-    },
+    me: null,
     userInfo: null,//다른 유저
 
 };
@@ -271,7 +269,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case UNIGNORE_SUCCESS:
             draft.unIgnoreLoading = false;
             draft.unIgnoreDone = true;
-            draft.me.Ignoring = draft.me.Ignorings.filter(v => v.id !== action.data.UserId)
+            draft.me.Ignorings = draft.me.Ignorings.filter(v => v.id !== action.data.UserId)
             break;
         case UNIGNORE_FAILURE:
             draft.unIgnoreLoading = false;
