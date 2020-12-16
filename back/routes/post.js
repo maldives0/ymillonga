@@ -6,7 +6,7 @@ const multer = require('multer');//FE의 form-data형식을 받기 위해(이미
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
-
+const prod = process.env.NODE_ENV === 'production';
 try {
     fs.accessSync('uploads');
 }
@@ -143,12 +143,76 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
             UserId: req.user.id,
             reason: req.body.reason,
         });
-        res.status(201).send('ok');
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth:{
+                user: 'maliethy@gmail.com',
+                pass: process.env.GMAIL_PASSWORD,
+            },
+        });
+        await transporter.verify();
+        await transporter.sendMail({
+            from: '"ymillonga 신고내역" <report@ymillonga.com>',
+            to: '"ymillonga 관리자" <maliethy@gmail.com>',
+            subject: 'ymillonga - 신고발생',
+            html:`
+        <div>
+          <a href="${prod ? 'https://ymillonga.com' : 'http://localhost:3050'}/post/${req.params.postId}">신고가 접수되었습니다.</a>
+          <p>${req.body.reason}</p>
+        </div>
+      `,
+        });
+        console.log('mail sent');
+                res.status(201).send('ok');
     }
     catch (err) {
         console.error(err);
         next(err);
     }
+});
+router.get('/:postId', async (req, res, next) => { // GET /post/1
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    });
+    if (!post) {
+      return res.status(404).send('존재하지 않는 게시글입니다.');
+    }
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }, {
+          model: Image,
+        }]
+      }, {
+        model: User,
+        attributes: ['id', 'nickname'],
+      }, {
+        model: User,
+        as: 'Likers',
+        attributes: ['id', 'nickname'],
+      }, {
+        model: Image,
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }],
+      }],
+    })
+    res.status(200).json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/retweet
     try {

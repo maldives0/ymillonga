@@ -7,7 +7,7 @@ import NicknameEditForm from '../components/NicknameEditForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
 import styled from '@emotion/styled';
-import Router from 'next/router';
+
 const CardWrapper = styled.div`
 margin-bottom: 20px;`
 const UserProfile = () => {

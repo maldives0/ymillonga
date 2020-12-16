@@ -44,69 +44,6 @@ export const initialState = {
     loadPostDone: false,
     loadPostError: null,
 };
-// mainPosts: [{
-//     id: 1,//게시글 아이디
-//     User: {//게시글 작성자 
-//         id: 1,
-//         nickname: 'momo',
-//     },
-//     content: '첫 번째 게시글 #first',
-//     Images: [{
-//         src: faker.image.image(),
-//     },
-//     {
-//         src: faker.image.image(),
-//     }, {
-//         src: faker.image.image(),
-//     }
-//     ],
-//     Likers: [],
-//     Comments: [{
-//         User: {
-//             id: nanoid(),
-//             nickname: faker.name.findName(),
-//         },
-//         content: faker.lorem.sentence(),
-//     }],
-// }],
-// const dummyPost = (data) => ({
-//     id: data.id,
-//     content: data.content,
-//     User: {
-//         id: 1,
-//         nickname: 'momo',
-//     },
-//     Images: [],
-//     Comments: [],
-// });
-// const dummyComment = (data) => ({
-//     id: nanoid(),
-//     User: {
-//         id: 2,
-//         nickname: 'soso',
-//     },
-//     content: data,
-// });
-// export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-//     id: nanoid(),
-//     User: {
-//         id: nanoid(),
-//         nickname: faker.name.findName(),
-//     },
-//     content: faker.lorem.paragraph(),
-//     Images: [{
-//         src: faker.image.image(),
-//     }],
-//     Comments: [{
-//         User: {
-//             id: nanoid(),
-//             nickname: faker.name.findName(),
-//         },
-//         content: faker.lorem.sentence(),
-//     }],
-// }));
-
-
 
 export const LOAD_RELATED_POSTS_REQUEST = 'LOAD_RELATED_POSTS_REQUEST';
 export const LOAD_RELATED_POSTS_SUCCESS = 'LOAD_RELATED_POSTS_SUCCESS';

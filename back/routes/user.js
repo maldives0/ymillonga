@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');//비밀번호 암호화 라이브러리
+const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
@@ -108,6 +108,25 @@ router.get('/followings', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
+router.get('/ignorings', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자입니다.');
+        }
+        const ignorings = await user.getIgnorings({
+            attributes: ['id', 'nickname'],
+            limit: parseInt(req.query.limit, 10),
+        });
+        res.status(200).json(ignorings);
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 
 
 router.post('/', isNotLoggedIn, async (req, res, next) => {
@@ -129,12 +148,12 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
         if (exNickname) {
             return res.status(403).send('이미 사용중인 닉네임입니다');
         }
-        const hashedPassword = await bcrypt.hash(req.body.password, 11);//10~13 사이로 숫자가 높아질수록 보안이 높아진다, 대신 서버가 느리면 오래걸릴 수 있다
+        const hashedPassword = await bcrypt.hash(req.body.password, 11);
         await User.create({
             email: req.body.email,
             password: hashedPassword,
             nickname: req.body.nickname,
-        });// res.json 전에 실행되도록 await붙여주기
+        });
         res.status(201).send('ok');
     }
     catch (err) {
@@ -163,7 +182,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                     include: ['id', 'nickname'],
                 },
                 include: [
-                    {//데이터효율을 위해 게시글수, 팔로잉수, 팔로워수만 가져오면 된다
+                    {
                         model: Post,
                         attributes: ['id'],
                     },
@@ -229,7 +248,7 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
             where: { id: req.params.userId },
         });
         if (!user) {
-            res.status(403).send('존재하지 않는 사용자를 차단할 수 없습니다.');
+            res.status(403).send('존재하지 않는 사용자를 언팔로우할 수 없습니다.');
         }
         await user.removeFollowings(req.user.id);//나를 following하는 user의 followings목록에서 나를 지우기
         res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
@@ -283,6 +302,7 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
         next(err);
     }
 });
+
 router.patch('/:userId/ignore', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({
@@ -291,8 +311,24 @@ router.patch('/:userId/ignore', isLoggedIn, async (req, res, next) => {
         if (!user) {
             res.status(403).send('존재하지 않는 사용자는 차단할 수 없습니다.');
         }
-        await user.addIgnorings(req.params.userId);
-        res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+        const followings = await User.findAll({
+            attributes: ['id'],
+            include: [{
+                model: User,
+                as: 'Followers',//내가 팔로워인 경우
+                where: { id: req.user.id },
+            }],
+        });
+
+        if (followings.filter(v => v.id === parseInt(req.params.userId, 10)).length !== 0) {
+            res.status(403).send('팔로잉한 사용자는 차단할 수 없습니다.');
+
+        } else {
+            await user.addIgnorings(req.params.userId);
+            res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+        }
+
+
     }
     catch (err) {
         console.error(err);
@@ -342,8 +378,8 @@ router.get('/:id/', async (req, res, next) => {
                 attributes: ['id'],
             }]
         })
-        if (fullUserWithoutPassword) {//다른 유저의 개인 정보를 보호하기 위해 데이터 갯수만 보낸다
-            const data = fullUserWithoutPassword.toJSON();//mysql 데이터를 json형식으로 바꾸기
+        if (fullUserWithoutPassword) {
+            const data = fullUserWithoutPassword.toJSON();
             data.Posts = data.Posts.length;
             data.Followings = data.Followings.length;
             data.Followers = data.Followers.length;
@@ -359,7 +395,7 @@ router.get('/:id/', async (req, res, next) => {
     }
 });
 router.get('/:id/posts', async (req, res, next) => {
-    //와일드 카드는 가장 아래로 내려주기
+
     //GET/user/1/posts
     try {
         const user = await User.findOne({
