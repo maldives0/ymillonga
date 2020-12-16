@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 3050",
     "build": "cross-env ANALYZE=true NODE_ENV=true next build",
-    "start": "next start"
+    "start": "cross-env NODE_ENV=production next start -p 3050"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "@zeit/next-less": "^1.0.1",
     "antd": "^4.8.2",
     "axios": "^0.21.0",
+    "cross-env": "^7.0.3",
     "immer": "^7.0.14",
     "less": "^3.12.2",
     "moment": "^2.29.1",
