@@ -16,7 +16,7 @@ const PostImages = ({ images }) => {
         return (
             <>
                 <img role="presentation"
-                    src={`${backUrl}/${images[0].src}`}
+                    src={`${images[0].src}`}
                     alt={images[0].src}
                     style={{
                         width: '300px',
@@ -38,7 +38,7 @@ const PostImages = ({ images }) => {
                         display: 'inline-block',
                         cursor: 'pointer'
                     }}
-                    src={`${backUrl}/${images[0].src}`}
+                    src={`${images[0].src}`}
                     alt={images[0].src}
                     onClick={onZoom} />
                 <img role="presentation"
@@ -47,7 +47,7 @@ const PostImages = ({ images }) => {
                         display: 'inline-block',
                         cursor: 'pointer'
                     }}
-                    src={`${backUrl}/${images[1].src}`}
+                    src={`${images[1].src}`}
                     alt={images[1].src}
                     onClick={onZoom} />
                 {showImagesZoom && <ImagesZoom
@@ -63,7 +63,7 @@ const PostImages = ({ images }) => {
                         width: '50%',
                         cursor: 'pointer'
                     }}
-                    src={`${backUrl}/${images[0].src}`}
+                    src={`${images[0].src}`}
                     alt={images[0].src}
                     onClick={onZoom} />
                 <div role="presentation"

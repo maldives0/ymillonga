@@ -3,6 +3,9 @@ const router = express.Router();
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const { Post, Image, Comment, User, Hashtag, Report } = require('../models');
 const multer = require('multer');//FE의 form-data형식을 받기 위해(이미지, 비디오 등등)
+const multerS3 = require('multer-s3');//이미지 업로드를 알아서 해준다
+const AWS = require('aws-sdk');//aws 접근 권한 얻기
+
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
@@ -14,17 +17,18 @@ catch (err) {
     console.log('uploads 폴더가 없으므로 생성합니다.');
     fs.mkdirSync('uploads');
 }
-
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+});
 const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);//확장자 추출
-            const basename = path.basename(file.originalname, ext);
-            done(null, basename + '-' + new Date().getTime() + ext);
-        },
+    storage: multerS3({
+        s3: new AWS.S3(),//access
+        bucket: 'ymillonga',
+        key(req, file, cb) {
+            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+        }
     }),
     limits: { fileSize: 20 * 1024 * 1024 },//20MB
 });
@@ -88,7 +92,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {//POST/po
 router.post('/images', isLoggedIn, upload.array('image'), (req, res) => {//POST/post/images
     //upload.array('image')에서 이미 이미지를 올려준다
     console.log(req.files);
-    res.json(req.files.map(v => v.filename));
+    res.json(req.files.map(v => v.location));
 });
 
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {//POST/1/comment
@@ -147,7 +151,7 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
-            auth:{
+            auth: {
                 user: 'maliethy@gmail.com',
                 pass: process.env.GMAIL_PASSWORD,
             },
@@ -157,7 +161,7 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
             from: '"ymillonga 신고내역" <report@ymillonga.com>',
             to: '"ymillonga 관리자" <maliethy@gmail.com>',
             subject: 'ymillonga - 신고발생',
-            html:`
+            html: `
         <div>
           <a href="${prod ? 'https://ymillonga.com' : 'http://localhost:3050'}/post/${req.params.postId}">신고가 접수되었습니다.</a>
           <p>${req.body.reason}</p>
@@ -165,7 +169,7 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
       `,
         });
         console.log('mail sent');
-                res.status(201).send('ok');
+        res.status(201).send('ok');
     }
     catch (err) {
         console.error(err);
@@ -173,46 +177,46 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
     }
 });
 router.get('/:postId', async (req, res, next) => { // GET /post/1
-  try {
-    const post = await Post.findOne({
-      where: { id: req.params.postId },
-    });
-    if (!post) {
-      return res.status(404).send('존재하지 않는 게시글입니다.');
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.postId },
+        });
+        if (!post) {
+            return res.status(404).send('존재하지 않는 게시글입니다.');
+        }
+        const fullPost = await Post.findOne({
+            where: { id: post.id },
+            include: [{
+                model: Post,
+                as: 'Retweet',
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }, {
+                    model: Image,
+                }]
+            }, {
+                model: User,
+                attributes: ['id', 'nickname'],
+            }, {
+                model: User,
+                as: 'Likers',
+                attributes: ['id', 'nickname'],
+            }, {
+                model: Image,
+            }, {
+                model: Comment,
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                }],
+            }],
+        })
+        res.status(200).json(fullPost);
+    } catch (error) {
+        console.error(error);
+        next(error);
     }
-    const fullPost = await Post.findOne({
-      where: { id: post.id },
-      include: [{
-        model: Post,
-        as: 'Retweet',
-        include: [{
-          model: User,
-          attributes: ['id', 'nickname'],
-        }, {
-          model: Image,
-        }]
-      }, {
-        model: User,
-        attributes: ['id', 'nickname'],
-      }, {
-        model: User,
-        as: 'Likers',
-        attributes: ['id', 'nickname'],
-      }, {
-        model: Image,
-      }, {
-        model: Comment,
-        include: [{
-          model: User,
-          attributes: ['id', 'nickname'],
-        }],
-      }],
-    })
-    res.status(200).json(fullPost);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
 });
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/retweet
     try {

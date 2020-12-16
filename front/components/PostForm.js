@@ -86,7 +86,7 @@ const PostForm = () => {
                         return (
                             <div key={v} style={{ display: 'inline-block' }}>
                                 <img
-                                    src={`${backUrl}/${v}`}
+                                    src={v}
                                     style={{ width: '200px' }} alt={v} />
                                 <div>
                                     <Button
