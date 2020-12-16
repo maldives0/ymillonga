@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Slick from 'react-Slick';
+import Slick from 'react-slick';
 import { Overlay, ImageGlobal, Header, CloseButton, SlickWrapper, ImageWrapper, Indicator } from './imageStyle';
 import { backUrl } from '../../config/config';
 
