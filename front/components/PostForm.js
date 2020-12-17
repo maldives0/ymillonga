@@ -85,7 +85,7 @@ const PostForm = () => {
                         return (
                             <div key={v} style={{ display: 'inline-block' }}>
                                 <img
-                                    src={v}
+                                    src={v.replace(/\/thumb\//, '/original/')}
                                     style={{ width: '200px' }} alt={v} />
                                 <div>
                                     <Button
