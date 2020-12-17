@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 3050",
     "build": "cross-env ANALYZE=true NODE_ENV=true next build",
-    "start": "next start -p 3050"
+    "start": "cross-env NODE_ENV=production next start -p 80"
   },
   "repository": {
     "type": "git",
