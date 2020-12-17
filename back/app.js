@@ -20,7 +20,7 @@ dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 const port = prod ? 80 : 3051;
-const frontUrl = prod ? "https://ymillonga.com" : "http://localhost:3050";
+const frontUrl = prod ? "http://ymillonga.com" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {
@@ -57,7 +57,8 @@ app.use(session({
     proxy: prod,
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: false,
+        //process.env.NODE_ENV === 'production',//https일 때 true
         domain: process.env.NODE_ENV === 'production' && '.ymillonga.com'
     },
 }));
