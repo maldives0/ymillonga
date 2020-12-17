@@ -50,7 +50,7 @@ router.get('/:tag', async (req, res, next) => {//GET/노드
                 }],
             }],
         });
-        console.log(posts);
+
         res.status(200).json(posts);
     }
     catch (err) {

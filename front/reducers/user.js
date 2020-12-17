@@ -129,8 +129,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOAD_MY_INFO_SUCCESS:
             draft.loadMyInfoLoading = false;
-            draft.me = action.data;
             draft.loadMyInfoDone = true;
+            draft.me = action.data;
             break;
         case LOAD_MY_INFO_FAILURE:
             draft.loadMyInfoLoading = false;
@@ -143,8 +143,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
             break;
         case LOAD_USER_SUCCESS:
             draft.loadUserLoading = false;
-            draft.userInfo = action.data;
             draft.loadUserDone = true;
+            draft.userInfo = action.data;
             break;
         case LOAD_USER_FAILURE:
             draft.loadUserLoading = false;

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 3050",
     "build": "cross-env ANALYZE=true NODE_ENV=true next build",
-    "start": "cross-env NODE_ENV=production next start -p 3050"
+    "start": "next start -p 3050"
   },
   "repository": {
     "type": "git",
@@ -54,8 +54,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "nanoid": "^3.1.16",
-    "faker": "^5.1.0"
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

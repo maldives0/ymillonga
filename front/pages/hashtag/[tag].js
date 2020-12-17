@@ -37,7 +37,7 @@ const Hashtag = () => {
             //쌓여있는 이벤트 메모리를 제거해주기
             window.removeEventListener('scroll', onScroll);
         };
-    }, [mainPosts.length, hasMorePosts, loadPostsLoading, tag]);
+    }, [mainPosts?.length, hasMorePosts, loadPostsLoading, tag]);
     //og:카카오톡에 나오는 정보
     return (
         <AppLayout>
@@ -46,7 +46,6 @@ const Hashtag = () => {
     );
 };
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
 
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';

@@ -6,12 +6,21 @@ import styled from '@emotion/styled';
 import moment from 'moment';
 import Link from 'next/link';
 import {
-    RetweetOutlined,
-    HeartTwoTone,
-    HeartOutlined,
-    MessageOutlined,
-    EllipsisOutlined
-} from '@ant-design/icons';
+  default as RetweetOutlined,  
+} from '@ant-design/icons/RetweetOutlined';
+import {
+  default as HeartTwoTone,  
+} from '@ant-design/icons/HeartTwoTone';
+import {
+  default as HeartOutlined,  
+} from '@ant-design/icons/HeartOutlined';
+import {
+  default as MessageOutlined,  
+} from '@ant-design/icons/MessageOutlined';
+import {
+  default as EllipsisOutlined,  
+} from '@ant-design/icons/EllipsisOutlined';
+
 
 import CommentForm from './CommentForm';
 import PostImages from './PostImages';

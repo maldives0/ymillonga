@@ -1,15 +1,24 @@
 import React, { useState, useCallback, useEffect } from 'react';
-
 import PropTypes from 'prop-types';
 import { Layout, Menu, Row, Col, message } from 'antd';
 import {
-    HomeOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    UserOutlined,
-    LoginOutlined,
-    LogoutOutlined
-} from '@ant-design/icons';
+    default as HomeOutlined,
+} from '@ant-design/icons/HomeOutlined';
+import {
+    default as MenuUnfoldOutlined,
+} from '@ant-design/icons/MenuUnfoldOutlined';
+import {
+    default as MenuFoldOutlined,
+} from '@ant-design/icons/MenuFoldOutlined';
+import {
+    default as LoginOutlined,
+} from '@ant-design/icons/LoginOutlined';
+import {
+    default as LogoutOutlined,
+} from '@ant-design/icons/LogoutOutlined';
+import {
+    default as UserOutlined,
+} from '@ant-design/icons/UserOutlined';
 import { GlobalLayout, InputSearch, Logo } from './style';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
@@ -22,7 +31,7 @@ const { Header, Sider, Content } = Layout;
 
 const AppLayout = ({ children }) => {
     const me = useSelector(state => state.user.me);
-    const logOutDone = useSelector(state => state.user.logOutDone);
+
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(false);
     const [currentKey, setCurrentKey] = useState('1');
@@ -44,12 +53,7 @@ const AppLayout = ({ children }) => {
             setCurrentKey(me.menuKey);
         }
     }, [me && me.id]);
-    // useEffect(() => {
-    //     if (me && me.id && logOutDone) {
-    //         Router.replace('/')
-    //     }
-    //     message.success('로그아웃되었습니다.', 5);
-    // }, [logOutDone]);
+
     const toggleCollapsed = useCallback(() => {
         setCollapsed((prev) => !prev);
     }, []);

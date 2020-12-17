@@ -1,4 +1,4 @@
-import { CloseOutlined } from '@ant-design/icons';
+import { default as CloseOutlined } from '@ant-design/icons/CloseOutlined';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/react';
 

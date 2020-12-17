@@ -13,6 +13,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passportConfig = require('./passport');
 const cors = require('cors');
+const hpp = require('hpp');
+const helmet = require('helmet');//hpp, helmet:production모드일 때 보안에 필요한 필수 패키지들
 const app = express();
 dotenv.config();
 passportConfig();
@@ -26,10 +28,22 @@ db.sequelize.sync()
     })
     .catch(console.error);
 app.use(morgan('dev'));
-app.use(cors({
-    origin: frontUrl,
-    credentials: true,
-}))
+
+if (prod) {
+    app.use(morgan('combined'));
+    app.use(hpp());
+    app.use(helmet({ contentSecurityPolicy: false }));
+    app.use(cors({
+        origin: frontUrl,
+        credentials: true,
+    }))
+} else {
+    app.use(morgan('dev'));
+    app.use(cors({
+        origin: true,
+        credentials: true,
+    }));
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,6 +54,12 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    proxy: prod,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        domain: process.env.NODE_ENV === 'production' && '.ymillonga.com'
+    },
 }));
 app.use(passport.initialize());
 app.use(passport.session());

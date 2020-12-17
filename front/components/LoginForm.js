@@ -2,8 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Form, Input, Button, Row, Col, Divider } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
+import {
+  default as UserOutlined,  
+} from '@ant-design/icons/UserOutlined';
+import {
+  default as LockOutlined,  
+} from '@ant-design/icons/LockOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
 import FacebookLoginBtn from './FacebookLoginBtn';

@@ -72,10 +72,7 @@ const Home = () => {
         </AppLayout>
     );
 };
-export const getServerSideProps = wrapper.getServerSideProps(async (context) => {//redux는 next 서버 메소드 4개와 쓸 때 문제가 있어서 wrapper-redux를 사용하기//Component보다 먼저 실행된다(FE에서만 실행된다 FE-> BE, Home component는 BS와 FE 둘다에서 실행된다 )
-    console.log('getServerSideProps start');
-    // bs=>be는 bs로부터 axios에 cookie에 자동으로 담겨 be로 보내진다
-    //fe=>be로 보낼 때는 따로 설정을 해주어야 한다
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
     const cookie = context.req ? context.req.headers.cookie : ''; //서버일 때만 쿠키값을 담아서
     axios.defaults.headers.Cookie = '';//다른 bs에서 요청을 보내면 fe server에 공유되고 있는 쿠키값을 지워야 한다
     if (context.req && cookie) {
@@ -91,7 +88,5 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     context.store.dispatch(END);//미리 준비된 액션인 END를 가져와서 
     await context.store.sagaTask.toPromise();//store.sagaTask를 사용해 success해서 데이터를 가져올 때까지 기다리도록 한다
 });
-//초기값=>getServerSideProps=> hydrate실행=> payload안에 결과가 담김
-//getStaticProps는 미리 만들어진 HTML를 가져온다(바뀌지 않는 게시글 같은 것을 불러올 때 쓴다)
-//getServerSideProps는 방문할 때마다 불러온다
+
 export default Home; 

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { PlusOutlined } from '@ant-design/icons';
+import { default as PlusOutlined } from '@ant-design/icons/PlusOutlined';
 import ImagesZoom from './ImagesZoom';
-import { backUrl } from '../config/config';
+
 const PostImages = ({ images }) => {
     const [showImagesZoom, setShowImagesZoom] = useState(false);
     const onZoom = useCallback(() => {

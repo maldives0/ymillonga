@@ -1,6 +1,5 @@
-import faker from 'faker';
 import produce from 'immer';
-import { nanoid } from 'nanoid';
+
 
 export const initialState = {
     singlePost: null,

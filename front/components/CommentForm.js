@@ -8,14 +8,16 @@ import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 const CommentForm = ({ post }) => {
     const id = useSelector(state => state.user.me?.id);
-    const addCommentLoading = useSelector(state => state.user.addCommentLoading);
-    const addCommentDone = useSelector(state => state.user.addCommentDone);
+    const addCommentLoading = useSelector(state => state.post.addCommentLoading);
+    const addCommentDone = useSelector(state => state.post.addCommentDone);
 
     const dispatch = useDispatch();
     const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
     useEffect(() => {
-        if (addCommentDone) setCommentText('');
+        if (addCommentDone) {
+            setCommentText('');
+        }
     }, [addCommentDone]);
 
 

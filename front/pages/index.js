@@ -70,11 +70,11 @@ const Home = () => {
             alert(retweetError);
         }
     }, [retweetError]);
-    useEffect(() => {
-        if (loadMyInfoError) {
-            Router.replace('/')
-        }
-    }, [loadMyInfoError]);
+    // useEffect(() => {
+    //     if (loadMyInfoError) {
+    //         Router.replace('/')
+    //     }
+    // }, [loadMyInfoError]);
     useEffect(() => {
         function onScroll() {
             if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
@@ -96,12 +96,12 @@ const Home = () => {
 
     return (
         <AppLayout>
-            {me && me.id && <Button
+            {me && me?.id && <Button
                 style={{ marginBottom: 5 }}
                 loading={loadPostsLoading}
                 onClick={onClickRelatedPosts}>
                 <Link href='/posts/related'><a>팔로잉 게시글만 보기</a></Link></Button>}
-            {me && me.id && <UserProfile />}
+            {me && me?.id && <UserProfile />}
             {me ? <PostForm /> : (
                 <PageHeader
                     className="site-page-header"
@@ -119,14 +119,12 @@ const Home = () => {
     );
 };
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
 
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';
     if (context.req && cookie) {
         axios.defaults.headers.Cookie = cookie;
     }
-
     context.store.dispatch({
         type: LOAD_MY_INFO_REQUEST,
     });

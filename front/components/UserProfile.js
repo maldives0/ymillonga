@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Avatar, Card, Divider, Tooltip, message } from 'antd';
-import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { default as SettingOutlined } from '@ant-design/icons/SettingOutlined';
+import {  default as LogoutOutlined} from '@ant-design/icons/LogoutOutlined';
 
 import NicknameEditForm from '../components/NicknameEditForm';
 import { useSelector, useDispatch } from 'react-redux';

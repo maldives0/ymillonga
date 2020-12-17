@@ -20,6 +20,7 @@ const User = () => {
     const loadPostsLoading = useSelector((state) => state.post.loadPostsLoading);
     const reportPostDone = useSelector((state) => state.post.reportPostDone);
     const reportPostError = useSelector((state) => state.post.reportPostError);
+
     const me = useSelector(state => state.user.me);
     const userInfo = useSelector(state => state.user.userInfo);
 
@@ -53,6 +54,7 @@ const User = () => {
         };
     }, [mainPosts.length, hasMorePosts, loadPostsLoading, id]);
     //og:카카오톡에 나오는 정보
+    console.log('userInfo', userInfo);
     return (
         <AppLayout>
             {userInfo && (
@@ -97,7 +99,6 @@ const User = () => {
     );
 };
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
 
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';

@@ -45,6 +45,7 @@ function loadMyInfoAPI() {
 function* loadMyInfo() {
     try {
         const result = yield call(loadMyInfoAPI);
+
         yield put({
             type: LOAD_MY_INFO_SUCCESS,
             data: result.data,
@@ -64,6 +65,7 @@ function loadUserAPI(data) {
 function* loadUser(action) {
     try {
         const result = yield call(loadUserAPI, action.data);
+
         yield put({
             type: LOAD_USER_SUCCESS,
             data: result.data,

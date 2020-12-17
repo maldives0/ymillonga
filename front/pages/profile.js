@@ -75,7 +75,7 @@ const Profile = () => {
     );
 };
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
+
     const cookie = context.req ? context.req.headers.cookie : '';
     axios.defaults.headers.Cookie = '';
     if (context.req && cookie) {
@@ -85,7 +85,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
         type: LOAD_MY_INFO_REQUEST,
     });
     context.store.dispatch(END);
-    console.log('getServerSideProps end');
+
     await context.store.sagaTask.toPromise();
 });
 export default Profile; 

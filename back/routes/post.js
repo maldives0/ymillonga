@@ -230,7 +230,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {//POST/1/
         if (!post) {
             res.status(403).send('존재하지 않는 게시글입니다.');
         }
-        console.log('retweet?', post);
+
         if (post.UserId === req.user.id || post.Retweet && post.Retweet.UserId === req.user.id) {//게시글 작성자가 자신의 글을 리트윗하거나 또는 다른 사람이 리트윗한 자신의 게시글 다시 리트윗할 경우
             res.status(403).send('자신의 게시글은 리트윗할 수 없습니다.');
         }
