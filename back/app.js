@@ -20,7 +20,7 @@ dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 const port = prod ? 80 : 3051;
-const frontUrl = prod ? "http://ymillonga.com" : "http://localhost:3050";
+const frontUrl = prod ? "//ymillonga.com" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {
@@ -34,7 +34,7 @@ if (prod) {
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cors({
-        origin: [frontUrl, 'http://3.36.18.214'],
+        origin: [frontUrl, '//3.36.18.214'],
         credentials: true,
     }))
 } else {
