@@ -88,6 +88,6 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-app.listen(port, () => {
-    console.log(`${port}에서 대기 중`);
+app.listen(3051, () => {
+    console.log(`3051에서 대기 중`);
 });
