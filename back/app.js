@@ -20,7 +20,7 @@ dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 
-const frontUrl = prod ? "//ymillonga.com" : "http://localhost:3050";
+const frontUrl = prod ? "//ymillonga.xyz" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {
@@ -35,7 +35,7 @@ if (prod) {
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cors({
-        origin: [frontUrl, 'http://52.78.17.63'],
+        origin: frontUrl,
         credentials: true,
     }))
 } else {
@@ -58,9 +58,8 @@ app.use(session({
     // proxy: prod,
     // cookie: {
     //     httpOnly: true,
-    //     secure: false,
-    //     //process.env.NODE_ENV === 'production',//https일 때 true
-    //     domain: process.env.NODE_ENV === 'production' && '.ymillonga.com'
+    //     secure: process.env.NODE_ENV === 'production',//https일 때 true
+    //     domain: process.env.NODE_ENV === 'production' && '.ymillonga.xyz'
     // },
 }));
 app.use(passport.initialize());

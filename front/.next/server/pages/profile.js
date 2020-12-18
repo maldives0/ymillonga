@@ -1581,20 +1581,20 @@ module.exports = require("@ant-design/icons/LogoutOutlined");
 /*!**************************!*\
   !*** ./config/config.js ***!
   \**************************/
-/*! exports provided: backUrl, callbackUrl, frontUrl */
+/*! exports provided: callbackUrl, backUrl, frontUrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "backUrl", function() { return backUrl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "callbackUrl", function() { return callbackUrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "backUrl", function() { return backUrl; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "frontUrl", function() { return frontUrl; });
-const backUrl = true ? "http://54.180.73.165" : undefined;
-const callbackUrl = true ? "http://54.180.73.165/user/google/callback" : undefined; // export const callbackUrl = process.env.NODE_ENV === 'production' ? "//api.ymillonga.com/user/google/callback" : "http://localhost:3051/user/google/callback";
-// export const backUrl = process.env.NODE_ENV === 'production' ? "//api.ymillonga.com" : "http://localhost:3051";
 // export const backUrl = "http://localhost:3051";
-
-const frontUrl = true ? "http://52.78.17.63" : undefined;
+// export const backUrl = process.env.NODE_ENV === 'production' ? "http://54.180.73.165" : "http://localhost:3051";
+// export const callbackUrl = process.env.NODE_ENV === 'production' ? "http://54.180.73.165/user/google/callback" : "//localhost:3051/user/google/callback";
+const callbackUrl = true ? "//api.ymillonga.xyz/user/google/callback" : undefined;
+const backUrl = true ? "//api.ymillonga.xyz" : undefined;
+const frontUrl = true ? "//ymillonga.xyz" : undefined;
 
 /***/ }),
 
