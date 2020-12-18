@@ -20,7 +20,7 @@ dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 
-const frontUrl = prod ? "//ymillonga.xyz" : "http://localhost:3050";
+const frontUrl = prod ? "http://ymillonga.xyz" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {

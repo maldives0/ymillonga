@@ -1831,9 +1831,9 @@ __webpack_require__.r(__webpack_exports__);
 // export const backUrl = "http://localhost:3051";
 // export const backUrl = process.env.NODE_ENV === 'production' ? "http://54.180.73.165" : "http://localhost:3051";
 // export const callbackUrl = process.env.NODE_ENV === 'production' ? "http://54.180.73.165/user/google/callback" : "//localhost:3051/user/google/callback";
-const callbackUrl = true ? "//api.ymillonga.xyz/user/google/callback" : undefined;
-const backUrl = true ? "//api.ymillonga.xyz" : undefined;
-const frontUrl = true ? "//ymillonga.xyz" : undefined;
+const callbackUrl = true ? "http://api.ymillonga.xyz/user/google/callback" : undefined;
+const backUrl = true ? "http://api.ymillonga.xyz" : undefined;
+const frontUrl = true ? "http://ymillonga.xyz" : undefined;
 
 /***/ }),
 
