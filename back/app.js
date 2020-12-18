@@ -55,11 +55,12 @@ app.use(session({
     resave: false,
     secret: process.env.COOKIE_SECRET,
     // proxy: prod,
-    // cookie: {
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV === 'production',//https일 때 true
-    //     domain: process.env.NODE_ENV === 'production' && '.ymillonga.xyz'
-    // },
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        // process.env.NODE_ENV === 'production',//https일 때 true
+        domain: process.env.NODE_ENV === 'production' && '.ymillonga.xyz'
+    },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
