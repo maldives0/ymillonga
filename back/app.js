@@ -19,7 +19,7 @@ const app = express();
 dotenv.config();
 passportConfig();
 const prod = process.env.NODE_ENV === 'production';
-const port = prod ? 80 : 3051;
+
 const frontUrl = prod ? "//ymillonga.com" : "http://localhost:3050";
 
 db.sequelize.sync()
@@ -30,11 +30,12 @@ db.sequelize.sync()
 app.use(morgan('dev'));
 
 if (prod) {
+    // app.enable('trust proxy');
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cors({
-        origin: [frontUrl, '//3.36.18.214'],
+        origin: [frontUrl, '//52.78.17.63'],
         credentials: true,
     }))
 } else {
@@ -55,12 +56,12 @@ app.use(session({
     resave: false,
     secret: process.env.COOKIE_SECRET,
     proxy: prod,
-    cookie: {
-        httpOnly: true,
-        secure: false,
-        //process.env.NODE_ENV === 'production',//https일 때 true
-        domain: process.env.NODE_ENV === 'production' && '.ymillonga.com'
-    },
+    // cookie: {
+    //     httpOnly: true,
+    //     secure: false,
+    //     //process.env.NODE_ENV === 'production',//https일 때 true
+    //     domain: process.env.NODE_ENV === 'production' && '.ymillonga.com'
+    // },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
