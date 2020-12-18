@@ -18,9 +18,8 @@ const helmet = require('helmet');//hpp, helmet:production모드일 때 보안에
 const app = express();
 dotenv.config();
 passportConfig();
+const frontUrl = require('../config/frontUrl');
 const prod = process.env.NODE_ENV === 'production';
-
-const frontUrl = prod ? "http://ymillonga.xyz" : "http://localhost:3050";
 
 db.sequelize.sync()
     .then(() => {
