@@ -35,7 +35,7 @@ if (prod) {
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cors({
-        origin: [frontUrl, '//52.78.17.63'],
+        origin: [frontUrl, 'http://52.78.17.63'],
         credentials: true,
     }))
 } else {
