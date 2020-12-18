@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next -p 3050",
     "build": "cross-env ANALYZE=true NODE_ENV=true next build",
-    "start": "cross-env NODE_ENV=production next start -p 80"
+    "start": "cross-env NODE_ENV=production next start -p 3050"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "next-redux-wrapper": "^6.0.2",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
+    "pm2": "^4.5.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
