@@ -23,7 +23,6 @@ const Home = () => {
     const retweetError = useSelector((state) => state.post.retweetError);
     const me = useSelector(state => state.user.me);
 
-    const loadMyInfoError = useSelector(state => state.user.loadMyInfoError);
     const ignoreError = useSelector(state => state.user.ignoreError);
     const unIgnoreError = useSelector(state => state.user.unIgnoreError);
     const ignoreDone = useSelector(state => state.user.ignoreDone);
@@ -70,11 +69,7 @@ const Home = () => {
             alert(retweetError);
         }
     }, [retweetError]);
-    // useEffect(() => {
-    //     if (loadMyInfoError) {
-    //         Router.replace('/')
-    //     }
-    // }, [loadMyInfoError]);
+
     useEffect(() => {
         function onScroll() {
             if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
