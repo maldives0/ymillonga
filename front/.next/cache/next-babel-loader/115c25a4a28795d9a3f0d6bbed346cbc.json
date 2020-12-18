@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var backUrl = true ? \"https://api.ymillonga.com\" : \"http://localhost:3051\";\nexport var frontUrl = true ? \"https://ymillonga.com\" : \"http://localhost:3050\";\nexport var callbackUrl = true ? \"https://ymillonga.kr/user/google/callback\" : \"http://localhost:3051/user/google/callback\";","map":null,"metadata":{},"sourceType":"module"}

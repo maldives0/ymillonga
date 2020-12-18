@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { jsx as _jsx } from \"react/jsx-runtime\";\nimport { jsx as ___EmotionJSX } from \"@emotion/react\";\n\nconst Custom404 = () => {\n  return ___EmotionJSX(\"h1\", null, \"404 - Page Not Found\");\n};\n\nexport default Custom404;","map":null,"metadata":{},"sourceType":"module"}

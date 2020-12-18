@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { all, fork } from 'redux-saga/effects';","map":{"version":3,"sources":["c:/Users/HOME/Documents/ymillonga/front/sagas/post.js"],"names":["all","fork"],"mappings":"AAAA,SAASA,GAAT,EAAcC,IAAd,QAA0B,oBAA1B","sourcesContent":["import { all, fork } from 'redux-saga/effects';\r\n"]},"metadata":{},"sourceType":"module"}
