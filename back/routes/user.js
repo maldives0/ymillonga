@@ -5,7 +5,7 @@ const passport = require('passport');
 const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const prod = process.env.NODE_ENV === 'production';
-const frontUrl = prod ? "http://ymillonga.xyz" : "http://localhost:3050";
+const frontUrl = prod ? "https://ymillonga.xyz" : "http://localhost:3050";
 const { Op } = require('sequelize');
 
 router.get('/google', function (req, res, next) {
