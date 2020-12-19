@@ -32,7 +32,7 @@ db.sequelize.sync()
 app.use(morgan('dev'));
 
 if (prod) {
-    app.enable('trust proxy');
+    app.set('trust proxy', 1);
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
