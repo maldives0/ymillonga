@@ -3,16 +3,12 @@ import useInput from '../hooks/useInput';
 import { Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
-import styled from '@emotion/styled';
-const InputSearch = styled(Input.Search)`
-& > .ant-input-group > .ant-input-group-addon{
-    left:-8px;
-}
+import { nicknameInputSearch } from './style';
 
-`;
 const NicknameEditForm = () => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me);
+    const changeNicknameLoading = useSelector(state => state.user.changeNicknameLoading);
     const [nickname, onChangeNickname] = useInput(me?.nickname || '');
     const onSubmit = useCallback(() => {
         dispatch({
@@ -22,7 +18,8 @@ const NicknameEditForm = () => {
     }, [nickname]);
     return (
         <Form>
-            <InputSearch
+            <nicknameInputSearch
+                loading={changeNicknameLoading}
                 value={nickname}
                 onChange={onChangeNickname}
                 onSearch={onSubmit}

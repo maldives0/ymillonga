@@ -6,7 +6,13 @@ export const ImageGlobal = () => (
     <Global
         styles={css`
     .slick-slide{
-        display: inline-block;
+       display:inline-block;
+    }
+    .slick-track{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:90vh;
     }
     .ant-card-cover{
         transform: none !important;
@@ -35,7 +41,6 @@ line-height: 44px;
 }
 `;
 export const SlickWrapper = styled.div`
-height: calc(100% =44px);
 background: #090909;
 `;
 export const CloseButton = styled(CloseOutlined)`position: absolute;
@@ -49,6 +54,7 @@ font-size:25px;
 `;
 export const Indicator = styled.div`
 text-align: center;
+padding-bottom:5%;
 & > div{
     width: 75px;
     height:30px;
@@ -65,8 +71,10 @@ export const ImageWrapper = styled.div`
 padding: 32px;
 text-align:center;
 
-&img{
+& > img{
     margin: 0 auto;
-    max-height: 750px;
+    width:100%;
+    max-height: 80vh;
+    
 }
 `;

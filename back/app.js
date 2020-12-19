@@ -15,12 +15,15 @@ const passportConfig = require('./passport');
 const cors = require('cors');
 const hpp = require('hpp');
 const helmet = require('helmet');//hpp, helmet:production모드일 때 보안에 필요한 필수 패키지들
+
 const app = express();
 dotenv.config();
 passportConfig();
 
 const prod = process.env.NODE_ENV === 'production';
 const frontUrl = prod ? "http://ymillonga.xyz" : "http://localhost:3050";
+
+const port = prod ? 80 : 3051;
 db.sequelize.sync()
     .then(() => {
         console.log('db연결 성공');
@@ -88,6 +91,6 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-app.listen(80, () => {
-    console.log(`80에서 대기 중`);
+app.listen(port, () => {
+    console.log(`${port}에서 대기 중`);
 });

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col, message } from 'antd';
+import { Layout, Menu, Row, Col, Tooltip } from 'antd';
 import {
     default as HomeOutlined,
 } from '@ant-design/icons/HomeOutlined';
@@ -19,6 +19,9 @@ import {
 import {
     default as UserOutlined,
 } from '@ant-design/icons/UserOutlined';
+import {
+    default as GithubOutlined,
+} from '@ant-design/icons/GithubOutlined';
 import { GlobalLayout, InputSearch, Logo } from './style';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
@@ -26,27 +29,34 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
-
+import { initialState } from "../reducers/user"
+import useSWR, { mutate, trigger } from "swr"
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = ({ children }) => {
-    const me = useSelector(state => state.user.me);
+    const { data } = useSWR("globalState", { initialData: initialState }, { revalidateOnFocus: true })
 
+    const me = useSelector(state => state.user.me);
     const dispatch = useDispatch();
-    const [collapsed, setCollapsed] = useState(false);
-    const [currentKey, setCurrentKey] = useState('1');
+    const [collapsed, setCollapsed] = useState(true);
+    const [currentKey, setCurrentKey] = useState(data?.me.menuKey || '1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
     }, [searchInput]);
 
     const onClickDefaultKey = useCallback((e) => {
+        mutate("globalState", {
+            ...data,
+            me: { menuKey: e.key }
+        }, false)
         if (me && me.id && e.key !== '2') {
             dispatch({
                 type: CHANGE_MENUKEY_REQUEST,
                 data: e.key,
             });
         }
+        trigger("globalState");
     }, [me && me.id]);
     useEffect(() => {
         if (me && me.id) {
@@ -103,37 +113,37 @@ const AppLayout = ({ children }) => {
                 <Header className="site-layout-background" style={{ padding: 0 }}>
                     <Row justify="space-between">
                         <Col xs={4} md={3}>
-                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                                className: 'trigger',
-                                onClick: toggleCollapsed,
-                                style: { marginLeft: 10 }
-                            })}
+                            <Tooltip title="메뉴보기">
+                                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                                    className: 'trigger',
+                                    onClick: toggleCollapsed,
+                                    style: { marginLeft: 10 }
+                                })}
+                            </Tooltip>
                         </Col>
                         <Col xs={12} sm={8} md={8}>
-                            <InputSearch enterButton
-                                value={searchInput}
-                                onChange={onChangeSearchInput}
-                                onSearch={onSearch} />
+                            <Tooltip
+                                placement="bottom"
+                                title="해시테그를 검색해보세요!">
+                                <InputSearch enterButton
+                                    value={searchInput}
+                                    onChange={onChangeSearchInput}
+                                    onSearch={onSearch} />
+                            </Tooltip>
                         </Col>
                     </Row>
                 </Header>
                 <Content
-                    className="site-layout-background"
-                    style={{
-                        margin: '24px 16px',
-                        padding: 24,
-                        minHeight: 280,
-                    }}
-                >
+                    className="site-layout-background" >
                     {children}
                 </Content>
-                <Row >
-                    <Col span={6} offset={18}>
+                <Row className="site-layout-foot" justify="start">
+                    <Col span={24} offset={2}>
                         <a
-                            href="https://github.com/maldives0/ymillonga"
+                            href="https://github.com/maldives0/ymillonga-sns"
                             target="_blank"
                             rel="noreferrer noopener"
-                        >Made by maldives0</a>
+                        >© 2020 Juyoung Jung.  All rights reserved. <GithubOutlined /> </a>
                     </Col>
                 </Row>
             </Layout>

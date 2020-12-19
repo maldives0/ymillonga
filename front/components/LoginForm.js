@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Row, Col, Divider } from 'antd';
+import { Form, Input, Button, Row, Divider } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import {
-  default as UserOutlined,  
+    default as UserOutlined,
 } from '@ant-design/icons/UserOutlined';
 import {
-  default as LockOutlined,  
+    default as LockOutlined,
 } from '@ant-design/icons/LockOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
@@ -15,16 +15,22 @@ import GoogleLoginBtn from './GoogleLoginBtn';
 import { useRouter } from 'next/router';
 const layout = {
     wrapperCol: {
-        xs: { span: 12, offset: 2 },
-        sm: { span: 12, offset: 3 },
-        md: { span: 8, offset: 8 },
+        xs: { span: 21, offset: 1 },
+        sm: { span: 18, offset: 3 },
+        md: { span: 16, offset: 4 },
+        lg: { span: 9, offset: 6 },
     },
 };
 const tailLayout = {
-    wrapperCol: { offset: 12, span: 16 },
+    wrapperCol: { offset: 6, span: 18 },
 };
 const btnLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: {
+        xs: { span: 21, offset: 1 },
+        sm: { span: 21, offset: 2 },
+        md: { span: 18, offset: 9 },
+        lg: { span: 18, offset: 10 },
+    },
 };
 const LoginForm = () => {
     const Router = useRouter();

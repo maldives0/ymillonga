@@ -14,7 +14,7 @@ const Login = () => {
         if (me && me.id) {
             Router.replace('/')
         }
-    }, [me, me.id]);
+    }, [me]);
     return (
         <AppLayout>
             {me && me.id ? <UserProfile /> : <LoginForm />}

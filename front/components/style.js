@@ -27,15 +27,35 @@ export const GlobalLayout = () => (
       }
       .site-layout .site-layout-background {
         background: #fff;
+        .ant-row ant-row-space-between{
+          padding: 0 2%;
+        }
       }
       .ant-card-bordered .ant-card-cover {
         display:flex;
         justify-content:center;
         align-items:center;
-        padding:3px;
+        padding:3%;
       }
-      .ant-page-header-heading-title{
-        overflow:visible;
+      .ant-page-header-heading-left
+      {
+        flex-wrap:wrap;
+        justify-content: center;
+       .ant-page-header-heading-title  {
+                overflow:hidden;
+                margin:5px 0;
+                 }
+        
+      }
+    
+      .ant-layout-content{
+        padding:5% !important;
+      }
+      .site-layout-background{
+        margin: 24px 16px;        
+            }
+      .site-layout-foot{
+        padding-bottom:3%;
       }
          `
     } />
@@ -44,6 +64,11 @@ export const InputSearch = styled(Input.Search)`
 vertical-align: middle;
 margin-right:5px;`
   ;
+export const nicknameInputSearch = styled(Input.Search)`
+  & > .ant-input-group > .ant-input-group-addon{
+      left:-8px;
+  }
+  `;
 export const Logo = styled.div`
 height:60px;
 margin:15px 10px;
