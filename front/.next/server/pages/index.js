@@ -2342,7 +2342,7 @@ const Home = () => {
     }
 
     if (reportPostError) {
-      antd__WEBPACK_IMPORTED_MODULE_12__["message"].error('신고하는 도중에 에러가 발생했습니다.', 5);
+      antd__WEBPACK_IMPORTED_MODULE_12__["message"].error(reportPostError, 5);
     }
   }, [reportPostDone, reportPostError]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {

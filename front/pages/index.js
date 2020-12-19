@@ -61,7 +61,7 @@ const Home = () => {
             message.success('신고가 접수되었습니다. 빠른 시일 내로 조치하겠습니다.', 5);
         }
         if (reportPostError) {
-            message.error('신고하는 도중에 에러가 발생했습니다.', 5);
+            message.error(reportPostError, 5);
         }
     }, [reportPostDone, reportPostError]);
     useEffect(() => {
