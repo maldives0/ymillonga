@@ -23,7 +23,7 @@ passportConfig();
 const prod = process.env.NODE_ENV === 'production';
 const frontUrl = prod ? "http://ymillonga.xyz" : "http://localhost:3050";
 
-const port = prod ? 80 : 3051;
+// const port = prod ? 80 : 3051;
 db.sequelize.sync()
     .then(() => {
         console.log('db연결 성공');
@@ -32,7 +32,7 @@ db.sequelize.sync()
 app.use(morgan('dev'));
 
 if (prod) {
-    // app.enable('trust proxy');
+    app.enable('trust proxy');
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
@@ -57,11 +57,10 @@ app.use(session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    // proxy: prod,
+    proxy: prod,
     cookie: {
         httpOnly: true,
-        secure: false,
-        // process.env.NODE_ENV === 'production',//https일 때 true
+        secure: process.env.NODE_ENV === 'production',//https일 때 true
         domain: process.env.NODE_ENV === 'production' && '.ymillonga.xyz'
     },
 }));
@@ -91,6 +90,6 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-app.listen(port, () => {
-    console.log(`${port}에서 대기 중`);
+app.listen(3051, () => {
+    console.log(`3051에서 대기 중`);
 });
