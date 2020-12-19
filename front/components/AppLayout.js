@@ -4,12 +4,7 @@ import { Layout, Menu, Row, Col, Tooltip } from 'antd';
 import {
     default as HomeOutlined,
 } from '@ant-design/icons/HomeOutlined';
-import {
-    default as MenuUnfoldOutlined,
-} from '@ant-design/icons/MenuUnfoldOutlined';
-import {
-    default as MenuFoldOutlined,
-} from '@ant-design/icons/MenuFoldOutlined';
+
 import {
     default as LoginOutlined,
 } from '@ant-design/icons/LoginOutlined';
@@ -31,14 +26,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 import { initialState } from "../reducers/user"
 import useSWR, { mutate, trigger } from "swr"
-const { Header, Sider, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const AppLayout = ({ children }) => {
     const { data } = useSWR("globalState", { initialData: initialState }, { revalidateOnFocus: true })
 
     const me = useSelector(state => state.user.me);
     const dispatch = useDispatch();
-    const [collapsed, setCollapsed] = useState(true);
+   
     const [currentKey, setCurrentKey] = useState(data?.me.menuKey || '1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
@@ -64,31 +59,32 @@ const AppLayout = ({ children }) => {
         }
     }, [me && me.id]);
 
-    const toggleCollapsed = useCallback(() => {
-        setCollapsed((prev) => !prev);
-    }, []);
-    const onLogout = useCallback(() => {
+      const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
     }, []);
 
     return (
-        <Layout>
-            <GlobalLayout />
-            <Sider trigger={null} collapsible collapsed={collapsed}>
-                <Logo>
+          <Layout className="layout">
+                      <GlobalLayout />
+                <Header className="layout-background-header" >
+                    <Row justify="space-between">
+                        <Col span={4}>
+                           <Logo>
                     <Image
                         src="/images/ic_logo.png"
                         alt="logo"
-                        width={150}
-                        height={60} />
+                        width={100}
+                        height={70} />
                 </Logo>
-                <Menu
-                    theme="dark"
+                                     </Col>
+                                     <Col  span={12}>
+                                       <Menu
+                                       theme="dark"
                     onClick={onClickDefaultKey}
                     selectedKeys={[currentKey]}
-                    mode="inline"
+                   mode="horizontal"
                 >
                     <Menu.Item
                         key="1" icon={<HomeOutlined />}>
@@ -107,21 +103,9 @@ const AppLayout = ({ children }) => {
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UserOutlined />}>
                         <Link href="/profile"><a>Profile</a></Link> </Menu.Item>
-                </Menu>
-            </Sider>
-            <Layout className="site-layout">
-                <Header className="site-layout-background" style={{ padding: 0 }}>
-                    <Row justify="space-between">
-                        <Col xs={4} md={3}>
-                            <Tooltip title="메뉴보기">
-                                {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                                    className: 'trigger',
-                                    onClick: toggleCollapsed,
-                                    style: { marginLeft: 10 }
-                                })}
-                            </Tooltip>
-                        </Col>
-                        <Col xs={12} sm={8} md={8}>
+                </Menu>                      
+                                     </Col>
+                        <Col span={8}>
                             <Tooltip
                                 placement="bottom"
                                 title="해시테그를 검색해보세요!">
@@ -134,10 +118,10 @@ const AppLayout = ({ children }) => {
                     </Row>
                 </Header>
                 <Content
-                    className="site-layout-background" >
+                    className="layout-background" >
                     {children}
                 </Content>
-                <Row className="site-layout-foot" justify="start">
+                <Footer className="layout-foot" justify="start">
                     <Col span={24} offset={2}>
                         <a
                             href="https://github.com/maldives0/ymillonga-sns"
@@ -145,12 +129,8 @@ const AppLayout = ({ children }) => {
                             rel="noreferrer noopener"
                         >© 2020 Juyoung Jung.  All rights reserved. <GithubOutlined /> </a>
                     </Col>
-                </Row>
-            </Layout>
-        </Layout>
-
-
-    );
+                </Footer>
+            </Layout>  );
 };
 AppLayout.propTypes = {
     children: PropTypes.node.isRequired,

@@ -17,7 +17,7 @@ const layout = {
     wrapperCol: {
         xs: { span: 21, offset: 1 },
         sm: { span: 18, offset: 3 },
-        md: { span: 16, offset: 4 },
+        md: { span: 9, offset: 4 },
         lg: { span: 9, offset: 6 },
     },
 };
@@ -70,7 +70,7 @@ const LoginForm = () => {
     return (
         <Form
             {...layout}
-            name="basic"
+            name="basic-form"
             initialValues={{
                 remember: true,
             }}

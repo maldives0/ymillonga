@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Input } from 'antd';
+import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Input, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from '@emotion/styled';
@@ -138,20 +138,26 @@ const PostCard = ({ post }) => {
             <Card
                 cover={post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
+                      <Tooltip title="리트윗하기">
                     <RetweetOutlined
                         onClick={onRetweet}
-                        key="retweet" />,
-                    liked ?
+                        key="retweet" />
+                        </Tooltip>,
+                              <Tooltip title="좋아요">
+              {      liked ?
                         <HeartTwoTone
                             key="heart"
                             twoToneColor="#eb2f96"
                             onClick={onUnlike} /> :
                         <HeartOutlined
                             key="heart"
-                            onClick={onLike} />,
+                            onClick={onLike} />}
+                            </Tooltip>,
+                             <Tooltip title="댓글달기">
                     <MessageOutlined
                         key="message"
-                        onClick={onToggleComment} />,
+                        onClick={onToggleComment} />
+                         </Tooltip>,
                     <Popover
                         key="ellipsis"
                         content={(

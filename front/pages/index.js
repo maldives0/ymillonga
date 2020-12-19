@@ -12,6 +12,10 @@ import axios from 'axios';
 import { PageHeader, message, Button } from 'antd';
 import Link from 'next/link';
 import Router from 'next/router';
+
+import {
+    default as UpOutlined,
+} from '@ant-design/icons/UpOutlined';
 const Home = () => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
@@ -91,20 +95,21 @@ const Home = () => {
 
     return (
         <AppLayout>
-            {me && me?.id && <Button
+            {me && me.id && <Button
                 style={{ marginBottom: 5 }}
                 loading={loadPostsLoading}
                 onClick={onClickRelatedPosts}>
                 <Link href='/posts/related'><a>팔로잉 게시글만 보기</a></Link></Button>}
-            {me && me?.id && <UserProfile />}
-            {me ? <PostForm /> : (
+            {me && me.id ? <UserProfile /> : (
                 <PageHeader
                     className="site-page-header"
                     onBack={() => Router.push('/login')}
                     title="당신의 밀롱가 경험을 공유해주세요!"
                     subTitle="로그인 후 게시글을 작성해보세요."
+                    backIcon={<UpOutlined />}
                 />
             )}
+            {me && me.id && <PostForm /> }
             {mainPosts?.map((post) => {
                 return (
                     <PostCard key={post.id} post={post} />

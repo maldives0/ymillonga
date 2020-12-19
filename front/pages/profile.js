@@ -20,17 +20,22 @@ const Profile = () => {
     const [followingsLimit, setFollowingsLimit] = useState(3);
     const [followersLimit, setFollowersLimit] = useState(3);
     const [ignoringsLimit, setIgnoringsLimit] = useState(3);
-    const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher);
-    const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher);
-    const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher);
+    const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher, { dedupingInterval: 5000 });
+    const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher, { dedupingInterval: 5000 });
+    const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher, { dedupingInterval: 5000 });
 
     const me = useSelector(state => state.user.me);
 
     useEffect(() => {
-        if (!(me && me.id) || (followerError || followingError || ignoringError)) {
+        if (!me) {
             Router.replace('/')
         };
-    }, [me && me.id, followerError, followingError, ignoringError]);
+    }, [me]);
+    useEffect(() => {
+        if (followerError || followingError || ignoringError) {
+            Router.replace('/')
+        };
+    }, [followerError, followingError, ignoringError]);
 
     const loadMoreFollowings = useCallback(() => {
         setFollowingsLimit((prev) => prev + 3);

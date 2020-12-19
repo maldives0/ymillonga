@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 export const GlobalLayout = () => (
   <Global
     styles={css`
+    
       #components-layout-demo-custom-trigger .trigger {
         font-size: 18px;
         line-height: 64px;
@@ -18,6 +19,13 @@ export const GlobalLayout = () => (
       #components-layout-demo-custom-trigger .trigger:hover {
         color: #1890ff;
       }
+      #basic-form{
+        margin-top:10%;
+      }
+    
+      body{
+        background:#f0f2f5;
+      } 
       .ant-card-type-inner .ant-card-head,
       .ant-card-head{
         background :#fafafa;
@@ -25,11 +33,21 @@ export const GlobalLayout = () => (
       .ant-card-bordered .ant-card-cover{
         margin:0;
       }
-      .site-layout .site-layout-background {
-        background: #fff;
+   
+      .layout .layout-background-header {
+        background: #000;
+      position:fixed;
+      top:0;
+      width:100%;
+        z-index:100;
+        padding: 0 10px;
         .ant-row ant-row-space-between{
           padding: 0 2%;
         }
+        .ant-input-group-addon{
+            left:0;
+                 }
+        
       }
       .ant-card-bordered .ant-card-cover {
         display:flex;
@@ -44,18 +62,22 @@ export const GlobalLayout = () => (
        .ant-page-header-heading-title  {
                 overflow:hidden;
                 margin:5px 10px;
-                 }
-        
+                 }     
       }
-    
+    .ant-list-bordered{
+      background:#fff;
+    }
       .ant-layout-content{
-        padding:5% !important;
+        padding:10% 3% 0 3% !important;
       }
-      .site-layout-background{
-        margin: 24px 16px;        
+      .layout-background{
+        margin: 0;        
             }
-      .site-layout-foot{
-        padding-bottom:3%;
+      .layout-foot{
+       position:fixed;
+       bottom:0;
+       width:100%;
+       padding: 14px 50px;
       }
          `
     } />
@@ -70,8 +92,8 @@ export const nicknameInputSearch = styled(Input.Search)`
   }
   `;
 export const Logo = styled.div`
-height:60px;
-margin:15px 10px;
+height:50px;
+margin:5px 10px;
 display:flex;
 justify-content:center;
 text-align:cetner;
