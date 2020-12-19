@@ -28,8 +28,8 @@ const btnLayout = {
     wrapperCol: {
         xs: { span: 21, offset: 1 },
         sm: { span: 21, offset: 2 },
-        md: { span: 18, offset: 9 },
-        lg: { span: 18, offset: 10 },
+        md: { span: 18, offset: 4 },
+        lg: { span: 18, offset: 4 },
     },
 };
 const LoginForm = () => {
@@ -124,7 +124,7 @@ const LoginForm = () => {
                 </Row>
             </Form.Item>
             <Form.Item {...btnLayout}>
-                <Row >
+                <Row justify="center">
                     <GoogleLoginBtn />
                     <FacebookLoginBtn />
                 </Row>

@@ -882,11 +882,11 @@ const btnLayout = {
     },
     md: {
       span: 18,
-      offset: 9
+      offset: 4
     },
     lg: {
       span: 18,
-      offset: 10
+      offset: 4
     }
   }
 };
@@ -971,7 +971,9 @@ const LoginForm = () => {
     }
   }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: "/signup"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, btnLayout, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))));
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, btnLayout, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+    justify: "center"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
