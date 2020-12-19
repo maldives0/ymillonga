@@ -9,7 +9,7 @@ const AWS = require('aws-sdk');//aws 접근 권한 얻기
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
-const prod = process.env.NODE_ENV === 'production';
+const frontUrl = require('../config/frontUrl');
 try {
     fs.accessSync('uploads');
 }
@@ -158,12 +158,12 @@ router.post('/:postId/report', isLoggedIn, async (req, res, next) => {
         });
         await transporter.verify();
         await transporter.sendMail({
-            from: '"ymillonga 신고내역" <report@ymillonga.com>',
+            from: '"ymillonga 신고내역" <report@api.ymillonga.xyz>',
             to: '"ymillonga 관리자" <maliethy@gmail.com>',
             subject: 'ymillonga - 신고발생',
             html: `
         <div>
-          <a href="${prod ? 'https://ymillonga.com' : 'http://localhost:3050'}/post/${req.params.postId}">신고가 접수되었습니다.</a>
+          <a href="${frontUrl}/post/${req.params.postId}">신고가 접수되었습니다.</a>
           <p>${req.body.reason}</p>
         </div>
       `,

@@ -1502,8 +1502,8 @@ const ImageWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()
   target: "ek6khcj0",
   label: "ImageWrapper"
 })(true ? {
-  name: "gocm0v",
-  styles: "padding:32px;text-align:center;&>img{margin:0 auto;width:100%;max-height:80vh;}"
+  name: "eqr4nx",
+  styles: "padding:32px;text-align:center;&>img{margin:0 auto;width:50%;}"
 } : undefined);
 
 /***/ }),
@@ -5886,8 +5886,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref = true ? {
-  name: "x4eppd",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.site-layout .site-layout-background{background:#fff;.ant-row ant-row-space-between{padding:0 2%;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 0;}}.ant-layout-content{padding:5%!important;}.site-layout-background{margin:24px 16px;}.site-layout-foot{padding-bottom:3%;}"
+  name: "18weo90",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.site-layout .site-layout-background{background:#fff;.ant-row ant-row-space-between{padding:0 2%;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-layout-content{padding:5%!important;}.site-layout-background{margin:24px 16px;}.site-layout-foot{padding-bottom:3%;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {

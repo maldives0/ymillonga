@@ -70,11 +70,8 @@ padding-bottom:5%;
 export const ImageWrapper = styled.div`
 padding: 32px;
 text-align:center;
-
 & > img{
     margin: 0 auto;
-    width:100%;
-    max-height: 80vh;
-    
+    width:50%;   
 }
 `;

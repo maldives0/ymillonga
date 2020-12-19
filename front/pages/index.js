@@ -51,7 +51,7 @@ const Home = () => {
             message.success('차단이 풀어졌습니다.', 5)
         }
         if (unIgnoreError) {
-            message.error(unIgnoreError, 5)
+            message.error('차단 풀기하는 도중에 에러가 발생했습니다.', 5)
         }
     }, [unIgnoreDone, unIgnoreError])
 
@@ -61,12 +61,12 @@ const Home = () => {
             message.success('신고가 접수되었습니다. 빠른 시일 내로 조치하겠습니다.', 5);
         }
         if (reportPostError) {
-            message.error(reportPostError, 5);
+            message.error('신고하는 도중에 에러가 발생했습니다.', 5);
         }
     }, [reportPostDone, reportPostError]);
     useEffect(() => {
         if (retweetError) {
-            alert(retweetError);
+            alert('리트윗하는 도중에 에러가 발생했습니다.');
         }
     }, [retweetError]);
 

@@ -43,7 +43,7 @@ export const GlobalLayout = () => (
         justify-content: center;
        .ant-page-header-heading-title  {
                 overflow:hidden;
-                margin:5px 0;
+                margin:5px 10px;
                  }
         
       }

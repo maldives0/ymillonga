@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import AppLayout from '../components/AppLayout';
 import LoginForm from '../components/LoginForm';
 import UserProfile from '../components/UserProfile';
+import { message } from 'antd';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import axios from 'axios';
@@ -13,6 +14,7 @@ const Login = () => {
     useEffect(() => {
         if (me && me.id) {
             Router.replace('/')
+            message.success('home으로 이동합니다.');
         }
     }, [me]);
     return (

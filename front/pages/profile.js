@@ -46,6 +46,7 @@ const Profile = () => {
         return (<LoadingDiv>이 페이지는 로그인이 필요합니다.
             <br /> Home으로 이동합니다.</LoadingDiv>)
     };
+
     if (followerError || followingError || ignoringError) {
         console.error(followerError || followingError || ignoringError);
         return (<LoadingDiv>팔로잉/팔로워/차단자 로딩 중 에러가 발생했습니다</LoadingDiv>);

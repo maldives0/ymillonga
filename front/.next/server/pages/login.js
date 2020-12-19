@@ -1755,18 +1755,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_AppLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/AppLayout */ "1zst");
 /* harmony import */ var _components_LoginForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/LoginForm */ "A0h5");
 /* harmony import */ var _components_UserProfile__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/UserProfile */ "J7m/");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "h74D");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux-saga */ "1fKG");
-/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(redux_saga__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "zr5I");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _store_configureStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store/configureStore */ "AQn3");
-/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! next/router */ "4Q3z");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "Exp3");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "h74D");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! redux-saga */ "1fKG");
+/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(redux_saga__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "zr5I");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _store_configureStore__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../store/configureStore */ "AQn3");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "4Q3z");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_12__);
+
 
 
 
@@ -1781,27 +1784,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const Login = () => {
-  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.me);
+  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.me);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (me && me.id) {
-      next_router__WEBPACK_IMPORTED_MODULE_10___default.a.replace('/');
+      next_router__WEBPACK_IMPORTED_MODULE_11___default.a.replace('/');
+      antd__WEBPACK_IMPORTED_MODULE_5__["message"].success('home으로 이동합니다.');
     }
   }, [me]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_UserProfile__WEBPACK_IMPORTED_MODULE_4__["default"], null) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_components_UserProfile__WEBPACK_IMPORTED_MODULE_4__["default"], null) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 };
 
-const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_8__["default"].getServerSideProps(async context => {
+const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_9__["default"].getServerSideProps(async context => {
   const cookie = context.req ? context.req.headers.cookie : '';
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.Cookie = '';
+  axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = '';
 
   if (context.req && cookie) {
-    axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.Cookie = cookie;
+    axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = cookie;
   }
 
   context.store.dispatch({
-    type: _reducers_user__WEBPACK_IMPORTED_MODULE_9__["LOAD_MY_INFO_REQUEST"]
+    type: _reducers_user__WEBPACK_IMPORTED_MODULE_10__["LOAD_MY_INFO_REQUEST"]
   });
-  context.store.dispatch(redux_saga__WEBPACK_IMPORTED_MODULE_6__["END"]);
+  context.store.dispatch(redux_saga__WEBPACK_IMPORTED_MODULE_7__["END"]);
   await context.store.sagaTask.toPromise();
 });
 /* harmony default export */ __webpack_exports__["default"] = (Login);
@@ -5457,8 +5461,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref = true ? {
-  name: "x4eppd",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.site-layout .site-layout-background{background:#fff;.ant-row ant-row-space-between{padding:0 2%;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 0;}}.ant-layout-content{padding:5%!important;}.site-layout-background{margin:24px 16px;}.site-layout-foot{padding-bottom:3%;}"
+  name: "18weo90",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.site-layout .site-layout-background{background:#fff;.ant-row ant-row-space-between{padding:0 2%;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-layout-content{padding:5%!important;}.site-layout-background{margin:24px 16px;}.site-layout-foot{padding-bottom:3%;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
