@@ -45,7 +45,7 @@ const PostCard = ({ post }) => {
     const [reportText, onChangeReportText] = useInput('');
     const [commentFormOpened, setCommentFormOpened] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const reportPostLoading = useSelector((state) => state.post.reportLoading);
+    const reportPostLoading = useSelector((state) => state.post.reportPostLoading);
     const reportPostDone = useSelector((state) => state.post.reportPostDone);
     const reportPostError = useSelector((state) => state.post.reportPostError);
     const removePostLoading = useSelector(state => state.post.removePostLoading);
@@ -173,7 +173,7 @@ const PostCard = ({ post }) => {
                         key="ellipsis"
                         content={(
                             <Button.Group>
-                                {id && post.User.id === id ?
+                                {id && post.User?.id === id ?
                                     (
                                         <>
                                             {!post.RetweetId && (<Button
@@ -248,14 +248,14 @@ const PostCard = ({ post }) => {
                                 avatar={(
                                     <Link
                                         prefetch={false}
-                                        href={`/user/${post.User.id}`}
+                                        href={`/user/${post.User?.id}`}
                                         prefetch={false}>
                                         <a><Avatar>
-                                            {post.User.nickname[0]}
+                                            {post.User?.nickname[0]}
                                         </Avatar></a>
                                     </Link>
                                 )}
-                                title={post.User.nickname}
+                                title={post.User?.nickname}
                                 description={
                                     <PostCardContent
                                         editMode={editMode}

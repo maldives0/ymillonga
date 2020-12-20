@@ -30,6 +30,9 @@ export const initialState = {
     signUpLoading: false, // 회원가입 시도중
     signUpDone: false,
     signUpError: null,
+    leaveLoading: false, // 회원탈퇴 시도중
+    leaveDone: false,
+    leaveError: null,
     reportLoading: false, // 신고하기 시도중
     reportDone: false,
     reportError: null,
@@ -69,6 +72,10 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+
+export const LEAVE_REQUEST = 'LEAVE_REQUEST';
+export const LEAVE_SUCCESS = 'LEAVE_SUCCESS';
+export const LEAVE_FAILURE = 'LEAVE_FAILURE';
 
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
@@ -205,6 +212,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
         case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
             draft.signUpError = action.error;
+            break;
+
+        case LEAVE_REQUEST:
+            draft.leaveLoading = true;
+            draft.leaveDone = false;
+            draft.leaveError = null;
+            break;
+        case LEAVE_SUCCESS:
+            draft.leaveLoading = false;
+            draft.leaveDone = true;
+            break;
+        case LEAVE_FAILURE:
+            draft.leaveLoading = false;
+            draft.leaveError = action.error;
             break;
 
         case FOLLOW_REQUEST:

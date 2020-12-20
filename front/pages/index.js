@@ -9,7 +9,7 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 import axios from 'axios';
-import { PageHeader, message, Button } from 'antd';
+import { PageHeader, message, Button, Tooltip } from 'antd';
 import Link from 'next/link';
 import Router from 'next/router';
 
@@ -94,27 +94,37 @@ const Home = () => {
 
     return (
         <AppLayout>
+            <div style={{ textAlign: 'center', marginTop: '5%' }}>
+                <img
+                    width={400}
+                    height={70}
+                    src="/images/dancers.png"
+                /></div>
+
             {me && me.id ? <UserProfile /> : (
                 <PageHeader
                     className="site-page-header"
                     onBack={() => Router.push('/login')}
                     title="당신의 밀롱가 경험을 공유해주세요!"
                     subTitle="로그인 후 게시글을 작성해보세요."
-                    backIcon={<UpOutlined />}
+                    backIcon={<Tooltip title="로그인하러 가기"
+
+                    ><UpOutlined /></Tooltip>}
                 />
             )}
-            {me && me.id && <PostForm />}
-            {me && me.id ? (<Button
-                style={{ marginBottom: 5 }}
-                type="primary"
-                loading={loadPostsLoading}
-                onClick={onClickRelatedPosts}>
-                <Link href='/posts/related'><a>팔로잉 게시글만 보기</a></Link></Button>) : (<div style={{ textAlign: 'center', marginTop: '1%' }}>
-                    <img
-                        width={400}
-                        height={70}
-                        src="/images/dancers.png"
-                    /></div>)}
+            {me && me.id &&
+                (<>
+                    <PostForm />
+                    <Button
+                        style={{ marginBottom: 5 }}
+                        type="primary"
+                        loading={loadPostsLoading}
+                        onClick={onClickRelatedPosts}>
+                        <Link href='/posts/related'>
+                            <a>팔로잉 게시글만 보기</a>
+                        </Link></Button>
+                </>)}
+
             {mainPosts?.map((post) => {
                 return (
                     <PostCard key={post.id} post={post} />

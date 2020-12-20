@@ -55,8 +55,11 @@ export const GlobalLayout = () => (
         align-items:center;
         padding:3%;
       }
+      .site-page-header-heading{
+        justify-content:center;
       .ant-page-header-heading-left
       {
+        margin-top:5%;
         flex-wrap:wrap;
         justify-content: center;
        .ant-page-header-heading-title  {
@@ -64,6 +67,8 @@ export const GlobalLayout = () => (
                 margin:5px 10px;
                  }     
       }
+
+    }
     .ant-list-bordered{
       background:#fff;
     }
@@ -139,9 +144,9 @@ export const ImageLayout = () => (
       right: 5%;
       z-index:2;
     }
-    h3.ant-typography{
+    .loginForm-title{
       z-index:3;
-      margin:10% 0 2% 6%;
+      margin:10% 0 4% 6%;
       text-align:center;
     }
     #basic-form{
@@ -149,6 +154,10 @@ export const ImageLayout = () => (
       margin-left:50%;
       width:300px;
       transform:translateX(-50%);
+    }
+    .img-dancer-position{
+      text-align:center;
+      margin-top:10%;
     }
   
     `} />);

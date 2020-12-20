@@ -405,7 +405,7 @@ const AppLayout = ({
   const {
     0: currentKey,
     1: setCurrentKey
-  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(data === null || data === void 0 ? void 0 : data.me.menuKey);
+  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
   const [searchInput, onChangeSearchInput] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_11__["default"])('');
   const onSearch = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     next_router__WEBPACK_IMPORTED_MODULE_12___default.a.push(`/hashtag/${searchInput}`);
@@ -418,6 +418,7 @@ const AppLayout = ({
     }), false);
 
     if (me && me.id && e.key !== '2') {
+      //logout시 menukey=null 에러 발생
       dispatch({
         type: _reducers_user__WEBPACK_IMPORTED_MODULE_16__["CHANGE_MENUKEY_REQUEST"],
         data: e.key
@@ -1025,7 +1026,7 @@ module.exports = require("@emotion/react");
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initialState, CHANGE_MENUKEY_REQUEST, CHANGE_MENUKEY_SUCCESS, CHANGE_MENUKEY_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE, IGNORE_REQUEST, IGNORE_SUCCESS, IGNORE_FAILURE, UNIGNORE_REQUEST, UNIGNORE_SUCCESS, UNIGNORE_FAILURE, REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE, LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE, ADD_POST_TO_ME, REMOVE_POST_OF_ME, default */
+/*! exports provided: initialState, CHANGE_MENUKEY_REQUEST, CHANGE_MENUKEY_SUCCESS, CHANGE_MENUKEY_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LEAVE_REQUEST, LEAVE_SUCCESS, LEAVE_FAILURE, CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE, IGNORE_REQUEST, IGNORE_SUCCESS, IGNORE_FAILURE, UNIGNORE_REQUEST, UNIGNORE_SUCCESS, UNIGNORE_FAILURE, REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE, LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE, ADD_POST_TO_ME, REMOVE_POST_OF_ME, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1049,6 +1050,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_REQUEST", function() { return LEAVE_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_SUCCESS", function() { return LEAVE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_FAILURE", function() { return LEAVE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_REQUEST", function() { return CHANGE_NICKNAME_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_SUCCESS", function() { return CHANGE_NICKNAME_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_FAILURE", function() { return CHANGE_NICKNAME_FAILURE; });
@@ -1114,6 +1118,10 @@ const initialState = {
   // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  leaveLoading: false,
+  // 회원탈퇴 시도중
+  leaveDone: false,
+  leaveError: null,
   reportLoading: false,
   // 신고하기 시도중
   reportDone: false,
@@ -1150,6 +1158,9 @@ const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+const LEAVE_REQUEST = 'LEAVE_REQUEST';
+const LEAVE_SUCCESS = 'LEAVE_SUCCESS';
+const LEAVE_FAILURE = 'LEAVE_FAILURE';
 const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
 const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
@@ -1295,6 +1306,22 @@ const reducer = (state = initialState, action) => Object(_utils_produce__WEBPACK
     case SIGN_UP_FAILURE:
       draft.signUpLoading = false;
       draft.signUpError = action.error;
+      break;
+
+    case LEAVE_REQUEST:
+      draft.leaveLoading = true;
+      draft.leaveDone = false;
+      draft.leaveError = null;
+      break;
+
+    case LEAVE_SUCCESS:
+      draft.leaveLoading = false;
+      draft.leaveDone = true;
+      break;
+
+    case LEAVE_FAILURE:
+      draft.leaveLoading = false;
+      draft.leaveError = action.error;
       break;
 
     case FOLLOW_REQUEST:
@@ -4673,7 +4700,7 @@ moment__WEBPACK_IMPORTED_MODULE_6___default.a.locale('ko');
 const PostCard = ({
   post
 }) => {
-  var _post$Likers;
+  var _post$Likers, _post$User, _post$User2, _post$User3, _post$User4;
 
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
   const id = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => {
@@ -4690,7 +4717,7 @@ const PostCard = ({
     0: editMode,
     1: setEditMode
   } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
-  const reportPostLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.post.reportLoading);
+  const reportPostLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.post.reportPostLoading);
   const reportPostDone = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.post.reportPostDone);
   const reportPostError = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.post.reportPostError);
   const removePostLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.post.removePostLoading);
@@ -4825,7 +4852,7 @@ const PostCard = ({
       onClick: onToggleComment
     })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Popover"], {
       key: "ellipsis",
-      content: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"].Group, null, id && post.User.id === id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, !post.RetweetId && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+      content: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"].Group, null, id && ((_post$User = post.User) === null || _post$User === void 0 ? void 0 : _post$User.id) === id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, !post.RetweetId && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         onClick: onClickUpdate
       }, "\uC218\uC815"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
         type: "danger",
@@ -4877,10 +4904,10 @@ const PostCard = ({
   }, moment__WEBPACK_IMPORTED_MODULE_6___default()(post.createdAt).startOf('hour').fromNow()), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Card"].Meta, {
     avatar: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_7___default.a, {
       prefetch: false,
-      href: `/user/${post.User.id}`,
+      href: `/user/${(_post$User2 = post.User) === null || _post$User2 === void 0 ? void 0 : _post$User2.id}`,
       prefetch: false
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Avatar"], null, post.User.nickname[0]))),
-    title: post.User.nickname,
+    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Avatar"], null, (_post$User3 = post.User) === null || _post$User3 === void 0 ? void 0 : _post$User3.nickname[0]))),
+    title: (_post$User4 = post.User) === null || _post$User4 === void 0 ? void 0 : _post$User4.nickname,
     description: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(_PostCardContent__WEBPACK_IMPORTED_MODULE_16__["default"], {
       editMode: editMode,
       onCancelUpdate: onCancelUpdate,
@@ -5288,8 +5315,27 @@ function* ignore(action) {
   }
 }
 
-function unIgnoreAPI(data) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(`/user/${data}/ignore`);
+function leaveAPI(data) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(`/user/leave`);
+}
+
+function* leave(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(leaveAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_SUCCESS"]
+    });
+  } catch (err) {
+    console.error(err);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_FAILURE"],
+      error: err.response.data
+    });
+  }
+}
+
+function unIgnoreAPI() {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(` /user/${data}/ignore`);
 }
 
 function* unIgnore(action) {
@@ -5392,6 +5438,10 @@ function* watchIgnore() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["IGNORE_REQUEST"], ignore);
 }
 
+function* watchLeave() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_REQUEST"], leave);
+}
+
 function* watchUnIgnore() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["UNIGNORE_REQUEST"], unIgnore);
 }
@@ -5417,7 +5467,7 @@ function* watchLogout() {
 }
 
 function* userSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadMyInfo), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignup), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeNickname), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeMenuKey), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchFollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnfollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchRemovefollower), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadMyInfo), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignup), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeNickname), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeMenuKey), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLeave), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchFollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnfollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchRemovefollower), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout)]);
 }
 
 /***/ }),
@@ -5851,8 +5901,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "1357n0g",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
+  name: "1gtmbmz",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.site-page-header-heading{justify-content:center;.ant-page-header-heading-left{margin-top:5%;flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
@@ -5909,8 +5959,8 @@ const LoadMore = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("di
 } : undefined);
 
 var _ref = true ? {
-  name: "phkq7j",
-  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}h3.ant-typography{z-index:3;margin:10% 0 2% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}"
+  name: "a9xini",
+  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}.loginForm-title{z-index:3;margin:10% 0 4% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}.img-dancer-position{text-align:center;margin-top:10%;}"
 } : undefined;
 
 const ImageLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
@@ -5975,6 +6025,8 @@ __webpack_require__.r(__webpack_exports__);
 const FollowButton = ({
   post
 }) => {
+  var _post$User;
+
   const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me);
   const followLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.followLoading);
   const unfollowLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.unfollowLoading);
@@ -6010,7 +6062,7 @@ const FollowButton = ({
     }
   }, [isIgnoring]);
 
-  if (post.User.id === me.id) {
+  if (((_post$User = post.User) === null || _post$User === void 0 ? void 0 : _post$User.id) === me.id) {
     return null;
   }
 

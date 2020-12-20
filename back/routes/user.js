@@ -29,7 +29,51 @@ router.get('/facebook/callback', passport.authenticate('facebook', {
 // : 여기로 접근하면 로그인 과정이 실행된다. 로그인 창으로 리다이렉트를 하고 결과를 GET '/user/google/callback'으로 받는다.
 // passport.authenticate 메서드에 콜백 함수를 제공하지 않는다. 
 // 카카오 로그인은 내부적으로 req.login을 호출하므로 직접 호출할 필요가 없다.
+router.post('/login', isNotLoggedIn, (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            console.error(err);
+            return next(err);
+        }
+        if (info) {
+            return res.status(401).send(info.reason);
+        }
+        return req.login(user, async (loginErr) => {
+            if (loginErr) {
+                console.error(loginErr);
+                return next(loginErr);
+            }
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: user.id },
+                attributes: {
+                    include: ['id', 'nickname'],
+                },
+                include: [
+                    {
+                        model: Post,
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followings',
+                        attributes: ['id', 'nickname'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followers',
+                        attributes: ['id', 'nickname'],
+                    }, {
+                        model: User,
+                        as: 'Ignorings',
+                        attributes: ['id'],
+                    }],
+            })
 
+            return res.status(200).json(fullUserWithoutPassword);
+
+        });
+    })(req, res, next);
+});
 router.get('/', async (req, res, next) => {
     // console.log(req.headers);//fe에서 보낸 쿠키 확인하기
     try {
@@ -161,51 +205,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
     }
 });
 
-router.post('/login', isNotLoggedIn, (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            console.error(err);
-            return next(err);
-        }
-        if (info) {
-            return res.status(401).send(info.reason);
-        }
-        return req.login(user, async (loginErr) => {
-            if (loginErr) {
-                console.error(loginErr);
-                return next(loginErr);
-            }
-            const fullUserWithoutPassword = await User.findOne({
-                where: { id: user.id },
-                attributes: {
-                    include: ['id', 'nickname'],
-                },
-                include: [
-                    {
-                        model: Post,
-                        attributes: ['id'],
-                    },
-                    {
-                        model: User,
-                        as: 'Followings',
-                        attributes: ['id', 'nickname'],
-                    },
-                    {
-                        model: User,
-                        as: 'Followers',
-                        attributes: ['id', 'nickname'],
-                    }, {
-                        model: User,
-                        as: 'Ignorings',
-                        attributes: ['id'],
-                    }],
-            })
 
-            return res.status(200).json(fullUserWithoutPassword);
-
-        });
-    })(req, res, next);
-});
 
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     try {
@@ -266,7 +266,7 @@ router.post('/logout', isLoggedIn, async (req, res) => {
     });
     req.logout();
     req.session.destroy();
-    res.redirect('/');
+    res.redirect(`/`);
 });
 
 
@@ -301,6 +301,27 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
         console.error(err);
         next(err);
     }
+});
+router.delete('/leave', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({
+            where: { id: req.user.id }
+        });
+        if (!user) {
+            res.status(403).send('존재하지 않는 사용자입니다.');
+        }
+        await user.destroy({
+            where: {
+                id: req.user.id,
+            },
+        });
+        res.status(200).send('ok');
+    }
+    catch (err) {
+        console.error(err);
+        next(err);
+    }
+
 });
 
 router.patch('/:userId/ignore', isLoggedIn, async (req, res, next) => {

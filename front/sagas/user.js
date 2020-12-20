@@ -34,6 +34,9 @@ import {
     UNIGNORE_FAILURE,
     UNIGNORE_REQUEST,
     UNIGNORE_SUCCESS,
+    LEAVE_FAILURE,
+    LEAVE_REQUEST,
+    LEAVE_SUCCESS,
     LOAD_MY_INFO_FAILURE,
     LOAD_MY_INFO_REQUEST,
     LOAD_MY_INFO_SUCCESS,
@@ -192,8 +195,26 @@ function* ignore(action) {
         });
     }
 }
-function unIgnoreAPI(data) {
-    return axios.delete(`/user/${data}/ignore`);
+function leaveAPI(data) {
+    return axios.delete(`/user/leave`);
+}
+function* leave(action) {
+    try {
+        const result = yield call(leaveAPI, action.data);
+
+        yield put({
+            type: LEAVE_SUCCESS,
+        });
+    } catch (err) {
+        console.error(err);
+        yield put({
+            type: LEAVE_FAILURE,
+            error: err.response.data,
+        });
+    }
+}
+function unIgnoreAPI() {
+    return axios.delete(` /user/${data}/ignore`);
 }
 function* unIgnore(action) {
     try {
@@ -288,6 +309,9 @@ function* watchIgnore() {
     yield takeLatest(IGNORE_REQUEST, ignore);
 }
 
+function* watchLeave() {
+    yield takeLatest(LEAVE_REQUEST, leave);
+}
 function* watchUnIgnore() {
     yield takeLatest(UNIGNORE_REQUEST, unIgnore);
 }
@@ -316,6 +340,7 @@ export default function* userSaga() {
         fork(watchChangeNickname),
         fork(watchChangeMenuKey),
         fork(watchIgnore),
+        fork(watchLeave),
         fork(watchUnIgnore),
         fork(watchFollow),
         fork(watchUnfollow),

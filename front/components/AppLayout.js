@@ -37,7 +37,7 @@ const AppLayout = ({ children }) => {
     const me = useSelector(state => state.user.me);
     const dispatch = useDispatch();
 
-    const [currentKey, setCurrentKey] = useState(data?.me.menuKey);
+    const [currentKey, setCurrentKey] = useState(data?.me.menuKey || '1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
@@ -49,6 +49,7 @@ const AppLayout = ({ children }) => {
             me: { menuKey: e.key }
         }, false)
         if (me && me.id && e.key !== '2') {
+            //logout시 menukey=null 에러 발생
             dispatch({
                 type: CHANGE_MENUKEY_REQUEST,
                 data: e.key,

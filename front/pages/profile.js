@@ -24,6 +24,7 @@ const Profile = () => {
     const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher, { revalidateOnFocus: true });
     const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher, { revalidateOnFocus: true });
     const me = useSelector(state => state.user.me);
+
     const { data: menuKeyData } = useSWR("globalState", { initialData: initialState }, { revalidateOnFocus: true });
 
     useEffect(() => {
@@ -58,7 +59,7 @@ const Profile = () => {
         return (
             <LoadingDiv>로그아웃 중입니다.
                 <br />프로필 페이지는 로그인이 필요합니다.
-                <br /> Home으로 이동합니다.</LoadingDiv>)
+                <br /> 메인 페이지로 이동합니다.</LoadingDiv>)
     };
 
     if (followerError || followingError || ignoringError) {

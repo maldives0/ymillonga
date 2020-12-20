@@ -284,7 +284,7 @@ const AppLayout = ({
   const {
     0: currentKey,
     1: setCurrentKey
-  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(data === null || data === void 0 ? void 0 : data.me.menuKey);
+  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
   const [searchInput, onChangeSearchInput] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_11__["default"])('');
   const onSearch = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     next_router__WEBPACK_IMPORTED_MODULE_12___default.a.push(`/hashtag/${searchInput}`);
@@ -297,6 +297,7 @@ const AppLayout = ({
     }), false);
 
     if (me && me.id && e.key !== '2') {
+      //logout시 menukey=null 에러 발생
       dispatch({
         type: _reducers_user__WEBPACK_IMPORTED_MODULE_16__["CHANGE_MENUKEY_REQUEST"],
         data: e.key
@@ -513,8 +514,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/router */ "4Q3z");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../config/config */ "OcYQ");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd */ "Exp3");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_6__);
+
 
 
 
@@ -527,7 +531,10 @@ const GoogleLoginBtn = () => {
   const onClickGoogleLogin = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     router.push(`${_config_config__WEBPACK_IMPORTED_MODULE_4__["backUrl"]}/user/google`);
   }, []);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_5__["jsx"])(react_social_login_buttons__WEBPACK_IMPORTED_MODULE_2__["GoogleLoginButton"], {
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_6__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_5__["Tooltip"], {
+    placement: "bottom",
+    title: " \uC548\uB4DC\uB85C\uC774\uB4DC , iOS \uBC0F OS X \uC0AC\uC6A9\uC790\uB294 \uD06C\uB86C \uBE0C\uB77C\uC6B0\uC800\uB85C \uAD6C\uAE00\uB85C \uB85C\uADF8\uC778\uD558\uAE30 \uAE30\uB2A5\uC744 \uC774\uC6A9\uD574\uC8FC\uC138\uC694."
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_6__["jsx"])(react_social_login_buttons__WEBPACK_IMPORTED_MODULE_2__["GoogleLoginButton"], {
     onClick: onClickGoogleLogin,
     align: "center",
     size: "40px",
@@ -535,7 +542,7 @@ const GoogleLoginBtn = () => {
     style: {
       width: '150px'
     }
-  });
+  }));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (GoogleLoginBtn);
@@ -807,13 +814,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
 /* harmony import */ var _FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./FacebookLoginBtn */ "lMjy");
 /* harmony import */ var _GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./GoogleLoginBtn */ "5fVt");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "4Q3z");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./style */ "uFM0");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_13__);
-
-
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./style */ "uFM0");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_12__);
 
 
 
@@ -832,8 +835,6 @@ __webpack_require__.r(__webpack_exports__);
 const Title = antd__WEBPACK_IMPORTED_MODULE_2__["Typography"].Title;
 
 const LoginForm = () => {
-  const Router = Object(next_router__WEBPACK_IMPORTED_MODULE_11__["useRouter"])();
-  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useSelector"])(state => state.user.me);
   const logInLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useSelector"])(state => state.user.logInLoading);
   const logInError = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useSelector"])(state => state.user.logInError);
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useDispatch"])();
@@ -843,12 +844,6 @@ const LoginForm = () => {
     0: basicButtonClicked,
     1: setBasicButtonClicked
   } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
-    if (me && me.id) {
-      alert('로그인 중입니다. 메인페이지로 이동합니다.');
-      Router.replace('/'); //push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
-    }
-  }, [me && me.id]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (logInError) alert(logInError);
   }, [logInError]);
@@ -866,71 +861,73 @@ const LoginForm = () => {
       });
     }
   }, [email, password, basicButtonClicked]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_12__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(Title, {
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_11__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("div", {
+    className: "loginForm-title"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(Title, {
     level: 3
-  }, "Y Millonga\uC5D0\uC11C \uB2F9\uC2E0\uC758 \uC18C\uC911\uD55C \uACBD\uD5D8\uC744 \uD568\uAED8 \uB098\uB220\uC8FC\uC138\uC694!"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+  }, "Y Millonga\uC5D0\uC11C \uB2F9\uC2E0\uC758 \uC18C\uC911\uD55C \uACBD\uD5D8\uC744 \uD568\uAED8 \uB098\uB220\uC8FC\uC138\uC694!")), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("div", {
     className: "img-dancer-position-one"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("img", {
     width: 250,
     height: 250,
     src: "/images/dancer1.png"
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("div", {
     className: "img-dancer-position-two"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("img", {
     width: 300,
     height: 300,
     src: "/images/dancer3.png"
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"], {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"], {
     name: "basic-form",
     initialValues: {
       remember: true
     },
     onFinish: onSubmitForm
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
     name: "username",
     rules: [{
       required: basicButtonClicked,
       message: 'Please input your username!'
     }]
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
-    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_ant_design_icons_UserOutlined__WEBPACK_IMPORTED_MODULE_5___default.a, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
+    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_ant_design_icons_UserOutlined__WEBPACK_IMPORTED_MODULE_5___default.a, {
       className: "site-form-item-icon"
     }),
     placeholder: "Username",
     value: email,
     onChange: onChangeEmail
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
     name: "password",
     rules: [{
       required: basicButtonClicked,
       message: 'Please input your password!'
     }]
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
-    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_ant_design_icons_LockOutlined__WEBPACK_IMPORTED_MODULE_6___default.a, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
+    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_ant_design_icons_LockOutlined__WEBPACK_IMPORTED_MODULE_6___default.a, {
       className: "site-form-item-icon"
     }),
     type: "password",
     placeholder: "Password",
     value: password,
     onChange: onChangePassword
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
     justify: "end"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
     type: "primary",
     htmlType: "submit",
     loading: logInLoading,
     onClick: onClickBasicButton
-  }, "\uB85C\uADF8\uC778"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Divider"], {
+  }, "\uB85C\uADF8\uC778"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Divider"], {
     type: "vertical",
     style: {
       border: 'none'
     }
-  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
+  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: "/signup"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
     justify: "center",
     wrap: false
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))))));
+  }, "  ", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
@@ -1120,7 +1117,7 @@ module.exports = require("@emotion/react");
 /*!**************************!*\
   !*** ./reducers/user.js ***!
   \**************************/
-/*! exports provided: initialState, CHANGE_MENUKEY_REQUEST, CHANGE_MENUKEY_SUCCESS, CHANGE_MENUKEY_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE, IGNORE_REQUEST, IGNORE_SUCCESS, IGNORE_FAILURE, UNIGNORE_REQUEST, UNIGNORE_SUCCESS, UNIGNORE_FAILURE, REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE, LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE, ADD_POST_TO_ME, REMOVE_POST_OF_ME, default */
+/*! exports provided: initialState, CHANGE_MENUKEY_REQUEST, CHANGE_MENUKEY_SUCCESS, CHANGE_MENUKEY_FAILURE, LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, LEAVE_REQUEST, LEAVE_SUCCESS, LEAVE_FAILURE, CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE, UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE, IGNORE_REQUEST, IGNORE_SUCCESS, IGNORE_FAILURE, UNIGNORE_REQUEST, UNIGNORE_SUCCESS, UNIGNORE_FAILURE, REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE, LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE, LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE, ADD_POST_TO_ME, REMOVE_POST_OF_ME, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1144,6 +1141,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_REQUEST", function() { return SIGN_UP_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_SUCCESS", function() { return SIGN_UP_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SIGN_UP_FAILURE", function() { return SIGN_UP_FAILURE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_REQUEST", function() { return LEAVE_REQUEST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_SUCCESS", function() { return LEAVE_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LEAVE_FAILURE", function() { return LEAVE_FAILURE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_REQUEST", function() { return CHANGE_NICKNAME_REQUEST; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_SUCCESS", function() { return CHANGE_NICKNAME_SUCCESS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_NICKNAME_FAILURE", function() { return CHANGE_NICKNAME_FAILURE; });
@@ -1209,6 +1209,10 @@ const initialState = {
   // 회원가입 시도중
   signUpDone: false,
   signUpError: null,
+  leaveLoading: false,
+  // 회원탈퇴 시도중
+  leaveDone: false,
+  leaveError: null,
   reportLoading: false,
   // 신고하기 시도중
   reportDone: false,
@@ -1245,6 +1249,9 @@ const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+const LEAVE_REQUEST = 'LEAVE_REQUEST';
+const LEAVE_SUCCESS = 'LEAVE_SUCCESS';
+const LEAVE_FAILURE = 'LEAVE_FAILURE';
 const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
 const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
 const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
@@ -1390,6 +1397,22 @@ const reducer = (state = initialState, action) => Object(_utils_produce__WEBPACK
     case SIGN_UP_FAILURE:
       draft.signUpLoading = false;
       draft.signUpError = action.error;
+      break;
+
+    case LEAVE_REQUEST:
+      draft.leaveLoading = true;
+      draft.leaveDone = false;
+      draft.leaveError = null;
+      break;
+
+    case LEAVE_SUCCESS:
+      draft.leaveLoading = false;
+      draft.leaveDone = true;
+      break;
+
+    case LEAVE_FAILURE:
+      draft.leaveLoading = false;
+      draft.leaveError = action.error;
       break;
 
     case FOLLOW_REQUEST:
@@ -1562,7 +1585,7 @@ const Title = antd__WEBPACK_IMPORTED_MODULE_4__["Typography"].Title;
 
 const Login = () => {
   const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.me);
-  const logInSuccess = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.logInSuccess);
+  const logOutDone = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.logOutDone);
   const {
     data: menuKeyData
   } = swr__WEBPACK_IMPORTED_MODULE_12___default()("globalState", {
@@ -1571,7 +1594,7 @@ const Login = () => {
     revalidateOnFocus: true
   });
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
-    if (logInSuccess) {
+    if (me && me.id && !logOutDone) {
       Object(swr__WEBPACK_IMPORTED_MODULE_12__["mutate"])("globalState", _objectSpread(_objectSpread({}, menuKeyData), {}, {
         me: {
           menuKey: '1'
@@ -1580,16 +1603,16 @@ const Login = () => {
       next_router__WEBPACK_IMPORTED_MODULE_11___default.a.replace('/');
       Object(swr__WEBPACK_IMPORTED_MODULE_12__["trigger"])("globalState");
     }
-  }, [logInSuccess]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_style__WEBPACK_IMPORTED_MODULE_5__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(Title, {
+  }, [me, logOutDone]);
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_style__WEBPACK_IMPORTED_MODULE_5__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+    className: "img-dancer-position"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(Title, {
     level: 3
-  }, `${me.nickname}님, Y Milonga에 오신 걸 환영합니다!`), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
-    className: "img-dancer-position-three"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+  }, `${me.nickname}님, Y Milonga에 오신 걸 환영합니다!`), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
     width: 500,
     height: 500,
     src: "/images/dancer2.png"
-  }))) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+  })))) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 };
 
 const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_9__["default"].getServerSideProps(async context => {
@@ -4678,8 +4701,27 @@ function* ignore(action) {
   }
 }
 
-function unIgnoreAPI(data) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(`/user/${data}/ignore`);
+function leaveAPI(data) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(`/user/leave`);
+}
+
+function* leave(action) {
+  try {
+    const result = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(leaveAPI, action.data);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_SUCCESS"]
+    });
+  } catch (err) {
+    console.error(err);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])({
+      type: _reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_FAILURE"],
+      error: err.response.data
+    });
+  }
+}
+
+function unIgnoreAPI() {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.delete(` /user/${data}/ignore`);
 }
 
 function* unIgnore(action) {
@@ -4782,6 +4824,10 @@ function* watchIgnore() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["IGNORE_REQUEST"], ignore);
 }
 
+function* watchLeave() {
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["LEAVE_REQUEST"], leave);
+}
+
 function* watchUnIgnore() {
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_reducers_user__WEBPACK_IMPORTED_MODULE_2__["UNIGNORE_REQUEST"], unIgnore);
 }
@@ -4807,7 +4853,7 @@ function* watchLogout() {
 }
 
 function* userSaga() {
-  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadMyInfo), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignup), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeNickname), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeMenuKey), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchFollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnfollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchRemovefollower), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout)]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["all"])([Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadMyInfo), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLoadUser), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchSignup), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeNickname), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchChangeMenuKey), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLeave), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnIgnore), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchFollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchUnfollow), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchRemovefollower), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogin), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["fork"])(watchLogout)]);
 }
 
 /***/ }),
@@ -5241,8 +5287,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "1357n0g",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
+  name: "1gtmbmz",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.site-page-header-heading{justify-content:center;.ant-page-header-heading-left{margin-top:5%;flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
@@ -5299,8 +5345,8 @@ const LoadMore = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("di
 } : undefined);
 
 var _ref = true ? {
-  name: "phkq7j",
-  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}h3.ant-typography{z-index:3;margin:10% 0 2% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}"
+  name: "a9xini",
+  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}.loginForm-title{z-index:3;margin:10% 0 4% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}.img-dancer-position{text-align:center;margin-top:10%;}"
 } : undefined;
 
 const ImageLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {

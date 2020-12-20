@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Avatar, Card, Divider, Tooltip, message } from 'antd';
+import { Avatar, Card, Divider, Tooltip, message, Modal } from 'antd';
 import { default as SettingOutlined } from '@ant-design/icons/SettingOutlined';
-import { default as LogoutOutlined } from '@ant-design/icons/LogoutOutlined';
+import { default as ClearOutlined } from '@ant-design/icons/ClearOutlined';
 import NicknameEditForm from '../components/NicknameEditForm';
 import { useSelector, useDispatch } from 'react-redux';
-import { LOG_OUT_REQUEST } from '../reducers/user';
+import { LEAVE_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
 import { CardWrapper } from './style';
 
 const UserProfile = () => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me);
+    const leaveLoading = useSelector((state) => state.post.leaveLoading);
 
+    const [modalVisible, setModalVisible] = useState(false);
     const changeNicknameDone = useSelector(state => state.user.changeNicknameDone);
     const [editNickname, setEditNickname] = useState(false);
 
@@ -19,18 +21,36 @@ const UserProfile = () => {
         setEditNickname((prev) => !prev)
     }, []);
 
-    const onLogout = useCallback(() => {
+
+    const onLeave = useCallback(() => {
+        setModalVisible(true);
+    }, []);
+    const onsubmitLeave = useCallback(() => {
+        if (!(me && me.id)) {
+            return message.info('로그인이 필요합니다.');
+        }
         dispatch({
-            type: LOG_OUT_REQUEST
+            type: LEAVE_REQUEST,
         });
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
+        setModalVisible(false);
+    }, [me]);
+    const leaveCancel = useCallback(() => {
+        setModalVisible(false);
     }, []);
 
+    const onCancel = useCallback(() => {
+        setEditNickname((prev) => !prev)
+    }, []);
     useEffect(() => {
         if (changeNicknameDone) {
-            setEditNickname(false)
+            setEditNickname(false);
             message.success('닉네임이 변경되었습니다.')
         }
     }, [changeNicknameDone]);
+
 
     return (
         <CardWrapper>
@@ -39,12 +59,16 @@ const UserProfile = () => {
                 style={{ width: '300', marginTop: 16 }}
                 type="inner"
                 extra={[
-                    <Tooltip title="로그아웃">
-                        <LogoutOutlined key="logout" onClick={onLogout} />
-                    </Tooltip>
-                    ,
+                    <Tooltip title="닉네임 바꾸기">
+                        <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} /></Tooltip>,
                     <Divider type="vertical" />,
-                    <Tooltip title="닉네임 바꾸기">   <SettingOutlined key="edit-nickname" onClick={onClickEditNickname} /></Tooltip>
+                    <Tooltip title="탈퇴하기">
+                        <ClearOutlined
+                            key="leave"
+                            onClick={onLeave}
+                            loading={leaveLoading}
+                        />
+                    </Tooltip>
 
                 ]}
                 actions={[
@@ -73,6 +97,15 @@ const UserProfile = () => {
                     </div>,
                 ]}
             >
+                <Modal
+                    title="report"
+                    visible={modalVisible}
+                    onOk={onsubmitLeave}
+                    confirmLoading={leaveLoading}
+                    onCancel={leaveCancel}
+                >
+                    <p>탈퇴하실 경우 되돌릴 수 없습니다. 계속 진행하시겠습니까?</p>
+                </Modal>
                 <Card.Meta
                     avatar={
                         (<Link
@@ -83,7 +116,7 @@ const UserProfile = () => {
                     title={me.nickname}
                     style={{ marginBottom: "10px" }}
                 />
-                {editNickname && <NicknameEditForm />}
+                {editNickname && <NicknameEditForm onCancel={onCancel} />}
 
             </Card>
         </CardWrapper>

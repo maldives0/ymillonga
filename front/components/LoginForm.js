@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Form, Input, Button, Row, Divider } from 'antd';
+import { Form, Input, Button, Row, Divider, Typography } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import {
@@ -12,27 +12,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { LOG_IN_REQUEST } from '../reducers/user';
 import FacebookLoginBtn from './FacebookLoginBtn';
 import GoogleLoginBtn from './GoogleLoginBtn';
-import { useRouter } from 'next/router';
-import { Typography } from 'antd';
+
 import { ImageLayout } from './style';
+
 const Title = Typography.Title;
 
-const LoginForm = () => {
-    const Router = useRouter();
 
-    const me = useSelector(state => state.user.me);
+const LoginForm = () => {
+
     const logInLoading = useSelector(state => state.user.logInLoading);
     const logInError = useSelector(state => state.user.logInError);
     const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [basicButtonClicked, setBasicButtonClicked] = useState(false);
-    useEffect(() => {
-        if (me && me.id) {
-            alert('로그인 중입니다. 메인페이지로 이동합니다.');
-            Router.replace('/');//push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
-        }
-    }, [me && me.id]);
+
 
     useEffect(() => {
         if (logInError) alert(logInError);
@@ -55,7 +49,9 @@ const LoginForm = () => {
     return (
         <>
             <ImageLayout />
-            <Title level={3}>Y Millonga에서 당신의 소중한 경험을 함께 나눠주세요!</Title>
+            <div className="loginForm-title">
+                <Title level={3}>Y Millonga에서 당신의 소중한 경험을 함께 나눠주세요!</Title>
+            </div>
             <div className='img-dancer-position-one'>
                 <img
                     width={250}
@@ -125,8 +121,7 @@ const LoginForm = () => {
                         </Row>
                     </Form.Item>
                     <Form.Item>
-                        <Row justify="center" wrap={false}>
-                            <GoogleLoginBtn />
+                        <Row justify="center" wrap={false}>  <GoogleLoginBtn />
                             <FacebookLoginBtn />
                         </Row>
                     </Form.Item>
