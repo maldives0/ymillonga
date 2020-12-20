@@ -14,6 +14,7 @@ import useSWR from 'swr';
 import { backUrl } from '../config/config';
 import fetcher from '../utils/fetcher';
 import { LoadingDiv } from '../components/style';
+import { message } from 'antd';
 
 
 const Profile = () => {
@@ -23,7 +24,6 @@ const Profile = () => {
     const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher, { dedupingInterval: 5000 });
     const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher, { dedupingInterval: 5000 });
     const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher, { dedupingInterval: 5000 });
-
     const me = useSelector(state => state.user.me);
 
     useEffect(() => {
@@ -31,6 +31,7 @@ const Profile = () => {
             Router.replace('/')
         };
     }, [me]);
+
     useEffect(() => {
         if (followerError || followingError || ignoringError) {
             Router.replace('/')

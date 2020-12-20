@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
-
+import { LoadMore } from './style';
 const FollowList = ({ header, data, onClickMore }) => {
 
     const dispatch = useDispatch();
@@ -22,21 +22,14 @@ const FollowList = ({ header, data, onClickMore }) => {
         });
     }, []);
     const loadMore = (
-        <div
-            style={{
-                textAlign: 'center',
-                margin: '10px 0',
-                height: 32,
-                lineHeight: '32px',
-            }}
-        >
+        <LoadMore>
             <Button onClick={onClickMore}>더보기</Button>
-        </div>
+        </LoadMore>
     );
     return (
 
         <List
-
+            key={`${header}-list`}
             style={{ marginBottom: 20 }}
             header={<div>{header}</div>}
             dataSource={data}

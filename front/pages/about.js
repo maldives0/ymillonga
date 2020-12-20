@@ -26,7 +26,7 @@ const About = () => {
 
     </Paragraph>
                 <Title style={{ textAlign: 'center' }} level={2}>Y Millonga는 탱고인들을 위한 SNS입니다.</Title>
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', marginBottom: 15 }}>
                     <img
                         width={400}
                         height={70}

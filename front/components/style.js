@@ -86,7 +86,14 @@ export const InputSearch = styled(Input.Search)`
 vertical-align: middle;
 margin-right:5px;`
   ;
-export const nicknameInputSearch = styled(Input.Search)`
+export const InputReport = styled(Input.TextArea)`
+position: relative;
+margin:10px 0;`
+  ;
+
+export const CardWrapper = styled.div`
+margin-bottom: 20px;`
+export const NicknameInputSearch = styled(Input.Search)`
   & > .ant-input-group > .ant-input-group-addon{
       left:-8px;
   }
@@ -109,4 +116,10 @@ text-align: center;
 line-height:2em;
 font-size:20px;
 color:white;
+`;
+export const LoadMore = styled.div`
+text-align: center;
+margin: 10px 0;
+height: 32px;
+line-height: 32px;
 `;

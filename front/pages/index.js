@@ -26,7 +26,7 @@ const Home = () => {
     const reportPostError = useSelector((state) => state.post.reportPostError);
     const retweetError = useSelector((state) => state.post.retweetError);
     const me = useSelector(state => state.user.me);
-
+    const changeNicknameDone = useSelector(state => state.user.changeNicknameDone);
     const ignoreError = useSelector(state => state.user.ignoreError);
     const unIgnoreError = useSelector(state => state.user.unIgnoreError);
     const ignoreDone = useSelector(state => state.user.ignoreDone);
@@ -109,7 +109,7 @@ const Home = () => {
                     backIcon={<UpOutlined />}
                 />
             )}
-            {me && me.id && <PostForm /> }
+            {me && me.id && <PostForm />}
             {mainPosts?.map((post) => {
                 return (
                     <PostCard key={post.id} post={post} />

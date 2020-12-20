@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { UNIGNORE_REQUEST } from '../reducers/user';
-
+import { LoadMore } from './style';
 const IgnoreList = ({ header, data, onClickMore }) => {
 
     const dispatch = useDispatch();
@@ -15,16 +15,9 @@ const IgnoreList = ({ header, data, onClickMore }) => {
         });
     }, []);
     const loadMore = (
-        <div
-            style={{
-                textAlign: 'center',
-                margin: '10px 0',
-                height: 32,
-                lineHeight: '32px',
-            }}
-        >
+        <LoadMore>
             <Button onClick={onClickMore}>더보기</Button>
-        </div>
+        </LoadMore>
     );
     return (
 
@@ -68,6 +61,5 @@ IgnoreList.propTypes = {
     header: PropTypes.string.isRequire,
     data: PropTypes.array.isRequire,
     onClickMore: PropTypes.func.isRequire,
-
-}
+};
 export default IgnoreList; 

@@ -6,10 +6,8 @@ import { default as LogoutOutlined } from '@ant-design/icons/LogoutOutlined';
 import NicknameEditForm from '../components/NicknameEditForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOG_OUT_REQUEST } from '../reducers/user';
-import styled from '@emotion/styled';
+import { CardWrapper } from './style';
 
-const CardWrapper = styled.div`
-margin-bottom: 20px;`
 const UserProfile = () => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me);
@@ -29,9 +27,11 @@ const UserProfile = () => {
 
     useEffect(() => {
         if (changeNicknameDone) {
-            setEditNickname((prev) => !prev)
+            setEditNickname(false)
+            message.success('닉네임이 변경되었습니다.')
         }
     }, [changeNicknameDone]);
+
     return (
         <CardWrapper>
             <Card

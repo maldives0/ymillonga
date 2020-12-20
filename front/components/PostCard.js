@@ -2,23 +2,24 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Input, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from '@emotion/styled';
+import { InputReport, CardWrapper } from './style';
+
 import moment from 'moment';
 import Link from 'next/link';
 import {
-  default as RetweetOutlined,  
+    default as RetweetOutlined,
 } from '@ant-design/icons/RetweetOutlined';
 import {
-  default as HeartTwoTone,  
+    default as HeartTwoTone,
 } from '@ant-design/icons/HeartTwoTone';
 import {
-  default as HeartOutlined,  
+    default as HeartOutlined,
 } from '@ant-design/icons/HeartOutlined';
 import {
-  default as MessageOutlined,  
+    default as MessageOutlined,
 } from '@ant-design/icons/MessageOutlined';
 import {
-  default as EllipsisOutlined,  
+    default as EllipsisOutlined,
 } from '@ant-design/icons/EllipsisOutlined';
 
 
@@ -37,8 +38,7 @@ import {
 import useInput from '../hooks/useInput';
 
 moment.locale('ko');
-const CardWrapper = styled.div`
-margin-bottom: 20px;`
+
 const PostCard = ({ post }) => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
@@ -138,26 +138,26 @@ const PostCard = ({ post }) => {
             <Card
                 cover={post.Images[0] && <PostImages images={post.Images} />}
                 actions={[
-                      <Tooltip title="리트윗하기">
-                    <RetweetOutlined
-                        onClick={onRetweet}
-                        key="retweet" />
-                        </Tooltip>,
-                              <Tooltip title="좋아요">
-              {      liked ?
-                        <HeartTwoTone
-                            key="heart"
-                            twoToneColor="#eb2f96"
-                            onClick={onUnlike} /> :
-                        <HeartOutlined
-                            key="heart"
-                            onClick={onLike} />}
-                            </Tooltip>,
-                             <Tooltip title="댓글달기">
-                    <MessageOutlined
-                        key="message"
-                        onClick={onToggleComment} />
-                         </Tooltip>,
+                    <Tooltip title="리트윗하기">
+                        <RetweetOutlined
+                            onClick={onRetweet}
+                            key="retweet" />
+                    </Tooltip>,
+                    <Tooltip title="좋아요">
+                        {liked ?
+                            <HeartTwoTone
+                                key="heart"
+                                twoToneColor="#eb2f96"
+                                onClick={onUnlike} /> :
+                            <HeartOutlined
+                                key="heart"
+                                onClick={onLike} />}
+                    </Tooltip>,
+                    <Tooltip title="댓글달기">
+                        <MessageOutlined
+                            key="message"
+                            onClick={onToggleComment} />
+                    </Tooltip>,
                     <Popover
                         key="ellipsis"
                         content={(
@@ -191,8 +191,7 @@ const PostCard = ({ post }) => {
                     onCancel={reportCancel}
                 >
                     <Form >
-                        <Input.TextArea
-                            style={{ position: 'relative', marginTop: '10px', marginBottom: '10px' }}
+                        <InputReport
                             rows={4}
                             value={reportText}
                             onChange={onChangeReportText}

@@ -27,8 +27,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { CHANGE_MENUKEY_REQUEST, LOG_OUT_REQUEST } from '../reducers/user';
-import { initialState } from "../reducers/user"
-import useSWR, { mutate, trigger } from "swr"
+import { initialState } from "../reducers/user";
+import useSWR, { mutate, trigger } from "swr";
 const { Header, Content, Footer } = Layout;
 
 const AppLayout = ({ children }) => {
@@ -73,7 +73,7 @@ const AppLayout = ({ children }) => {
             <GlobalLayout />
             <Header className="layout-background-header" >
                 <Row justify="space-between">
-                    <Col span={2}>
+                    <Col xs={3} sm={2}>
                         <Logo>
                             <Image
                                 src="/images/ic_logo.png"
@@ -82,7 +82,7 @@ const AppLayout = ({ children }) => {
                                 height={70} />
                         </Logo>
                     </Col>
-                    <Col span={16}>
+                    <Col xs={13} sm={16} md={17}>
                         <Menu
                             theme="dark"
                             onClick={onClickDefaultKey}
@@ -110,7 +110,7 @@ const AppLayout = ({ children }) => {
                                 <Link href="/about"><a>About</a></Link> </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col xs={8} md={4}>
+                    <Col xs={8} sm={6} md={5}>
                         <Tooltip
                             placement="bottom"
                             title="해시테그를 검색해보세요!">
