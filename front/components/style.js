@@ -19,10 +19,10 @@ export const GlobalLayout = () => (
       #components-layout-demo-custom-trigger .trigger:hover {
         color: #1890ff;
       }
-      #basic-form{
+      #nest-messages{
         margin-top:10%;
+        text-align:center;
       }
-    
       body{
         background:#f0f2f5;
       } 
@@ -68,7 +68,7 @@ export const GlobalLayout = () => (
       background:#fff;
     }
       .ant-layout-content{
-        padding:10% 3% 0 3% !important;
+        padding:9% 3%!important;
       }
       .layout-background{
         margin: 0;        
@@ -123,3 +123,32 @@ margin: 10px 0;
 height: 32px;
 line-height: 32px;
 `;
+
+export const ImageLayout = () => (
+  <Global
+    styles={css`
+    .img-dancer-position-one{
+      position: absolute;
+      top: 35%;
+      left: 5%;
+      z-index:1;
+    }
+    .img-dancer-position-two{
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      z-index:2;
+    }
+    h3.ant-typography{
+      z-index:3;
+      margin:10% 0 2% 6%;
+      text-align:center;
+    }
+    #basic-form{
+      z-index:4;
+      margin-left:50%;
+      width:300px;
+      transform:translateX(-50%);
+    }
+  
+    `} />);

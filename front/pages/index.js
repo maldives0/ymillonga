@@ -26,7 +26,6 @@ const Home = () => {
     const reportPostError = useSelector((state) => state.post.reportPostError);
     const retweetError = useSelector((state) => state.post.retweetError);
     const me = useSelector(state => state.user.me);
-    const changeNicknameDone = useSelector(state => state.user.changeNicknameDone);
     const ignoreError = useSelector(state => state.user.ignoreError);
     const unIgnoreError = useSelector(state => state.user.unIgnoreError);
     const ignoreDone = useSelector(state => state.user.ignoreDone);
@@ -95,11 +94,6 @@ const Home = () => {
 
     return (
         <AppLayout>
-            {me && me.id && <Button
-                style={{ marginBottom: 5 }}
-                loading={loadPostsLoading}
-                onClick={onClickRelatedPosts}>
-                <Link href='/posts/related'><a>팔로잉 게시글만 보기</a></Link></Button>}
             {me && me.id ? <UserProfile /> : (
                 <PageHeader
                     className="site-page-header"
@@ -110,6 +104,17 @@ const Home = () => {
                 />
             )}
             {me && me.id && <PostForm />}
+            {me && me.id ? (<Button
+                style={{ marginBottom: 5 }}
+                type="primary"
+                loading={loadPostsLoading}
+                onClick={onClickRelatedPosts}>
+                <Link href='/posts/related'><a>팔로잉 게시글만 보기</a></Link></Button>) : (<div style={{ textAlign: 'center', marginTop: '1%' }}>
+                    <img
+                        width={400}
+                        height={70}
+                        src="/images/dancers.png"
+                    /></div>)}
             {mainPosts?.map((post) => {
                 return (
                     <PostCard key={post.id} post={post} />

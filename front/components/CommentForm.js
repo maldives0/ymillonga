@@ -7,7 +7,7 @@ import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 
 const CommentForm = ({ post }) => {
-    const id = useSelector(state => state.user.me?.id);
+    const me = useSelector(state => state.user.me);
     const addCommentLoading = useSelector(state => state.post.addCommentLoading);
     const addCommentDone = useSelector(state => state.post.addCommentDone);
 
@@ -26,11 +26,11 @@ const CommentForm = ({ post }) => {
             type: ADD_COMMENT_REQUEST,
             data: {
                 content: commentText,
-                userId: id,
+                userId: me?.id,
                 postId: post.id,
             },
         });
-    }, [commentText, id]);
+    }, [commentText, me]);
     return (
         <Form onFinish={onSubmit}
         >

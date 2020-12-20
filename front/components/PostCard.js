@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Input, Tooltip } from 'antd';
+import { Card, Button, Avatar, Popover, List, Comment, Modal, Form, Tooltip, message } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { InputReport, CardWrapper } from './style';
@@ -53,7 +53,7 @@ const PostCard = ({ post }) => {
 
     const onLike = useCallback(() => {
         if (!id) {
-            return alert('로그인이 필요합니다.');
+            return message.info('로그인 후 좋아요를 할 수 있습니다.');
         }
         return dispatch({
             type: LIKE_POST_REQUEST,
@@ -61,7 +61,9 @@ const PostCard = ({ post }) => {
         });
     }, [id]);
     const onUnlike = useCallback(() => {
-        if (!id) alert('로그인이 필요합니다');
+        if (!id) {
+            return alert('로그인이 필요합니다');
+        }
         return dispatch({
             type: UNLIKE_POST_REQUEST,
             data: post.id,
@@ -77,7 +79,9 @@ const PostCard = ({ post }) => {
         })
     }, [id]);
     const onRetweet = useCallback(() => {
-        if (!id) alert('로그인이 필요합니다');
+        if (!id) {
+            return message.info('로그인 후 리트윗할 수 있습니다.');
+        }
         dispatch({
             type: RETWEET_REQUEST,
             data: post.id,
@@ -85,7 +89,11 @@ const PostCard = ({ post }) => {
     }, [id]);
 
     const onToggleComment = useCallback(() => {
-        setCommentFormOpened((prev) => !prev);
+        if (id) {
+            setCommentFormOpened((prev) => !prev);
+        } else {
+            return message.info('로그인 후 댓글을 입력할 수 있습니다.');
+        }
     }, [id]);
 
     const onClickUpdate = useCallback(() => {
@@ -107,6 +115,9 @@ const PostCard = ({ post }) => {
         });
     }, [post]);
     const onReport = useCallback(() => {
+        if (!id) {
+            return message.info('로그인 후 신고할 수 있습니다.');
+        }
         setModalVisible(true);
     }, []);
     const onsubmitReport = useCallback(() => {
@@ -259,7 +270,7 @@ const PostCard = ({ post }) => {
                         </>
                     )}
             </Card>
-            {commentFormOpened && (
+            {id && commentFormOpened && (
                 <>
                     <CommentForm post={post} />
                     <List

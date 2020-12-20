@@ -53,8 +53,14 @@ const Signup = () => {
     }, [password]);
 
     const onSubmit = useCallback(() => {
-        if (password !== passwordCheck) setPasswordError(true);
-        if (!term) setTermError(true);
+        if (password !== passwordCheck) {
+            setPasswordError(true);
+            return alert('비밀번호를 확인해주세요.');
+        }
+        if (!term) {
+            setTermError(true)
+            return alert('약관에 동의해주세요.');
+        };
         dispatch({
             type: SIGN_UP_REQUEST,
             data: {
@@ -62,6 +68,12 @@ const Signup = () => {
             }
         })
     }, [email, password, passwordCheck, term]);
+    const validateMessages = {
+        required: '${label}을 적어주세요!',
+        types: {
+            email: '${label} 이메일 형식에 맞지 않습니다!',
+        },
+    };
     return (
         <AppLayout>
             <Head>
@@ -69,28 +81,51 @@ const Signup = () => {
             </Head>
             <>
                 <Form
+                    name="nest-messages"
                     labelCol={{ span: 6 }}
                     wrapperCol={{ span: 14 }}
                     layout="horizontal"
                     onFinish={onSubmit}
+                    validateMessages={validateMessages}
                 >
-
-                    <Form.Item label="E-mail">
+                    <Form.Item
+                        label="이메일"
+                        rules={[
+                            { type: 'email', },
+                            { required: true, },
+                        ]}
+                    >
                         <Input name="user-name" type="email" value={email} required onChange={onChangeEmail} />
                     </Form.Item>
-                    <Form.Item label="Nickname">
+                    <Form.Item label="닉네임"
+                        rules={[
+                            { required: true, },
+                        ]}
+                    >
                         <Input name="user-nickname" value={nickname} required onChange={onChangeNickname} />
                     </Form.Item>
-                    <Form.Item label="password">
+                    <Form.Item label="비밀번호"
+                        rules={[
+                            { required: true, },
+                        ]}
+                    >
                         <Input name="user-password" type="Password" value={password} required onChange={onChangePassword} />
                     </Form.Item>
-                    <Form.Item label="Password check">
+                    <Form.Item label="비밀번호 확인"
+                        rules={[
+                            { required: true, },
+                        ]}
+                    >
                         <Input name="user-password-check" type="password" value={passwordCheck} required onChange={onChangePasswordCheck} />
                         {passwordError && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>}
                     </Form.Item>
-                    <Form.Item >
-                        <Checkbox name="user-term" checked={term} onChange={onChangeTerm} /> 약관에 동의합니다.
-          {termError && <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>}
+                    <Form.Item
+                        rules={[
+                            { required: true, },
+                        ]}
+                    >
+                        <Checkbox name="user-term" checked={term} onChange={onChangeTerm} /> 개인정보 수집 및 이용에 동의합니다.
+          {termError && <div style={{ color: 'red' }}>약관에 동의해주세요.</div>}
                     </Form.Item>
                     <Form.Item >
                         <Button

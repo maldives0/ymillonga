@@ -13,25 +13,10 @@ import { LOG_IN_REQUEST } from '../reducers/user';
 import FacebookLoginBtn from './FacebookLoginBtn';
 import GoogleLoginBtn from './GoogleLoginBtn';
 import { useRouter } from 'next/router';
-const layout = {
-    wrapperCol: {
-        xs: { span: 21, offset: 1 },
-        sm: { span: 18, offset: 3 },
-        md: { span: 9, offset: 4 },
-        lg: { span: 9, offset: 6 },
-    },
-};
-const tailLayout = {
-    wrapperCol: { offset: 6, span: 18 },
-};
-const btnLayout = {
-    wrapperCol: {
-        xs: { span: 21, offset: 1 },
-        sm: { span: 21, offset: 2 },
-        md: { span: 18, offset: 4 },
-        lg: { span: 18, offset: 4 },
-    },
-};
+import { Typography } from 'antd';
+import { ImageLayout } from './style';
+const Title = Typography.Title;
+
 const LoginForm = () => {
     const Router = useRouter();
 
@@ -68,68 +53,86 @@ const LoginForm = () => {
 
 
     return (
-        <Form
-            {...layout}
-            name="basic-form"
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={onSubmitForm}
-        >
-            <Form.Item
-                name="username"
-                rules={[
-                    {
-                        required: basicButtonClicked,
-                        message: 'Please input your username!',
-                    },
-                ]}
-            >
-                <Input prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="Username"
-                    value={email}
-                    onChange={onChangeEmail} />
-            </Form.Item>
+        <>
+            <ImageLayout />
+            <Title level={3}>Y Millonga에서 당신의 소중한 경험을 함께 나눠주세요!</Title>
+            <div className='img-dancer-position-one'>
+                <img
+                    width={250}
+                    height={250}
+                    src="/images/dancer1.png"
+                /></div>
 
-            <Form.Item
-                name="password"
-                rules={[
-                    {
-                        required: basicButtonClicked,
-                        message: 'Please input your password!',
-                    },
-                ]}
-            >
-                <Input
-                    prefix={<LockOutlined className="site-form-item-icon" />}
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={onChangePassword}
-                />
-            </Form.Item>
-
-            <Form.Item {...tailLayout} >
-                <Row >
-                    <Button type="primary" htmlType="submit"
-                        loading={logInLoading}
-                        onClick={onClickBasicButton}
+            <div className='img-dancer-position-two'>
+                <img
+                    width={300}
+                    height={300}
+                    src="/images/dancer3.png"
+                /></div>
+            <Row>
+                <Form
+                    name="basic-form"
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onSubmitForm}
+                >
+                    <Form.Item
+                        name="username"
+                        rules={[
+                            {
+                                required: basicButtonClicked,
+                                message: 'Please input your username!',
+                            },
+                        ]}
                     >
-                        로그인
+                        <Input prefix={<UserOutlined className="site-form-item-icon" />}
+                            placeholder="Username"
+                            value={email}
+                            onChange={onChangeEmail} />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            {
+                                required: basicButtonClicked,
+                                message: 'Please input your password!',
+                            },
+                        ]}
+                    >
+                        <Input
+                            prefix={<LockOutlined className="site-form-item-icon" />}
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={onChangePassword}
+                        />
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Row justify="end">
+                            <Button type="primary" htmlType="submit"
+                                loading={logInLoading}
+                                onClick={onClickBasicButton}
+                            >
+                                로그인
             </Button>
-                    <Divider type="vertical" style={{ border: 'none' }} />
-                    <Link href="/signup"><a><Button>
-                        회원가입
+                            <Divider type="vertical" style={{ border: 'none' }} />
+                            <Link href="/signup"><a><Button>
+                                회원가입
             </Button></a></Link>
-                </Row>
-            </Form.Item>
-            <Form.Item {...btnLayout}>
-                <Row justify="center">
-                    <GoogleLoginBtn />
-                    <FacebookLoginBtn />
-                </Row>
-            </Form.Item>
-        </Form>
+                        </Row>
+                    </Form.Item>
+                    <Form.Item>
+                        <Row justify="center" wrap={false}>
+                            <GoogleLoginBtn />
+                            <FacebookLoginBtn />
+                        </Row>
+                    </Form.Item>
+                </Form>
+            </Row>
+        </>
     );
 
 

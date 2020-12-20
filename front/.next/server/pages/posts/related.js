@@ -527,7 +527,7 @@ const AppLayout = ({
   const {
     0: currentKey,
     1: setCurrentKey
-  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
+  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(data === null || data === void 0 ? void 0 : data.me.menuKey);
   const [searchInput, onChangeSearchInput] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_11__["default"])('');
   const onSearch = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     next_router__WEBPACK_IMPORTED_MODULE_12___default.a.push(`/hashtag/${searchInput}`);
@@ -550,7 +550,7 @@ const AppLayout = ({
   }, [me && me.id]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (me && me.id) {
-      setCurrentKey(me.menuKey);
+      setCurrentKey(data === null || data === void 0 ? void 0 : data.me.menuKey);
     }
   }, [me && me.id]);
   const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
@@ -2472,11 +2472,7 @@ __webpack_require__.r(__webpack_exports__);
 const CommentForm = ({
   post
 }) => {
-  const id = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => {
-    var _state$user$me;
-
-    return (_state$user$me = state.user.me) === null || _state$user$me === void 0 ? void 0 : _state$user$me.id;
-  });
+  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.user.me);
   const addCommentLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.post.addCommentLoading);
   const addCommentDone = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(state => state.post.addCommentDone);
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
@@ -2491,11 +2487,11 @@ const CommentForm = ({
       type: _reducers_post__WEBPACK_IMPORTED_MODULE_6__["ADD_COMMENT_REQUEST"],
       data: {
         content: commentText,
-        userId: id,
+        userId: me === null || me === void 0 ? void 0 : me.id,
         postId: post.id
       }
     });
-  }, [commentText, id]);
+  }, [commentText, me]);
   return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_7__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Form"], {
     onFinish: onSubmit
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_7__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_7__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Input"].TextArea, {
@@ -5019,7 +5015,7 @@ const PostCard = ({
   } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
   const onLike = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     if (!id) {
-      return alert('로그인이 필요합니다.');
+      return antd__WEBPACK_IMPORTED_MODULE_2__["message"].info('로그인 후 좋아요를 할 수 있습니다.');
     }
 
     return dispatch({
@@ -5028,7 +5024,10 @@ const PostCard = ({
     });
   }, [id]);
   const onUnlike = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    if (!id) alert('로그인이 필요합니다');
+    if (!id) {
+      return alert('로그인이 필요합니다');
+    }
+
     return dispatch({
       type: _reducers_post__WEBPACK_IMPORTED_MODULE_17__["UNLIKE_POST_REQUEST"],
       data: post.id
@@ -5045,14 +5044,21 @@ const PostCard = ({
     });
   }, [id]);
   const onRetweet = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    if (!id) alert('로그인이 필요합니다');
+    if (!id) {
+      return antd__WEBPACK_IMPORTED_MODULE_2__["message"].info('로그인 후 리트윗할 수 있습니다.');
+    }
+
     dispatch({
       type: _reducers_post__WEBPACK_IMPORTED_MODULE_17__["RETWEET_REQUEST"],
       data: post.id
     });
   }, [id]);
   const onToggleComment = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    setCommentFormOpened(prev => !prev);
+    if (id) {
+      setCommentFormOpened(prev => !prev);
+    } else {
+      return antd__WEBPACK_IMPORTED_MODULE_2__["message"].info('로그인 후 댓글을 입력할 수 있습니다.');
+    }
   }, [id]);
   const onClickUpdate = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     setEditMode(true);
@@ -5075,6 +5081,10 @@ const PostCard = ({
     });
   }, [post]);
   const onReport = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
+    if (!id) {
+      return antd__WEBPACK_IMPORTED_MODULE_2__["message"].info('로그인 후 신고할 수 있습니다.');
+    }
+
     setModalVisible(true);
   }, []);
   const onsubmitReport = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
@@ -5192,7 +5202,7 @@ const PostCard = ({
       onChangePost: onChangePost,
       postData: post.content
     })
-  }))), commentFormOpened && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(_CommentForm__WEBPACK_IMPORTED_MODULE_13__["default"], {
+  }))), id && commentFormOpened && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(_CommentForm__WEBPACK_IMPORTED_MODULE_13__["default"], {
     post: post
   }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["List"], {
     header: `댓글: ${post.Comments ? post.Comments.length : 0}개`,
@@ -6121,7 +6131,7 @@ module.exports = require("prop-types");
 /*!*****************************!*\
   !*** ./components/style.js ***!
   \*****************************/
-/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore */
+/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6134,6 +6144,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadingDiv", function() { return LoadingDiv; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadMore", function() { return LoadMore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageLayout", function() { return ImageLayout; });
 /* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/styled/base */ "w8No");
 /* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "F5FC");
@@ -6154,13 +6165,13 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 
-var _ref = true ? {
-  name: "19vgor7",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#basic-form{margin-top:10%;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:10% 3% 0 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
+var _ref2 = true ? {
+  name: "1357n0g",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
-  styles: _ref
+  styles: _ref2
 });
 const InputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].Search, {
   target: "et0pmbv6",
@@ -6211,6 +6222,15 @@ const LoadMore = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("di
   name: "45jwkq",
   styles: "text-align:center;margin:10px 0;height:32px;line-height:32px"
 } : undefined);
+
+var _ref = true ? {
+  name: "phkq7j",
+  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}h3.ant-typography{z-index:3;margin:10% 0 2% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}"
+} : undefined;
+
+const ImageLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
+  styles: _ref
+});
 
 /***/ }),
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col, Tooltip } from 'antd';
+import { Layout, Menu, Row, Col, Tooltip, } from 'antd';
 import {
     default as HomeOutlined,
 } from '@ant-design/icons/HomeOutlined';
@@ -37,7 +37,7 @@ const AppLayout = ({ children }) => {
     const me = useSelector(state => state.user.me);
     const dispatch = useDispatch();
 
-    const [currentKey, setCurrentKey] = useState(data?.me.menuKey || '1');
+    const [currentKey, setCurrentKey] = useState(data?.me.menuKey);
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
         Router.push(`/hashtag/${searchInput}`);
@@ -58,15 +58,17 @@ const AppLayout = ({ children }) => {
     }, [me && me.id]);
     useEffect(() => {
         if (me && me.id) {
-            setCurrentKey(me.menuKey);
+            setCurrentKey(data?.me.menuKey);
         }
     }, [me && me.id]);
+
 
     const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
     }, []);
+
 
     return (
         <Layout className="layout">
@@ -95,7 +97,8 @@ const AppLayout = ({ children }) => {
                             </Menu.Item>
 
                             <Menu.Item key="2" icon={
-                                me && me.id ? <LogoutOutlined /> : <LoginOutlined />
+                                me && me.id ? <LogoutOutlined
+                                /> : <LoginOutlined />
                             }>
                                 {
                                     me && me.id ?

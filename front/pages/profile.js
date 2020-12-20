@@ -10,25 +10,30 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
 import wrapper from '../store/configureStore';
-import useSWR from 'swr';
+import useSWR, { mutate, trigger } from "swr";
 import { backUrl } from '../config/config';
 import fetcher from '../utils/fetcher';
 import { LoadingDiv } from '../components/style';
-import { message } from 'antd';
-
+import { initialState } from "../reducers/user";
 
 const Profile = () => {
     const [followingsLimit, setFollowingsLimit] = useState(3);
     const [followersLimit, setFollowersLimit] = useState(3);
     const [ignoringsLimit, setIgnoringsLimit] = useState(3);
-    const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher, { dedupingInterval: 5000 });
-    const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher, { dedupingInterval: 5000 });
-    const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher, { dedupingInterval: 5000 });
+    const { data: followingsData, error: followingError } = useSWR(`${backUrl}/user/followings?limit=${followingsLimit}`, fetcher, { revalidateOnFocus: true });
+    const { data: followersData, error: followerError } = useSWR(`${backUrl}/user/followers?limit=${followersLimit}`, fetcher, { revalidateOnFocus: true });
+    const { data: ignoringsData, error: ignoringError } = useSWR(`${backUrl}/user/ignorings?limit=${ignoringsLimit}`, fetcher, { revalidateOnFocus: true });
     const me = useSelector(state => state.user.me);
+    const { data: menuKeyData } = useSWR("globalState", { initialData: initialState }, { revalidateOnFocus: true });
 
     useEffect(() => {
         if (!me) {
-            Router.replace('/')
+            mutate("globalState", {
+                ...menuKeyData,
+                me: { menuKey: '1' }
+            }, false);
+            Router.replace('/');
+            trigger("globalState");
         };
     }, [me]);
 
@@ -49,8 +54,11 @@ const Profile = () => {
     }, []);
 
     if (!me) {
-        return (<LoadingDiv>이 페이지는 로그인이 필요합니다.
-            <br /> Home으로 이동합니다.</LoadingDiv>)
+        Router.replace('/');
+        return (
+            <LoadingDiv>로그아웃 중입니다.
+                <br />프로필 페이지는 로그인이 필요합니다.
+                <br /> Home으로 이동합니다.</LoadingDiv>)
     };
 
     if (followerError || followingError || ignoringError) {

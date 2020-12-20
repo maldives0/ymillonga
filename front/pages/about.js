@@ -25,12 +25,12 @@ const About = () => {
                     <Link href="https://ko.wikipedia.org/wiki/%EB%B0%80%EB%A1%B1%EA%B0%80">밀롱가(Milonga)</Link>는 이런 탱고를 즐기기 위해 사람들이 모이는 장소 및 시간을 의미합니다. Y Millonga는 여러분이 밀롱가에서 경험했던 잊지 못할 추억을 탱고인들과 함께 나눌 수 있는 소셜 네트워크 서비스(SNS)입니다.
 
     </Paragraph>
-                <Title style={{ textAlign: 'center' }} level={2}>Y Millonga는 탱고인들을 위한 SNS입니다.</Title>
+                <Title style={{ textAlign: 'center' }} level={2}>Y Millonga는 탱고를 사랑하는 사람들을 위한 SNS입니다.</Title>
                 <div style={{ textAlign: 'center', marginBottom: 15 }}>
                     <img
                         width={400}
                         height={70}
-                        src="/images/dancers1.png"
+                        src="/images/dancers.png"
                     /></div>
                 <Paragraph>
                     <Text>탱고는 춤추는 상대가 누구인지, 어떤 탱고음악에 맞춰 스탭을 밟고 있는지, 주변에 어떤 사람들이 함께 춤을 추고 있는지에 따라 색다른 경험을 선사하는 춤입니다. 무엇보다 춤을 추고 있는 내가 어떤 상상을 하며 춤을 추고 있는지가 가장 큰 영향을 미치지요. 아래의 말처럼 말이죠.</Text>

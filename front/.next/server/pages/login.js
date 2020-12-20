@@ -284,7 +284,7 @@ const AppLayout = ({
   const {
     0: currentKey,
     1: setCurrentKey
-  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
+  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(data === null || data === void 0 ? void 0 : data.me.menuKey);
   const [searchInput, onChangeSearchInput] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_11__["default"])('');
   const onSearch = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     next_router__WEBPACK_IMPORTED_MODULE_12___default.a.push(`/hashtag/${searchInput}`);
@@ -307,7 +307,7 @@ const AppLayout = ({
   }, [me && me.id]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (me && me.id) {
-      setCurrentKey(me.menuKey);
+      setCurrentKey(data === null || data === void 0 ? void 0 : data.me.menuKey);
     }
   }, [me && me.id]);
   const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
@@ -809,13 +809,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./GoogleLoginBtn */ "5fVt");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "4Q3z");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_12__);
-
-
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
+/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./style */ "uFM0");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_13__);
 
 
 
@@ -828,52 +824,12 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 
 
 
-const layout = {
-  wrapperCol: {
-    xs: {
-      span: 21,
-      offset: 1
-    },
-    sm: {
-      span: 18,
-      offset: 3
-    },
-    md: {
-      span: 9,
-      offset: 4
-    },
-    lg: {
-      span: 9,
-      offset: 6
-    }
-  }
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 6,
-    span: 18
-  }
-};
-const btnLayout = {
-  wrapperCol: {
-    xs: {
-      span: 21,
-      offset: 1
-    },
-    sm: {
-      span: 21,
-      offset: 2
-    },
-    md: {
-      span: 18,
-      offset: 4
-    },
-    lg: {
-      span: 18,
-      offset: 4
-    }
-  }
-};
+
+
+
+
+
+const Title = antd__WEBPACK_IMPORTED_MODULE_2__["Typography"].Title;
 
 const LoginForm = () => {
   const Router = Object(next_router__WEBPACK_IMPORTED_MODULE_11__["useRouter"])();
@@ -910,54 +866,71 @@ const LoginForm = () => {
       });
     }
   }, [email, password, basicButtonClicked]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"], _extends({}, layout, {
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_12__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(Title, {
+    level: 3
+  }, "Y Millonga\uC5D0\uC11C \uB2F9\uC2E0\uC758 \uC18C\uC911\uD55C \uACBD\uD5D8\uC744 \uD568\uAED8 \uB098\uB220\uC8FC\uC138\uC694!"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+    className: "img-dancer-position-one"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+    width: 250,
+    height: 250,
+    src: "/images/dancer1.png"
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+    className: "img-dancer-position-two"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+    width: 300,
+    height: 300,
+    src: "/images/dancer3.png"
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"], {
     name: "basic-form",
     initialValues: {
       remember: true
     },
     onFinish: onSubmitForm
-  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
     name: "username",
     rules: [{
       required: basicButtonClicked,
       message: 'Please input your username!'
     }]
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
-    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_ant_design_icons_UserOutlined__WEBPACK_IMPORTED_MODULE_5___default.a, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
+    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_ant_design_icons_UserOutlined__WEBPACK_IMPORTED_MODULE_5___default.a, {
       className: "site-form-item-icon"
     }),
     placeholder: "Username",
     value: email,
     onChange: onChangeEmail
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, {
     name: "password",
     rules: [{
       required: basicButtonClicked,
       message: 'Please input your password!'
     }]
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
-    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_ant_design_icons_LockOutlined__WEBPACK_IMPORTED_MODULE_6___default.a, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Input"], {
+    prefix: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_ant_design_icons_LockOutlined__WEBPACK_IMPORTED_MODULE_6___default.a, {
       className: "site-form-item-icon"
     }),
     type: "password",
     placeholder: "Password",
     value: password,
     onChange: onChangePassword
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, tailLayout, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+    justify: "end"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], {
     type: "primary",
     htmlType: "submit",
     loading: logInLoading,
     onClick: onClickBasicButton
-  }, "\uB85C\uADF8\uC778"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Divider"], {
+  }, "\uB85C\uADF8\uC778"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Divider"], {
     type: "vertical",
     style: {
       border: 'none'
     }
-  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
+  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_3___default.a, {
     href: "/signup"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, btnLayout, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
-    justify: "center"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_12__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))));
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Button"], null, "\uD68C\uC6D0\uAC00\uC785"))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Form"].Item, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+    justify: "center",
+    wrap: false
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_GoogleLoginBtn__WEBPACK_IMPORTED_MODULE_10__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_FacebookLoginBtn__WEBPACK_IMPORTED_MODULE_9__["default"], null))))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LoginForm);
@@ -1099,97 +1072,6 @@ module.exports = require("react/jsx-runtime");
 
 /***/ }),
 
-/***/ "F6lQ":
-/*!****************************************!*\
-  !*** ./components/NicknameEditForm.js ***!
-  \****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "F5FC");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "cDcd");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _hooks_useInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks/useInput */ "3zrx");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "Exp3");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "h74D");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./style */ "uFM0");
-/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! swr */ "aYjl");
-/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(swr__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_8__);
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-
-
-const NicknameEditForm = () => {
-  const {
-    data
-  } = swr__WEBPACK_IMPORTED_MODULE_7___default()("globalState", {
-    initialData: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["initialState"]
-  }, {
-    revalidateOnFocus: true
-  });
-  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
-  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me);
-  const changeNicknameLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.changeNicknameLoading);
-  const [nickname, onChangeNickname] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_2__["default"])((me === null || me === void 0 ? void 0 : me.nickname) || '');
-  const onSubmit = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    Object(swr__WEBPACK_IMPORTED_MODULE_7__["mutate"])("globalState", _objectSpread(_objectSpread({}, data), {}, {
-      me: {
-        nickname: nickname
-      }
-    }), false);
-    dispatch({
-      type: _reducers_user__WEBPACK_IMPORTED_MODULE_5__["CHANGE_NICKNAME_REQUEST"],
-      data: nickname
-    });
-    Object(swr__WEBPACK_IMPORTED_MODULE_7__["trigger"])("globalState");
-  }, [nickname]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_8__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Form"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_8__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_6__["NicknameInputSearch"], {
-    loading: changeNicknameLoading,
-    value: nickname,
-    onChange: onChangeNickname,
-    onSearch: onSubmit,
-    addonBefore: "\uB2C9\uB124\uC784:",
-    enterButton: "\uBC14\uAFB8\uAE30"
-  }));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (NicknameEditForm);
-
-/***/ }),
-
-/***/ "HJDV":
-/*!****************************************************!*\
-  !*** external "@ant-design/icons/SettingOutlined" ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@ant-design/icons/SettingOutlined");
-
-/***/ }),
-
 /***/ "Ibkh":
 /*!**************************!*\
   !*** ./utils/produce.js ***!
@@ -1209,124 +1091,6 @@ const newProduce = (...args) => {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (newProduce);
-
-/***/ }),
-
-/***/ "J7m/":
-/*!***********************************!*\
-  !*** ./components/UserProfile.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "F5FC");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "cDcd");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/link */ "YFqc");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! antd */ "Exp3");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _ant_design_icons_SettingOutlined__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ant-design/icons/SettingOutlined */ "HJDV");
-/* harmony import */ var _ant_design_icons_SettingOutlined__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_ant_design_icons_SettingOutlined__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _ant_design_icons_LogoutOutlined__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ant-design/icons/LogoutOutlined */ "LU3z");
-/* harmony import */ var _ant_design_icons_LogoutOutlined__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_ant_design_icons_LogoutOutlined__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _components_NicknameEditForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/NicknameEditForm */ "F6lQ");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-redux */ "h74D");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
-/* harmony import */ var _style__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./style */ "uFM0");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_10__);
-
-
-
-
-
-
-
-
-
-
-
-
-
-const UserProfile = () => {
-  const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useDispatch"])();
-  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useSelector"])(state => state.user.me);
-  const changeNicknameDone = Object(react_redux__WEBPACK_IMPORTED_MODULE_7__["useSelector"])(state => state.user.changeNicknameDone);
-  const {
-    0: editNickname,
-    1: setEditNickname
-  } = Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(false);
-  const onClickEditNickname = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    setEditNickname(prev => !prev);
-  }, []);
-  const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
-    dispatch({
-      type: _reducers_user__WEBPACK_IMPORTED_MODULE_8__["LOG_OUT_REQUEST"]
-    });
-  }, []);
-  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
-    if (changeNicknameDone) {
-      setEditNickname(false);
-      antd__WEBPACK_IMPORTED_MODULE_3__["message"].success('닉네임이 변경되었습니다.');
-    }
-  }, [changeNicknameDone]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_9__["CardWrapper"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Card"], {
-    key: `${me.id}_profile`,
-    style: {
-      width: '300',
-      marginTop: 16
-    },
-    type: "inner",
-    extra: [Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Tooltip"], {
-      title: "\uB85C\uADF8\uC544\uC6C3"
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(_ant_design_icons_LogoutOutlined__WEBPACK_IMPORTED_MODULE_5___default.a, {
-      key: "logout",
-      onClick: onLogout
-    })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Divider"], {
-      type: "vertical"
-    }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Tooltip"], {
-      title: "\uB2C9\uB124\uC784 \uBC14\uAFB8\uAE30"
-    }, "   ", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(_ant_design_icons_SettingOutlined__WEBPACK_IMPORTED_MODULE_4___default.a, {
-      key: "edit-nickname",
-      onClick: onClickEditNickname
-    }))],
-    actions: [Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("div", {
-      key: `${me.id}_twit`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      prefetch: false,
-      href: `/user/${me.id}`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", null, "\uAC8C\uC2DC\uAE00", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("br", null), me.Posts.length))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("div", {
-      key: `${me.id}_following`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      prefetch: false,
-      href: `/posts/related`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", null, "\uD314\uB85C\uC789", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("br", null), me.Followings.length))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("div", {
-      key: `${me.id}_follower`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      href: "/profile"
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", null, "\uD314\uB85C\uC5B4", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("br", null), me.Followers.length))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("div", {
-      key: `${me.id}_ignoring`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      href: "/profile"
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", null, "\uCC28\uB2E8\uC790", Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("br", null), me.Ignorings.length)))]
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Card"].Meta, {
-    avatar: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_2___default.a, {
-      prefetch: false,
-      href: `/user/${me.id}`
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Avatar"], null, me.nickname[0]))),
-    title: me.nickname,
-    style: {
-      marginBottom: "10px"
-    }
-  }), editNickname && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_10__["jsx"])(_components_NicknameEditForm__WEBPACK_IMPORTED_MODULE_6__["default"], null)));
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (UserProfile);
 
 /***/ }),
 
@@ -1753,19 +1517,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_AppLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/AppLayout */ "1zst");
 /* harmony import */ var _components_LoginForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/LoginForm */ "A0h5");
-/* harmony import */ var _components_UserProfile__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/UserProfile */ "J7m/");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "h74D");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux-saga */ "1fKG");
-/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(redux_saga__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "zr5I");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _store_configureStore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store/configureStore */ "AQn3");
-/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! next/router */ "4Q3z");
-/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd */ "Exp3");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_style__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/style */ "uFM0");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-redux */ "h74D");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! redux-saga */ "1fKG");
+/* harmony import */ var redux_saga__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(redux_saga__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! axios */ "zr5I");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _store_configureStore__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../store/configureStore */ "AQn3");
+/* harmony import */ var _reducers_user__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../reducers/user */ "LAVF");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! next/router */ "4Q3z");
+/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! swr */ "aYjl");
+/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(swr__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_13__);
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -1778,29 +1555,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+const Title = antd__WEBPACK_IMPORTED_MODULE_4__["Typography"].Title;
 
 const Login = () => {
-  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.me);
+  const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.me);
+  const logInSuccess = Object(react_redux__WEBPACK_IMPORTED_MODULE_6__["useSelector"])(state => state.user.logInSuccess);
+  const {
+    data: menuKeyData
+  } = swr__WEBPACK_IMPORTED_MODULE_12___default()("globalState", {
+    initialData: _reducers_user__WEBPACK_IMPORTED_MODULE_10__["initialState"]
+  }, {
+    revalidateOnFocus: true
+  });
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
-    if (me && me.id) {
-      next_router__WEBPACK_IMPORTED_MODULE_10___default.a.replace('/');
+    if (logInSuccess) {
+      Object(swr__WEBPACK_IMPORTED_MODULE_12__["mutate"])("globalState", _objectSpread(_objectSpread({}, menuKeyData), {}, {
+        me: {
+          menuKey: '1'
+        }
+      }), false);
+      next_router__WEBPACK_IMPORTED_MODULE_11___default.a.replace('/');
+      Object(swr__WEBPACK_IMPORTED_MODULE_12__["trigger"])("globalState");
     }
-  }, [me]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_UserProfile__WEBPACK_IMPORTED_MODULE_4__["default"], null) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_11__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+  }, [logInSuccess]);
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_2__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_style__WEBPACK_IMPORTED_MODULE_5__["ImageLayout"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(Title, {
+    level: 3
+  }, `${me.nickname}님, Y Milonga에 오신 걸 환영합니다!`), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("div", {
+    className: "img-dancer-position-three"
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])("img", {
+    width: 500,
+    height: 500,
+    src: "/images/dancer2.png"
+  }))) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_13__["jsx"])(_components_LoginForm__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 };
 
-const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_8__["default"].getServerSideProps(async context => {
+const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_9__["default"].getServerSideProps(async context => {
   const cookie = context.req ? context.req.headers.cookie : '';
-  axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.Cookie = '';
+  axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = '';
 
   if (context.req && cookie) {
-    axios__WEBPACK_IMPORTED_MODULE_7___default.a.defaults.headers.Cookie = cookie;
+    axios__WEBPACK_IMPORTED_MODULE_8___default.a.defaults.headers.Cookie = cookie;
   }
 
   context.store.dispatch({
-    type: _reducers_user__WEBPACK_IMPORTED_MODULE_9__["LOAD_MY_INFO_REQUEST"]
+    type: _reducers_user__WEBPACK_IMPORTED_MODULE_10__["LOAD_MY_INFO_REQUEST"]
   });
-  context.store.dispatch(redux_saga__WEBPACK_IMPORTED_MODULE_6__["END"]);
+  context.store.dispatch(redux_saga__WEBPACK_IMPORTED_MODULE_7__["END"]);
   await context.store.sagaTask.toPromise();
 });
 /* harmony default export */ __webpack_exports__["default"] = (Login);
@@ -5403,7 +5206,7 @@ module.exports = require("prop-types");
 /*!*****************************!*\
   !*** ./components/style.js ***!
   \*****************************/
-/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore */
+/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5416,6 +5219,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadingDiv", function() { return LoadingDiv; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoadMore", function() { return LoadMore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImageLayout", function() { return ImageLayout; });
 /* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @emotion/styled/base */ "w8No");
 /* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "F5FC");
@@ -5436,13 +5240,13 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 
-var _ref = true ? {
-  name: "19vgor7",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#basic-form{margin-top:10%;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:10% 3% 0 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
+var _ref2 = true ? {
+  name: "1357n0g",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading-left{flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
-  styles: _ref
+  styles: _ref2
 });
 const InputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].Search, {
   target: "et0pmbv6",
@@ -5493,6 +5297,15 @@ const LoadMore = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("di
   name: "45jwkq",
   styles: "text-align:center;margin:10px 0;height:32px;line-height:32px"
 } : undefined);
+
+var _ref = true ? {
+  name: "phkq7j",
+  styles: ".img-dancer-position-one{position:absolute;top:35%;left:5%;z-index:1;}.img-dancer-position-two{position:absolute;bottom:10%;right:5%;z-index:2;}h3.ant-typography{z-index:3;margin:10% 0 2% 6%;text-align:center;}#basic-form{z-index:4;margin-left:50%;width:300px;transform:translateX(-50%);}"
+} : undefined;
+
+const ImageLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
+  styles: _ref
+});
 
 /***/ }),
 

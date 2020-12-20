@@ -71,5 +71,5 @@ FollowList.propTypes = {
     data: PropTypes.array.isRequire,
     onClickMore: PropTypes.func.isRequire,
 
-}
+};
 export default FollowList; 
