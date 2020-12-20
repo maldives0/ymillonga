@@ -17,6 +17,9 @@ import {
 import {
     default as GithubOutlined,
 } from '@ant-design/icons/GithubOutlined';
+import {
+    default as QuestionCircleOutlined,
+} from '@ant-design/icons/QuestionCircleOutlined';
 import { GlobalLayout, InputSearch, Logo } from './style';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
@@ -33,7 +36,7 @@ const AppLayout = ({ children }) => {
 
     const me = useSelector(state => state.user.me);
     const dispatch = useDispatch();
-   
+
     const [currentKey, setCurrentKey] = useState(data?.me.menuKey || '1');
     const [searchInput, onChangeSearchInput] = useInput('');
     const onSearch = useCallback(() => {
@@ -59,78 +62,80 @@ const AppLayout = ({ children }) => {
         }
     }, [me && me.id]);
 
-      const onLogout = useCallback(() => {
+    const onLogout = useCallback(() => {
         dispatch({
             type: LOG_OUT_REQUEST,
         });
     }, []);
 
     return (
-          <Layout className="layout">
-                      <GlobalLayout />
-                <Header className="layout-background-header" >
-                    <Row justify="space-between">
-                        <Col span={4}>
-                           <Logo>
-                    <Image
-                        src="/images/ic_logo.png"
-                        alt="logo"
-                        width={100}
-                        height={70} />
-                </Logo>
-                                     </Col>
-                                     <Col  span={12}>
-                                       <Menu
-                                       theme="dark"
-                    onClick={onClickDefaultKey}
-                    selectedKeys={[currentKey]}
-                   mode="horizontal"
-                >
-                    <Menu.Item
-                        key="1" icon={<HomeOutlined />}>
-                        <Link href="/"><a>Home</a></Link>
-                    </Menu.Item>
-
-                    <Menu.Item key="2" icon={
-                        me && me.id ? <LogoutOutlined /> : <LoginOutlined />
-                    }>
-                        {
-                            me && me.id ?
-                                (<Link href="/login" ><a onClick={onLogout}>Logout</a></Link>)
-                                :
-                                (<Link href="/login"><a>Login</a></Link>)
-                        }
-                    </Menu.Item>
-                    <Menu.Item key="3" icon={<UserOutlined />}>
-                        <Link href="/profile"><a>Profile</a></Link> </Menu.Item>
-                </Menu>                      
-                                     </Col>
-                        <Col span={8}>
-                            <Tooltip
-                                placement="bottom"
-                                title="해시테그를 검색해보세요!">
-                                <InputSearch enterButton
-                                    value={searchInput}
-                                    onChange={onChangeSearchInput}
-                                    onSearch={onSearch} />
-                            </Tooltip>
-                        </Col>
-                    </Row>
-                </Header>
-                <Content
-                    className="layout-background" >
-                    {children}
-                </Content>
-                <Footer className="layout-foot" justify="start">
-                    <Col span={24} offset={2}>
-                        <a
-                            href="https://github.com/maldives0/ymillonga-sns"
-                            target="_blank"
-                            rel="noreferrer noopener"
-                        >© 2020 Juyoung Jung.  All rights reserved. <GithubOutlined /> </a>
+        <Layout className="layout">
+            <GlobalLayout />
+            <Header className="layout-background-header" >
+                <Row justify="space-between">
+                    <Col span={2}>
+                        <Logo>
+                            <Image
+                                src="/images/ic_logo.png"
+                                alt="logo"
+                                width={70}
+                                height={70} />
+                        </Logo>
                     </Col>
-                </Footer>
-            </Layout>  );
+                    <Col span={16}>
+                        <Menu
+                            theme="dark"
+                            onClick={onClickDefaultKey}
+                            selectedKeys={[currentKey]}
+                            mode="horizontal"
+                        >
+                            <Menu.Item
+                                key="1" icon={<HomeOutlined />}>
+                                <Link href="/"><a>Home</a></Link>
+                            </Menu.Item>
+
+                            <Menu.Item key="2" icon={
+                                me && me.id ? <LogoutOutlined /> : <LoginOutlined />
+                            }>
+                                {
+                                    me && me.id ?
+                                        (<Link href="/login" ><a onClick={onLogout}>Logout</a></Link>)
+                                        :
+                                        (<Link href="/login"><a>Login</a></Link>)
+                                }
+                            </Menu.Item>
+                            <Menu.Item key="3" icon={<UserOutlined />}>
+                                <Link href="/profile"><a>Profile</a></Link> </Menu.Item>
+                            <Menu.Item key="4" icon={<QuestionCircleOutlined />}>
+                                <Link href="/about"><a>About</a></Link> </Menu.Item>
+                        </Menu>
+                    </Col>
+                    <Col xs={8} md={4}>
+                        <Tooltip
+                            placement="bottom"
+                            title="해시테그를 검색해보세요!">
+                            <InputSearch enterButton
+                                value={searchInput}
+                                onChange={onChangeSearchInput}
+                                onSearch={onSearch} />
+                        </Tooltip>
+                    </Col>
+                </Row>
+            </Header>
+            <Content
+                className="layout-background" >
+                {children}
+            </Content>
+            <Footer className="layout-foot" justify="start">
+                <Col span={24} offset={2}>
+                    <a
+                        href="https://github.com/maldives0/ymillonga-sns"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >© 2020 Juyoung Jung.  All rights reserved. <GithubOutlined /> </a>
+                </Col>
+            </Footer>
+        </Layout >);
 };
 AppLayout.propTypes = {
     children: PropTypes.node.isRequired,

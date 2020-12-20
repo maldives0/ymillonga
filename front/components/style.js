@@ -92,12 +92,12 @@ export const nicknameInputSearch = styled(Input.Search)`
   }
   `;
 export const Logo = styled.div`
-height:50px;
+height:60px;
 margin:5px 10px;
 display:flex;
 justify-content:center;
 text-align:cetner;
-background-color:rgba(255,255,255,0.5);
+background-color:rgba(255,255,255,0.7);
 border-radius:50%;
 `;
 export const LoadingDiv = styled.div`
