@@ -209,6 +209,13 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
 
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
     try {
+        const exNickname = await User.findOne({
+            where: { nickname: req.body.nickname },
+        });
+        if (exNickname) {
+            res.status(403).send('이미 존재하는 닉네임입니다.');
+        }
+
         await User.update({
             nickname: req.body.nickname,
         }, {

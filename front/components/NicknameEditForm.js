@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import useInput from '../hooks/useInput';
 import PropTypes from 'prop-types';
-import { Form, Button, Row, Col } from 'antd';
+import { Form, Button, Row, Col, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_NICKNAME_REQUEST } from '../reducers/user';
 import { NicknameInputSearch } from './style';
@@ -12,8 +12,14 @@ const NicknameEditForm = ({ onCancel }) => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me);
     const changeNicknameLoading = useSelector(state => state.user.changeNicknameLoading);
+    const changeNicknameError = useSelector(state => state.user.changeNicknameError);
     const [nickname, onChangeNickname] = useInput(me?.nickname || '');
 
+    useEffect(() => {
+        if (changeNicknameError) {
+            message.error(changeNicknameError, 5);
+        }
+    }, [changeNicknameError]);
     const onSubmit = useCallback(() => {
         mutate("globalState", {
             ...data,
@@ -26,19 +32,34 @@ const NicknameEditForm = ({ onCancel }) => {
         trigger("globalState");
     }, [nickname]);
     return (
-        <Form>
+        <Form onFinish={onSubmit}>
             <Row>
-                <Col span={18}>
-                    <NicknameInputSearch
-                        loading={changeNicknameLoading}
-                        value={nickname}
-                        onChange={onChangeNickname}
-                        onSearch={onSubmit}
-                        addonBefore="닉네임:"
-                        enterButton="바꾸기" />
+                <Col>
+                    <Form.Item
+                        label="닉네임"
+                        rules={[
+                            { required: true, },
+                        ]}
+                    >
+                        <NicknameInputSearch
+                            value={nickname}
+                            required
+                            onChange={onChangeNickname}
+                        />
+                    </Form.Item>
                 </Col>
-                <Col span={3}>
-                    <Button onClick={onCancel}>취소하기</Button>
+            </Row>
+            <Row>
+                <Col span={16} offset={6}>
+                    <Button
+                        htmlType="submit"
+                        loading={changeNicknameLoading}
+                        type="primary"
+                    >바꾸기</Button>
+
+                    <Button
+                        style={{ marginLeft: 5 }}
+                        className="nickname-cancel-button" onClick={onCancel}>취소하기</Button>
                 </Col>
             </Row>
         </Form>

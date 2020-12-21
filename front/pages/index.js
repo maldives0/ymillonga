@@ -69,7 +69,7 @@ const Home = () => {
     }, [reportPostDone, reportPostError]);
     useEffect(() => {
         if (retweetError) {
-            alert('리트윗하는 도중에 에러가 발생했습니다.');
+            message.error('리트윗하는 도중에 에러가 발생했습니다.', 5);
         }
     }, [retweetError]);
 

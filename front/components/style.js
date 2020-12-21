@@ -55,17 +55,20 @@ export const GlobalLayout = () => (
         align-items:center;
         padding:3%;
       }
-      .site-page-header-heading{
-        justify-content:center;
+      .ant-page-header-compact .ant-page-header-heading{
+        justify-content:center !important;
       .ant-page-header-heading-left
       {
-        margin-top:5%;
-        flex-wrap:wrap;
-        justify-content: center;
-       .ant-page-header-heading-title  {
-                overflow:hidden;
-                margin:5px 10px;
-                 }     
+        margin-top:5% !important;
+        flex-wrap:wrap !important;
+        justify-content: center !important;
+        .ant-page-header-back{
+          span.ant-page-header-heading-title  {
+            overflow:unset !important;
+            margin:5px 10px !important;
+             }     
+        }
+       
       }
 
     }
@@ -98,11 +101,12 @@ margin:10px 0;`
 
 export const CardWrapper = styled.div`
 margin-bottom: 20px;`
-export const NicknameInputSearch = styled(Input.Search)`
+export const NicknameInputSearch = styled(Input)`
+width:300px;
   & > .ant-input-group > .ant-input-group-addon{
       left:-8px;
   }
-  `;
+    `;
 export const Logo = styled.div`
 height:60px;
 margin:5px 10px;

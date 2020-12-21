@@ -1182,7 +1182,13 @@ const NicknameEditForm = ({
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useDispatch"])();
   const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.me);
   const changeNicknameLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.changeNicknameLoading);
+  const changeNicknameError = Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["useSelector"])(state => state.user.changeNicknameError);
   const [nickname, onChangeNickname] = Object(_hooks_useInput__WEBPACK_IMPORTED_MODULE_2__["default"])((me === null || me === void 0 ? void 0 : me.nickname) || '');
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
+    if (changeNicknameError) {
+      antd__WEBPACK_IMPORTED_MODULE_4__["message"].error(changeNicknameError, 5);
+    }
+  }, [changeNicknameError]);
   const onSubmit = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     Object(swr__WEBPACK_IMPORTED_MODULE_8__["mutate"])("globalState", _objectSpread(_objectSpread({}, data), {}, {
       me: {
@@ -1195,18 +1201,29 @@ const NicknameEditForm = ({
     });
     Object(swr__WEBPACK_IMPORTED_MODULE_8__["trigger"])("globalState");
   }, [nickname]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Form"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Col"], {
-    span: 18
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Form"], {
+    onFinish: onSubmit
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Col"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Form"].Item, {
+    label: "\uB2C9\uB124\uC784",
+    rules: [{
+      required: true
+    }]
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_7__["NicknameInputSearch"], {
-    loading: changeNicknameLoading,
     value: nickname,
-    onChange: onChangeNickname,
-    onSearch: onSubmit,
-    addonBefore: "\uB2C9\uB124\uC784:",
-    enterButton: "\uBC14\uAFB8\uAE30"
-  })), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Col"], {
-    span: 3
+    required: true,
+    onChange: onChangeNickname
+  })))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Row"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Col"], {
+    span: 16,
+    offset: 6
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    htmlType: "submit",
+    loading: changeNicknameLoading,
+    type: "primary"
+  }, "\uBC14\uAFB8\uAE30"), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_9__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+    style: {
+      marginLeft: 5
+    },
+    className: "nickname-cancel-button",
     onClick: onCancel
   }, "\uCDE8\uC18C\uD558\uAE30"))));
 };
@@ -6273,8 +6290,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "1gtmbmz",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.site-page-header-heading{justify-content:center;.ant-page-header-heading-left{margin-top:5%;flex-wrap:wrap;justify-content:center;.ant-page-header-heading-title{overflow:hidden;margin:5px 10px;}}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
+  name: "jnsq93",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-compact .ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin-top:5%!important;flex-wrap:wrap!important;justify-content:center!important;.ant-page-header-back{span.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}}}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:14px 50px;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
@@ -6301,12 +6318,12 @@ const CardWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(
   name: "1azpx8r",
   styles: "margin-bottom:20px"
 } : undefined);
-const NicknameInputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].Search, {
+const NicknameInputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"], {
   target: "et0pmbv3",
   label: "NicknameInputSearch"
 })(true ? {
-  name: "1fwlh39",
-  styles: "&>.ant-input-group>.ant-input-group-addon{left:-8px;}"
+  name: "1t8216c",
+  styles: "width:300px;&>.ant-input-group>.ant-input-group-addon{left:-8px;}"
 } : undefined);
 const Logo = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
   target: "et0pmbv2",
