@@ -85,7 +85,8 @@ export const GlobalLayout = () => (
        position:fixed;
        bottom:0;
        width:100%;
-       padding: 14px 50px;
+       padding: 8px 50px;
+       text-align:center;
       }
          `
     } />
