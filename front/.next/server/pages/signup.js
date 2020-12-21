@@ -320,7 +320,7 @@ const AppLayout = ({
   }, [me && me.id]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (me && me.id) {
-      setCurrentKey(data === null || data === void 0 ? void 0 : data.me.menuKey);
+      setCurrentKey((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
     }
   }, [me && me.id]);
   const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {

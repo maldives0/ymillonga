@@ -10,8 +10,8 @@ const FollowButton = ({ post }) => {
     const unfollowLoading = useSelector(state => state.user.unfollowLoading);
     const ignoreLoading = useSelector(state => state.user.ignoreLoading);
     const unIgnoreLoading = useSelector(state => state.user.unIgnoreLoading);
-    const isFollowing = me.Followings.find((v) => v.id === post.User.id);
-    const isIgnoring = me.Ignorings.find((v) => v.id === post.User.id);
+    const isFollowing = me.Followings.find((v) => v.id === post.User?.id);
+    const isIgnoring = me.Ignorings.find((v) => v.id === post.User?.id);
     const dispatch = useDispatch();
     const ToggleFollow = useCallback(() => {
         if (isFollowing) {

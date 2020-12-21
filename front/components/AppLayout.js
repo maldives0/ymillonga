@@ -59,7 +59,7 @@ const AppLayout = ({ children }) => {
     }, [me && me.id]);
     useEffect(() => {
         if (me && me.id) {
-            setCurrentKey(data?.me.menuKey);
+            setCurrentKey(data?.me.menuKey || '1');
         }
     }, [me && me.id]);
 

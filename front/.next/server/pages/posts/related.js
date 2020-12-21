@@ -551,7 +551,7 @@ const AppLayout = ({
   }, [me && me.id]);
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(() => {
     if (me && me.id) {
-      setCurrentKey(data === null || data === void 0 ? void 0 : data.me.menuKey);
+      setCurrentKey((data === null || data === void 0 ? void 0 : data.me.menuKey) || '1');
     }
   }, [me && me.id]);
   const onLogout = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
@@ -5089,7 +5089,7 @@ moment__WEBPACK_IMPORTED_MODULE_6___default.a.locale('ko');
 const PostCard = ({
   post
 }) => {
-  var _post$Likers, _post$User, _post$User2, _post$User3, _post$User4;
+  var _post$Likers, _post$User, _post$User2, _post$User3, _post$User4, _post$User5;
 
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
   const id = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => {
@@ -5254,7 +5254,7 @@ const PostCard = ({
     extra: id && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(_FollowButton__WEBPACK_IMPORTED_MODULE_15__["default"], {
       post: post
     }),
-    title: post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null
+    title: post.RetweetId ? `${((_post$User2 = post.User) === null || _post$User2 === void 0 ? void 0 : _post$User2.nickname) || '탈퇴한 사용자'}님이 리트윗하셨습니다.` : null
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Modal"], {
     title: "report",
     visible: modalVisible,
@@ -5293,10 +5293,10 @@ const PostCard = ({
   }, moment__WEBPACK_IMPORTED_MODULE_6___default()(post.createdAt).startOf('hour').fromNow()), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Card"].Meta, {
     avatar: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_7___default.a, {
       prefetch: false,
-      href: `/user/${(_post$User2 = post.User) === null || _post$User2 === void 0 ? void 0 : _post$User2.id}`,
+      href: `/user/${(_post$User3 = post.User) === null || _post$User3 === void 0 ? void 0 : _post$User3.id}`,
       prefetch: false
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Avatar"], null, (_post$User3 = post.User) === null || _post$User3 === void 0 ? void 0 : _post$User3.nickname[0]))),
-    title: (_post$User4 = post.User) === null || _post$User4 === void 0 ? void 0 : _post$User4.nickname,
+    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])("a", null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_2__["Avatar"], null, ((_post$User4 = post.User) === null || _post$User4 === void 0 ? void 0 : _post$User4.nickname[0]) || 'null'))),
+    title: ((_post$User5 = post.User) === null || _post$User5 === void 0 ? void 0 : _post$User5.nickname) || '탈퇴한 사용자',
     description: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_19__["jsx"])(_PostCardContent__WEBPACK_IMPORTED_MODULE_16__["default"], {
       editMode: editMode,
       onCancelUpdate: onCancelUpdate,
@@ -6414,15 +6414,23 @@ __webpack_require__.r(__webpack_exports__);
 const FollowButton = ({
   post
 }) => {
-  var _post$User;
+  var _post$User3;
 
   const me = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.me);
   const followLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.followLoading);
   const unfollowLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.unfollowLoading);
   const ignoreLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.ignoreLoading);
   const unIgnoreLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useSelector"])(state => state.user.unIgnoreLoading);
-  const isFollowing = me.Followings.find(v => v.id === post.User.id);
-  const isIgnoring = me.Ignorings.find(v => v.id === post.User.id);
+  const isFollowing = me.Followings.find(v => {
+    var _post$User;
+
+    return v.id === ((_post$User = post.User) === null || _post$User === void 0 ? void 0 : _post$User.id);
+  });
+  const isIgnoring = me.Ignorings.find(v => {
+    var _post$User2;
+
+    return v.id === ((_post$User2 = post.User) === null || _post$User2 === void 0 ? void 0 : _post$User2.id);
+  });
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["useDispatch"])();
   const ToggleFollow = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(() => {
     if (isFollowing) {
@@ -6451,7 +6459,7 @@ const FollowButton = ({
     }
   }, [isIgnoring]);
 
-  if (((_post$User = post.User) === null || _post$User === void 0 ? void 0 : _post$User.id) === me.id) {
+  if (((_post$User3 = post.User) === null || _post$User3 === void 0 ? void 0 : _post$User3.id) === me.id) {
     return null;
   }
 

@@ -192,7 +192,7 @@ const PostCard = ({ post }) => {
                     </Popover>,
                 ]}
                 extra={id && <FollowButton post={post} />}
-                title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
+                title={post.RetweetId ? `${post.User?.nickname || '탈퇴한 사용자'}님이 리트윗하셨습니다.` : null}
             >
                 <Modal
                     title="report"
@@ -251,11 +251,11 @@ const PostCard = ({ post }) => {
                                         href={`/user/${post.User?.id}`}
                                         prefetch={false}>
                                         <a><Avatar>
-                                            {post.User?.nickname[0]}
+                                            {post.User?.nickname[0] || 'null'}
                                         </Avatar></a>
                                     </Link>
                                 )}
-                                title={post.User?.nickname}
+                                title={post.User?.nickname || '탈퇴한 사용자'}
                                 description={
                                     <PostCardContent
                                         editMode={editMode}
