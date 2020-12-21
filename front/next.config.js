@@ -18,14 +18,11 @@ module.exports = withBundleAnalyzer(withLess({
             mode: prod ? 'production' : 'development',
             plugins: [
                 ...config.plugins,
-                new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),  
-                              ],
-            };
+                new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+            ],
+        };
         if (prod) {
-            newConfig.devtool = 'hidden-source-map'; 
-            newConfig.resolve.alias = {
-             "@ant-design/icons$": resolve(__dirname, "path/to/your/src/icons.tsx")
-            };          
+            newConfig.devtool = 'hidden-source-map';
         }
         return newConfig;
     },
