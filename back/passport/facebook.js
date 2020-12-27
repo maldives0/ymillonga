@@ -2,7 +2,7 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt');
 
-//구글 로그인 전략
+//페이스북 로그인 전략
 dotenv.config();
 const { User } = require('../models');
 const FacebookStrategy = require('passport-facebook').Strategy;
