@@ -55,23 +55,32 @@ export const GlobalLayout = () => (
         align-items:center;
         padding:3%;
       }
-      .ant-page-header-compact .ant-page-header-heading{
+      .ant-page-header-heading{
         justify-content:center !important;
-      .ant-page-header-heading-left
-      {
-        margin-top:5% !important;
-        flex-wrap:wrap !important;
-        justify-content: center !important;
-        .ant-page-header-back{
+        .ant-page-header-heading-left
+        {
+          margin:0 ;
+          flex-wrap:wrap;
+          justify-content: center;
+  
           span.ant-page-header-heading-title  {
             overflow:unset !important;
             margin:5px 10px !important;
-             }     
-        }
-       
+             }
+          span.ant-page-header-heading-sub-title{
+            white-space:normal !important;
+            margin-top:15px !important;
+            line-height: 2em;
+            }
+          } 
       }
-
-    }
+      @media (max-width: 576px){
+        .ant-page-header-heading-left
+        {
+          margin-top:10% !important;
+         }
+      }
+    
     .ant-list-bordered{
       background:#fff;
     }
@@ -93,7 +102,7 @@ export const GlobalLayout = () => (
 );
 export const InputSearch = styled(Input.Search)`
 vertical-align: middle;
-margin-right:5px;`
+`
   ;
 export const InputReport = styled(Input.TextArea)`
 position: relative;
@@ -110,11 +119,11 @@ width:300px;
     `;
 export const Logo = styled.div`
 height:60px;
-margin:5px 10px;
+margin:3px 25px 3px 20px;
 display:flex;
 justify-content:center;
 text-align:cetner;
-background-color:rgba(255,255,255,0.7);
+background-color:rgba(255,255,255,0.5);
 border-radius:50%;
 `;
 export const LoadingDiv = styled.div`

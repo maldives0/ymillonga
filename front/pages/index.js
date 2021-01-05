@@ -94,6 +94,16 @@ const Home = () => {
 
     return (
         <AppLayout>
+            {me && me.id ? <UserProfile /> : (
+                <PageHeader
+                    className="site-page-header"
+                    onBack={() => Router.push('/login')}
+                    title="당신의 밀롱가 경험을 공유해주세요!"
+                    subTitle="로그인을 하면 Y millonga에서 제공하는 다양한 기능을 누리실 수 있습니다."
+                    backIcon={<Tooltip title="로그인하러 가기"
+                    ><UpOutlined /></Tooltip>}
+                />
+            )}
             <div style={{ textAlign: 'center', marginTop: '5%' }}>
                 <img
                     width={400}
@@ -101,17 +111,6 @@ const Home = () => {
                     src="/images/dancers.png"
                 /></div>
 
-            {me && me.id ? <UserProfile /> : (
-                <PageHeader
-                    className="site-page-header"
-                    onBack={() => Router.push('/login')}
-                    title="당신의 밀롱가 경험을 공유해주세요!"
-                    subTitle="로그인 후 게시글을 작성해보세요."
-                    backIcon={<Tooltip title="로그인하러 가기"
-
-                    ><UpOutlined /></Tooltip>}
-                />
-            )}
             {me && me.id &&
                 (<>
                     <PostForm />

@@ -566,17 +566,17 @@ const AppLayout = ({
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Row"], {
     justify: "space-between"
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
-    xs: 3,
-    sm: 2
+    xs: 4,
+    sm: 3
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_10__["Logo"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(next_image__WEBPACK_IMPORTED_MODULE_14___default.a, {
     src: "/images/ic_logo.png",
     alt: "logo",
     width: 70,
     height: 70
   }))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
-    xs: 13,
-    sm: 16,
-    md: 17
+    xs: 10,
+    sm: 14,
+    md: 16
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Menu"], {
     theme: "dark",
     onClick: onClickDefaultKey,
@@ -607,18 +607,16 @@ const AppLayout = ({
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_13___default.a, {
     href: "/about"
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])("a", null, "About")), " "))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
-    xs: 8,
-    sm: 6,
+    xs: 10,
+    sm: 7,
     md: 5
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Tooltip"], {
-    placement: "bottom",
-    title: "\uD574\uC2DC\uD14C\uADF8\uB97C \uAC80\uC0C9\uD574\uBCF4\uC138\uC694!"
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_10__["InputSearch"], {
     enterButton: true,
+    placeholder: "\uD574\uC2DC\uD0DC\uADF8\uB97C \uAC80\uC0C9\uD574\uBCF4\uC138\uC694",
     value: searchInput,
     onChange: onChangeSearchInput,
     onSearch: onSearch
-  }))))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(Content, {
+  })))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(Content, {
     className: "layout-background"
   }, children), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(Footer, {
     className: "layout-foot",
@@ -6290,8 +6288,8 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "1o7s2rg",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-compact .ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin-top:5%!important;flex-wrap:wrap!important;justify-content:center!important;.ant-page-header-back{span.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}}}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
+  name: "7a0j9a",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin:0;flex-wrap:wrap;justify-content:center;span.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}span.ant-page-header-heading-sub-title{white-space:normal!important;margin-top:15px!important;line-height:2em;}}}@media (max-width: 576px){.ant-page-header-heading-left{margin-top:10%!important;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
@@ -6301,8 +6299,8 @@ const InputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0
   target: "et0pmbv6",
   label: "InputSearch"
 })(true ? {
-  name: "1yb74ka",
-  styles: "vertical-align:middle;margin-right:5px"
+  name: "1989ovb",
+  styles: "vertical-align:middle"
 } : undefined);
 const InputReport = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].TextArea, {
   target: "et0pmbv5",
@@ -6329,8 +6327,8 @@ const Logo = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", 
   target: "et0pmbv2",
   label: "Logo"
 })(true ? {
-  name: "15fb1w1",
-  styles: "height:60px;margin:5px 10px;display:flex;justify-content:center;text-align:cetner;background-color:rgba(255,255,255,0.7);border-radius:50%"
+  name: "ew8o37",
+  styles: "height:60px;margin:3px 25px 3px 20px;display:flex;justify-content:center;text-align:cetner;background-color:rgba(255,255,255,0.5);border-radius:50%"
 } : undefined);
 const LoadingDiv = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
   target: "et0pmbv1",

@@ -54,7 +54,7 @@ const User = () => {
         };
     }, [mainPosts.length, hasMorePosts, loadPostsLoading, id]);
     //og:카카오톡에 나오는 정보
-    console.log('userInfo', userInfo);
+    // console.log('userInfo', userInfo);
     return (
         <AppLayout>
             {userInfo && (

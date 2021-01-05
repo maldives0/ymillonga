@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Row, Col, Tooltip, } from 'antd';
+import { Layout, Menu, Row, Col } from 'antd';
 import {
     default as HomeOutlined,
 } from '@ant-design/icons/HomeOutlined';
@@ -76,7 +76,7 @@ const AppLayout = ({ children }) => {
             <GlobalLayout />
             <Header className="layout-background-header" >
                 <Row justify="space-between">
-                    <Col xs={3} sm={2}>
+                    <Col xs={4} sm={3}>
                         <Logo>
                             <Image
                                 src="/images/ic_logo.png"
@@ -85,7 +85,7 @@ const AppLayout = ({ children }) => {
                                 height={70} />
                         </Logo>
                     </Col>
-                    <Col xs={13} sm={16} md={17}>
+                    <Col xs={10} sm={14} md={16}>
                         <Menu
                             theme="dark"
                             onClick={onClickDefaultKey}
@@ -114,15 +114,12 @@ const AppLayout = ({ children }) => {
                                 <Link href="/about"><a>About</a></Link> </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col xs={8} sm={6} md={5}>
-                        <Tooltip
-                            placement="bottom"
-                            title="해시테그를 검색해보세요!">
-                            <InputSearch enterButton
-                                value={searchInput}
-                                onChange={onChangeSearchInput}
-                                onSearch={onSearch} />
-                        </Tooltip>
+                    <Col xs={10} sm={7} md={5}>
+                        <InputSearch enterButton
+                            placeholder="해시태그를 검색해보세요"
+                            value={searchInput}
+                            onChange={onChangeSearchInput}
+                            onSearch={onSearch} />
                     </Col>
                 </Row>
             </Header>
