@@ -442,7 +442,7 @@ const AppLayout = ({
   }))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
     xs: 10,
     sm: 14,
-    md: 16
+    md: 14
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Menu"], {
     theme: "dark",
     onClick: onClickDefaultKey,
@@ -475,7 +475,8 @@ const AppLayout = ({
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])("a", null, "About")), " "))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
     xs: 10,
     sm: 7,
-    md: 5
+    md: 6,
+    lg: 4
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_10__["InputSearch"], {
     enterButton: true,
     placeholder: "\uD574\uC2DC\uD0DC\uADF8\uB97C \uAC80\uC0C9\uD574\uBCF4\uC138\uC694",
@@ -5815,14 +5816,16 @@ module.exports = require("prop-types");
 /*!*****************************!*\
   !*** ./components/style.js ***!
   \*****************************/
-/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
+/*! exports provided: GlobalLayout, InputSearch, ButtonLayout, InputReport, ImgWrapper, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GlobalLayout", function() { return GlobalLayout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputSearch", function() { return InputSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonLayout", function() { return ButtonLayout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputReport", function() { return InputReport; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImgWrapper", function() { return ImgWrapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CardWrapper", function() { return CardWrapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NicknameInputSearch", function() { return NicknameInputSearch; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
@@ -5850,26 +5853,40 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "7a0j9a",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin:0;flex-wrap:wrap;justify-content:center;span.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}span.ant-page-header-heading-sub-title{white-space:normal!important;margin-top:15px!important;line-height:2em;}}}@media (max-width: 576px){.ant-page-header-heading-left{margin-top:10%!important;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
+  name: "1nzljyf",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0px;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin:0;flex-direction:column;justify-content:center;.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}.ant-page-header-heading-sub-title{white-space:normal!important;line-height:2em;}}}@media (max-width: 576px){.ant-page-header-heading-left{margin-top:10%!important;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
   styles: _ref2
 });
 const InputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].Search, {
-  target: "et0pmbv6",
+  target: "et0pmbv8",
   label: "InputSearch"
 })(true ? {
   name: "1989ovb",
   styles: "vertical-align:middle"
 } : undefined);
+const ButtonLayout = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+  target: "et0pmbv7",
+  label: "ButtonLayout"
+})(true ? {
+  name: "15vsrev",
+  styles: "color:#fff;font-size:20px;height:auto;margin:15%"
+} : undefined);
 const InputReport = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].TextArea, {
-  target: "et0pmbv5",
+  target: "et0pmbv6",
   label: "InputReport"
 })(true ? {
   name: "1b2aqw4",
   styles: "position:relative;margin:10px 0"
+} : undefined);
+const ImgWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
+  target: "et0pmbv5",
+  label: "ImgWrapper"
+})(true ? {
+  name: "1c10oam",
+  styles: "margin-bottom:20px;text-align:center;margin:5%;&>img{width:90%;height:30%;}@media (max-width: 576px){&>img{height:5%;}}"
 } : undefined);
 const CardWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
   target: "et0pmbv4",

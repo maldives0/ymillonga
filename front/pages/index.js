@@ -9,13 +9,14 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 import axios from 'axios';
-import { PageHeader, message, Button, Tooltip } from 'antd';
+import { PageHeader, message, Button } from 'antd';
 import Link from 'next/link';
 import Router from 'next/router';
+import { ButtonLayout, ImgWrapper } from '../components/style';
 
 import {
-    default as UpOutlined,
-} from '@ant-design/icons/UpOutlined';
+    default as LoginOutlined,
+} from '@ant-design/icons/LoginOutlined';
 const Home = () => {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.user.me?.id);
@@ -98,18 +99,17 @@ const Home = () => {
                 <PageHeader
                     className="site-page-header"
                     onBack={() => Router.push('/login')}
-                    title="당신의 밀롱가 경험을 공유해주세요!"
+                    title="이번 밀롱가에서는 어떤 일이 있었나요?"
                     subTitle="로그인을 하면 Y millonga에서 제공하는 다양한 기능을 누리실 수 있습니다."
-                    backIcon={<Tooltip title="로그인하러 가기"
-                    ><UpOutlined /></Tooltip>}
+                    backIcon={<ButtonLayout
+                        type="primary"
+                        onClick={() => Router.push('/login')}
+                    ><LoginOutlined />로그인</ButtonLayout>}
                 />
             )}
-            <div style={{ textAlign: 'center', marginTop: '5%' }}>
-                <img
-                    width={400}
-                    height={70}
-                    src="/images/dancers.png"
-                /></div>
+            <ImgWrapper>
+                <img src="/images/dancers.png" />
+            </ImgWrapper>
 
             {me && me.id &&
                 (<>
@@ -132,6 +132,7 @@ const Home = () => {
         </AppLayout>
     );
 };
+//antd.less => antd customize theme
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
 
     const cookie = context.req ? context.req.headers.cookie : '';

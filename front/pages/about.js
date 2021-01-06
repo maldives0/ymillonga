@@ -25,11 +25,11 @@ const About = () => {
                     <Link href="https://ko.wikipedia.org/wiki/%EB%B0%80%EB%A1%B1%EA%B0%80">밀롱가(Milonga)</Link>는 이런 탱고를 즐기기 위해 사람들이 모이는 장소 및 시간을 의미합니다. Y Millonga는 여러분이 밀롱가에서 경험했던 잊지 못할 추억을 탱고인들과 함께 나눌 수 있는 소셜 네트워크 서비스(SNS)입니다.
 
     </Paragraph>
-                <Title style={{ textAlign: 'center' }} level={2}>Y Millonga는 탱고를 사랑하는 사람들을 위한 SNS입니다.</Title>
+                <Title style={{ textAlign: 'center', margin: '100px 0 30px 0' }} level={2}>Y Millonga는 탱고를 사랑하는 사람들을 위한 SNS입니다.</Title>
                 <div style={{ textAlign: 'center', marginBottom: 15 }}>
                     <img
-                        width={400}
-                        height={70}
+                        width={600}
+                        height={100}
                         src="/images/dancers.png"
                     /></div>
                 <Paragraph>
@@ -45,7 +45,7 @@ const About = () => {
                     </blockquote>
                     <Text style={{ float: 'right', fontSize: 10 }} type="secondary"><Link href="https://cafe.naver.com/useserver">출처 보러가기</Link></Text>
                 </Paragraph>
-                <Title level={3} style={{ margin: '6% 0', lineHeight: 2 }}>Y Millonga는 여러분 개개인이 밀롱가에서 경험한 누구하고도 비교할 수 없기에 소중하고 유일한 경험을 함께 나누고 싶은 바램에서 시작되었습니다.</Title>
+                <Title level={2} style={{ margin: '10% 0', lineHeight: 2 }}> Y Millonga는 여러분 개개인이 밀롱가에서 경험한 누구하고도 비교할 수 없기에 소중하고 유일한 경험을 함께 나누고 싶은 바램에서 시작되었습니다.</Title>
             </Typography>
         </AppLayout>
 

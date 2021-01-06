@@ -442,7 +442,7 @@ const AppLayout = ({
   }))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
     xs: 10,
     sm: 14,
-    md: 16
+    md: 14
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Menu"], {
     theme: "dark",
     onClick: onClickDefaultKey,
@@ -475,7 +475,8 @@ const AppLayout = ({
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])("a", null, "About")), " "))), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_3__["Col"], {
     xs: 10,
     sm: 7,
-    md: 5
+    md: 6,
+    lg: 4
   }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_18__["jsx"])(_style__WEBPACK_IMPORTED_MODULE_10__["InputSearch"], {
     enterButton: true,
     placeholder: "\uD574\uC2DC\uD0DC\uADF8\uB97C \uAC80\uC0C9\uD574\uBCF4\uC138\uC694",
@@ -2367,10 +2368,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! next/router */ "4Q3z");
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var _ant_design_icons_UpOutlined__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ant-design/icons/UpOutlined */ "bKpI");
-/* harmony import */ var _ant_design_icons_UpOutlined__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_ant_design_icons_UpOutlined__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @emotion/react */ "Kps4");
-/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _components_style__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../components/style */ "uFM0");
+/* harmony import */ var _ant_design_icons_LoginOutlined__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @ant-design/icons/LoginOutlined */ "S6m+");
+/* harmony import */ var _ant_design_icons_LoginOutlined__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_ant_design_icons_LoginOutlined__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @emotion/react */ "Kps4");
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(_emotion_react__WEBPACK_IMPORTED_MODULE_17__);
+
 
 
 
@@ -2471,39 +2474,34 @@ const Home = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [mainPosts, hasMorePosts, loadPostsLoading]);
-  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_3__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(_components_UserProfile__WEBPACK_IMPORTED_MODULE_6__["default"], null) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_12__["PageHeader"], {
+  return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_AppLayout__WEBPACK_IMPORTED_MODULE_3__["default"], null, me && me.id ? Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_UserProfile__WEBPACK_IMPORTED_MODULE_6__["default"], null) : Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_12__["PageHeader"], {
     className: "site-page-header",
     onBack: () => next_router__WEBPACK_IMPORTED_MODULE_14___default.a.push('/login'),
-    title: "\uB2F9\uC2E0\uC758 \uBC00\uB871\uAC00 \uACBD\uD5D8\uC744 \uACF5\uC720\uD574\uC8FC\uC138\uC694!",
+    title: "\uC774\uBC88 \uBC00\uB871\uAC00\uC5D0\uC11C\uB294 \uC5B4\uB5A4 \uC77C\uC774 \uC788\uC5C8\uB098\uC694?",
     subTitle: "\uB85C\uADF8\uC778\uC744 \uD558\uBA74 Y millonga\uC5D0\uC11C \uC81C\uACF5\uD558\uB294 \uB2E4\uC591\uD55C \uAE30\uB2A5\uC744 \uB204\uB9AC\uC2E4 \uC218 \uC788\uC2B5\uB2C8\uB2E4.",
-    backIcon: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_12__["Tooltip"], {
-      title: "\uB85C\uADF8\uC778\uD558\uB7EC \uAC00\uAE30"
-    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(_ant_design_icons_UpOutlined__WEBPACK_IMPORTED_MODULE_15___default.a, null))
-  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])("div", {
-    style: {
-      textAlign: 'center',
-      marginTop: '5%'
-    }
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])("img", {
-    width: 400,
-    height: 70,
+    backIcon: Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_style__WEBPACK_IMPORTED_MODULE_15__["ButtonLayout"], {
+      type: "primary",
+      onClick: () => next_router__WEBPACK_IMPORTED_MODULE_14___default.a.push('/login')
+    }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_ant_design_icons_LoginOutlined__WEBPACK_IMPORTED_MODULE_16___default.a, null), "\uB85C\uADF8\uC778")
+  }), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_style__WEBPACK_IMPORTED_MODULE_15__["ImgWrapper"], null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])("img", {
     src: "/images/dancers.png"
-  })), me && me.id && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(_components_PostForm__WEBPACK_IMPORTED_MODULE_4__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_12__["Button"], {
+  })), me && me.id && Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(react__WEBPACK_IMPORTED_MODULE_1___default.a.Fragment, null, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_PostForm__WEBPACK_IMPORTED_MODULE_4__["default"], null), Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(antd__WEBPACK_IMPORTED_MODULE_12__["Button"], {
     style: {
       marginBottom: 5
     },
     type: "primary",
     loading: loadPostsLoading,
     onClick: onClickRelatedPosts
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_13___default.a, {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(next_link__WEBPACK_IMPORTED_MODULE_13___default.a, {
     href: "/posts/related"
-  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])("a", null, "\uD314\uB85C\uC789 \uAC8C\uC2DC\uAE00\uB9CC \uBCF4\uAE30")))), mainPosts === null || mainPosts === void 0 ? void 0 : mainPosts.map(post => {
-    return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_16__["jsx"])(_components_PostCard__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])("a", null, "\uD314\uB85C\uC789 \uAC8C\uC2DC\uAE00\uB9CC \uBCF4\uAE30")))), mainPosts === null || mainPosts === void 0 ? void 0 : mainPosts.map(post => {
+    return Object(_emotion_react__WEBPACK_IMPORTED_MODULE_17__["jsx"])(_components_PostCard__WEBPACK_IMPORTED_MODULE_5__["default"], {
       key: post.id,
       post: post
     });
   }));
-};
+}; //antd.less => antd customize theme
+
 
 const getServerSideProps = _store_configureStore__WEBPACK_IMPORTED_MODULE_9__["default"].getServerSideProps(async context => {
   const cookie = context.req ? context.req.headers.cookie : '';
@@ -2932,17 +2930,6 @@ ImagesZoom.propTypes = {
 /***/ (function(module, exports) {
 
 module.exports = require("swr");
-
-/***/ }),
-
-/***/ "bKpI":
-/*!***********************************************!*\
-  !*** external "@ant-design/icons/UpOutlined" ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@ant-design/icons/UpOutlined");
 
 /***/ }),
 
@@ -6322,14 +6309,16 @@ module.exports = require("prop-types");
 /*!*****************************!*\
   !*** ./components/style.js ***!
   \*****************************/
-/*! exports provided: GlobalLayout, InputSearch, InputReport, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
+/*! exports provided: GlobalLayout, InputSearch, ButtonLayout, InputReport, ImgWrapper, CardWrapper, NicknameInputSearch, Logo, LoadingDiv, LoadMore, ImageLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GlobalLayout", function() { return GlobalLayout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputSearch", function() { return InputSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ButtonLayout", function() { return ButtonLayout; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InputReport", function() { return InputReport; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ImgWrapper", function() { return ImgWrapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CardWrapper", function() { return CardWrapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NicknameInputSearch", function() { return NicknameInputSearch; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Logo", function() { return Logo; });
@@ -6357,26 +6346,40 @@ function _EMOTION_STRINGIFIED_CSS_ERROR__() { return "You have tried to stringif
 
 
 var _ref2 = true ? {
-  name: "7a0j9a",
-  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin:0;flex-wrap:wrap;justify-content:center;span.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}span.ant-page-header-heading-sub-title{white-space:normal!important;margin-top:15px!important;line-height:2em;}}}@media (max-width: 576px){.ant-page-header-heading-left{margin-top:10%!important;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
+  name: "1nzljyf",
+  styles: "#components-layout-demo-custom-trigger .trigger{font-size:18px;line-height:64px;padding:0 24px;cursor:pointer;transition:color 0.3s;}#components-layout-demo-custom-trigger .trigger:hover{color:#1890ff;}#nest-messages{margin-top:10%;text-align:center;}body{background:#f0f2f5;}.ant-card-type-inner .ant-card-head,.ant-card-head{background:#fafafa;}.ant-card-bordered .ant-card-cover{margin:0;}.layout .layout-background-header{background:#000;position:fixed;top:0;width:100%;z-index:100;padding:0 10px;.ant-row ant-row-space-between{padding:0 2%;}.ant-input-group-addon{left:0px;}}.ant-card-bordered .ant-card-cover{display:flex;justify-content:center;align-items:center;padding:3%;}.ant-page-header-heading{justify-content:center!important;.ant-page-header-heading-left{margin:0;flex-direction:column;justify-content:center;.ant-page-header-heading-title{overflow:unset!important;margin:5px 10px!important;}.ant-page-header-heading-sub-title{white-space:normal!important;line-height:2em;}}}@media (max-width: 576px){.ant-page-header-heading-left{margin-top:10%!important;}}.ant-list-bordered{background:#fff;}.ant-layout-content{padding:9% 3%!important;}.layout-background{margin:0;}.layout-foot{position:fixed;bottom:0;width:100%;padding:8px 50px;text-align:center;}"
 } : undefined;
 
 const GlobalLayout = () => Object(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["jsx"])(_emotion_react__WEBPACK_IMPORTED_MODULE_3__["Global"], {
   styles: _ref2
 });
 const InputSearch = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].Search, {
-  target: "et0pmbv6",
+  target: "et0pmbv8",
   label: "InputSearch"
 })(true ? {
   name: "1989ovb",
   styles: "vertical-align:middle"
 } : undefined);
+const ButtonLayout = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+  target: "et0pmbv7",
+  label: "ButtonLayout"
+})(true ? {
+  name: "15vsrev",
+  styles: "color:#fff;font-size:20px;height:auto;margin:15%"
+} : undefined);
 const InputReport = /*#__PURE__*/_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()(antd__WEBPACK_IMPORTED_MODULE_4__["Input"].TextArea, {
-  target: "et0pmbv5",
+  target: "et0pmbv6",
   label: "InputReport"
 })(true ? {
   name: "1b2aqw4",
   styles: "position:relative;margin:10px 0"
+} : undefined);
+const ImgWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
+  target: "et0pmbv5",
+  label: "ImgWrapper"
+})(true ? {
+  name: "1c10oam",
+  styles: "margin-bottom:20px;text-align:center;margin:5%;&>img{width:90%;height:30%;}@media (max-width: 576px){&>img{height:5%;}}"
 } : undefined);
 const CardWrapper = _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0___default()("div", {
   target: "et0pmbv4",

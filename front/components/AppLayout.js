@@ -85,7 +85,7 @@ const AppLayout = ({ children }) => {
                                 height={70} />
                         </Logo>
                     </Col>
-                    <Col xs={10} sm={14} md={16}>
+                    <Col xs={10} sm={14} md={14} >
                         <Menu
                             theme="dark"
                             onClick={onClickDefaultKey}
@@ -114,7 +114,7 @@ const AppLayout = ({ children }) => {
                                 <Link href="/about"><a>About</a></Link> </Menu.Item>
                         </Menu>
                     </Col>
-                    <Col xs={10} sm={7} md={5}>
+                    <Col xs={10} sm={7} md={6} lg={4}>
                         <InputSearch enterButton
                             placeholder="해시태그를 검색해보세요"
                             value={searchInput}
