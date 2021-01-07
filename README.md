@@ -30,7 +30,7 @@ Google/Facebook OAuth를 이용해 login하기, Infinite scrolling, 게시글 �
 
 * 프론트엔드 화면을 디자인할 때 다양한 UI components를 제공하는 antd와 별다른 설정 없이 SSR이 되는 emotion 라이브러리를 선택했습니다. 
  탱고를 상징하는 붉은색으로 antd의 custom theme을 적용하기위해 Next의 Webpack 설정을 바꾸는 작업이 필요했습니다. 이때 @zeit/next-less라는 plugin을 사용하면서 Webpack의 기본 구조를 공부했습니다. Next 서버를 빌드하는 과정에서 antd에서 제공하는 icon이 2MB를 차지하는 문제가 발생해 사용한 아이콘 파일만 가져오도록 tree-shaking 해보았습니다.
- (관련 블로그 글:https://mal)es0.github.io/posts/antd_icon-tree_shaking)  
+ (관련 블로그 글:https://maldives0.github.io/posts/antd_icon-tree_shaking/)  
  
 * sns 기능을 위해 필요한 총 27가지의 case를 만들면서 redux와 redux-saga를 만들 때 코드량이 많아지는 문제가 있었습니다. 그래서 변수명을 최대한 기능에 맞게 만들도록 노력했습니다. 이런 문제를 경험한 뒤라서 redux toolkit를 사용하면 코드량을 많이 줄일 수 있다는 반가운 사실을 알게 되어 앞으로의 프로젝트에서는 이를 적용해보기위해 공부해보고 싶은 생각이 큽니다.
  한편 Header의 메뉴탭 변경하기, 닉네임 바꾸기 기능은 빠른 데이터 fetching이 필요한 부분이라고 판단되어 SWR 라이브러리를 사용해보았습니다.    
