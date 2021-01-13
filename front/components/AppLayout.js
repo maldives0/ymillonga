@@ -4,7 +4,6 @@ import { Layout, Menu, Row, Col } from 'antd';
 import {
     default as HomeOutlined,
 } from '@ant-design/icons/HomeOutlined';
-
 import {
     default as LoginOutlined,
 } from '@ant-design/icons/LoginOutlined';
