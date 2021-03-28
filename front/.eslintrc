@@ -1,5 +1,5 @@
 {
-    "parser":"babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
       "ecmaVersion": 2020,
       "sourceType": "module",
@@ -9,26 +9,37 @@
     },
     "env": {
       "browser": true,
-      "node": true
+      "node": true,
+      "es6": true
     },
     "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
+      "airbnb"
     ],
     "plugins": [
-      "import",
+      "@typescript-eslint",
       "react-hooks"
     ],
+    "settings":{
+      "import/resolver":{
+        "node":{
+          "extensions":[".js",".jsx",".ts",".tsx",".d.ts"]
+        }
+      }
+    },
     "rules": {
-      "jsx-a11y/label-has-associated-control": "off",
-      "jsx-a11y/anchor-is-valid": "off",
-      "no-console": "off",
-      "no-underscore-dangle": "off",
-      "react/forbid-prop-types": "off",
-      "react/jsx-filename-extension": "off",
-      "react/jsx-one-expression-per-line": "off",
-      "object-curly-newline": "off",
-      "linebreak-style": "off",
-      "no-param-reassign": "off"
+      "react/jsx-props-no-spreading": 0,
+      "react/jsx-filename-extension": 0,
+      "react/prop-types": 0,
+      "no-unused-vars": 0,
+      "max-len": 0,
+      "import/extensions": 0,
+      "no-underscore-dangle":0,
+      "react/forbid-prop-types": 0,
+      "object-curly-newline": 0,
+      "no-nested-ternary": 0,
+      "no-param-reassign": 0,
+      "linebreak-style": 0,
+      "jsx-a11y/anchor-is-valid": 0,
+      "jsx-a11y/label-has-associated-control": 0
     }
   }
