@@ -1,7 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 
-import 'antd/dist/antd.less';
+// import 'antd/dist/antd.css';
+// import 'antd/dist/antd.less';
 import wrapper from '../store/configureStore';
 
 

@@ -31,7 +31,7 @@ db.sequelize.sync()
 app.use(morgan('dev'));
 
 if (prod) {
-    app.set('trust proxy', 1);
+    // app.set('trust proxy', 1);//https
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet({ contentSecurityPolicy: false }));
@@ -46,6 +46,9 @@ if (prod) {
         credentials: true,
     }));
 }
+// // 화면 engine을 ejs로 설정
+// app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname,'views'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
