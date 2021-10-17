@@ -1,13 +1,10 @@
-import axios from 'axios';
-import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
+import axios from "axios";
+import { all, call, delay, fork, put, takeLatest } from "redux-saga/effects";
 
 import {
   CHANGE_NICKNAME_FAILURE,
   CHANGE_NICKNAME_REQUEST,
   CHANGE_NICKNAME_SUCCESS,
-  CHANGE_MENUKEY_FAILURE,
-  CHANGE_MENUKEY_REQUEST,
-  CHANGE_MENUKEY_SUCCESS,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
@@ -41,9 +38,9 @@ import {
   LOAD_MY_INFO_FAILURE,
   LOAD_MY_INFO_REQUEST,
   LOAD_MY_INFO_SUCCESS,
-} from '../reducers/user';
+} from "../reducers/user";
 function loadMyInfoAPI() {
-  return axios.get('/user');
+  return axios.get("/user");
 }
 
 function* loadMyInfo() {
@@ -84,7 +81,7 @@ function* loadUser(action) {
 }
 
 function loginAPI(data) {
-  return axios.post('/user/login', data);
+  return axios.post("/user/login", data);
 }
 function* login(action) {
   try {
@@ -103,7 +100,7 @@ function* login(action) {
   }
 }
 function logoutAPI() {
-  return axios.post('/user/logout');
+  return axios.post("/user/logout");
 }
 function* logout() {
   try {
@@ -122,7 +119,7 @@ function* logout() {
 }
 
 function signupAPI(data) {
-  return axios.post('/user', data);
+  return axios.post("/user", data);
 }
 function* signup(action) {
   try {
@@ -140,7 +137,7 @@ function* signup(action) {
   }
 }
 function changeNicknameAPI(data) {
-  return axios.patch('/user/nickname', { nickname: data });
+  return axios.patch("/user/nickname", { nickname: data });
 }
 function* changeNickname(action) {
   try {
@@ -158,25 +155,7 @@ function* changeNickname(action) {
     });
   }
 }
-function changeMenuKeyAPI(data) {
-  return axios.patch('/user/menuKey', { currentKey: data });
-}
-function* changeMenuKey(action) {
-  try {
-    const result = yield call(changeMenuKeyAPI, action.data);
 
-    yield put({
-      type: CHANGE_MENUKEY_SUCCESS,
-      data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: CHANGE_MENUKEY_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
 function ignoreAPI(data) {
   return axios.patch(`/user/${data}/ignore`);
 }
@@ -303,9 +282,7 @@ function* watchSignup() {
 function* watchChangeNickname() {
   yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
-function* watchChangeMenuKey() {
-  yield takeLatest(CHANGE_MENUKEY_REQUEST, changeMenuKey);
-}
+
 function* watchIgnore() {
   yield takeLatest(IGNORE_REQUEST, ignore);
 }
@@ -339,7 +316,6 @@ export default function* userSaga() {
     fork(watchLoadUser),
     fork(watchSignup),
     fork(watchChangeNickname),
-    fork(watchChangeMenuKey),
     fork(watchIgnore),
     fork(watchLeave),
     fork(watchUnIgnore),
