@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var logo = require('./logo.png');","map":{"version":3,"sources":["C:/Users/HOME/Documents/ymillonga/front/public/assets/indexImages.js"],"names":["logo","require"],"mappings":"AAAA,OAAO,IAAMA,IAAI,GAAGC,OAAO,CAAC,YAAD,CAApB","sourcesContent":["export const logo = require('./logo.png');"]},"metadata":{},"sourceType":"module"}
