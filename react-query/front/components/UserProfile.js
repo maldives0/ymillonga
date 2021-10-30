@@ -27,7 +27,7 @@ const UserProfile = () => {
     setModalVisible(true);
   }, []);
   const onsubmitLeave = useCallback(() => {
-    if (!(me && me.id)) {
+    if (!(me && me?.id)) {
       return message.info("로그인이 필요합니다.");
     }
     dispatch({
@@ -55,7 +55,7 @@ const UserProfile = () => {
   return (
     <CardWrapper>
       <Card
-        key={`${me.id}_profile`}
+        key={`${me?.id}_profile`}
         style={{ width: "300", marginTop: 16 }}
         type="inner"
         extra={[
@@ -75,39 +75,39 @@ const UserProfile = () => {
           </Tooltip>,
         ]}
         actions={[
-          <div key={`${me.id}_twit`}>
-            <Link prefetch={false} href={`/user/${me.id}`}>
+          <div key={`${me?.id}_twit`}>
+            <Link prefetch={false} href={`/user/${me?.id}`}>
               <a>
                 게시글
                 <br />
-                {me.Posts.length}
+                {me?.Posts.length}
               </a>
             </Link>
           </div>,
-          <div key={`${me.id}_following`}>
+          <div key={`${me?.id}_following`}>
             <Link prefetch={false} href={`/posts/related`}>
               <a>
                 팔로잉
                 <br />
-                {me.Followings.length}
+                {me?.Followings.length}
               </a>
             </Link>
           </div>,
-          <div key={`${me.id}_follower`}>
+          <div key={`${me?.id}_follower`}>
             <Link href="/profile">
               <a>
                 팔로어
                 <br />
-                {me.Followers.length}
+                {me?.Followers.length}
               </a>
             </Link>
           </div>,
-          <div key={`${me.id}_ignoring`}>
+          <div key={`${me?.id}_ignoring`}>
             <Link href="/profile">
               <a>
                 차단자
                 <br />
-                {me.Ignorings.length}
+                {me?.Ignorings.length}
               </a>
             </Link>
           </div>,
@@ -123,15 +123,15 @@ const UserProfile = () => {
           <p>탈퇴하실 경우 되돌릴 수 없습니다. 계속 진행하시겠습니까?</p>
         </Modal>
         <Card.Meta
-          key={`${me.id}_modal`}
+          key={`${me?.id}_modal`}
           avatar={
-            <Link prefetch={false} href={`/user/${me.id}`}>
+            <Link prefetch={false} href={`/user/${me?.id}`}>
               <a>
-                <Avatar>{me.nickname[0]}</Avatar>
+                <Avatar>{me?.nickname[0]}</Avatar>
               </a>
             </Link>
           }
-          title={me.nickname}
+          title={me?.nickname}
           style={{ marginBottom: "10px" }}
         />
         {editNickname && <NicknameEditForm onCancel={onCancel} />}

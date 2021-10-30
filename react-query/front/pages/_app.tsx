@@ -1,3 +1,6 @@
+import "antd/dist/antd.css";
+// import "antd/dist/antd.less";
+import wrapper from "../store/configureStore";
 import React, { useRef } from "react";
 import Head from "next/head";
 import { AppProps, NextWebVitalsMetric } from "next/app";
@@ -27,7 +30,9 @@ const Ymillonga = ({ Component, pageProps }: AppProps) => {
 };
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric);
+  console.log("metric", metric);
 }
 
-export default Ymillonga;
+// export default Ymillonga;
+
+export default wrapper.withRedux(Ymillonga);
