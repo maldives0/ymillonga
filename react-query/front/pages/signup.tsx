@@ -1,22 +1,20 @@
 import React, { useCallback, useState, useEffect } from "react";
 import Head from "next/head";
-import { Form, Checkbox, Button, Input } from "antd";
+import { Form, Checkbox, Button, Input, message } from "antd";
+import { useQuery } from "react-query";
 import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
-import { useSelector, useDispatch } from "react-redux";
-import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from "../reducers/user";
+import User from "../interfaces/user";
 import Router from "next/router";
 import { END } from "redux-saga";
 import axios from "axios";
+import { loadMyInfoAPI, signupAPI } from "../apis/user";
 import wrapper from "../store/configureStore";
 
 const Signup = () => {
-  const dispatch = useDispatch();
-  const me = useSelector((state) => state.user.me);
-  const signUpLoading = useSelector((state) => state.user.signUpLoading);
-  const signUpDone = useSelector((state) => state.user.signUpDone);
-  const signUpError = useSelector((state) => state.user.signUpError);
+  const { data: me } = useQuery<User>("user", loadMyInfoAPI);
 
+  const [loading, setLoading] = useState(false);
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
@@ -31,16 +29,7 @@ const Signup = () => {
       Router.replace("/"); //push는 뒤로가기 하면 히스토리가 남아있지만 replace는 지워짐
     }
   }, [me && me.id]);
-  useEffect(() => {
-    if (signUpDone) {
-      Router.replace("/login");
-    }
-  }, [signUpDone]);
-  useEffect(() => {
-    if (signUpError) {
-      alert(signUpError);
-    }
-  }, [signUpError]);
+
   const onChangePasswordCheck = useCallback(
     (e) => {
       setPasswordCheck(e.target.value);
@@ -66,14 +55,17 @@ const Signup = () => {
       setTermError(true);
       return alert("약관에 동의해주세요.");
     }
-    dispatch({
-      type: SIGN_UP_REQUEST,
-      data: {
-        email,
-        password,
-        nickname,
-      },
-    });
+    setLoading(true);
+    signupAPI({ email, password, nickname })
+      .then(() => {
+        Router.replace("/");
+      })
+      .catch((error) => {
+        message.error(error.response.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [email, password, passwordCheck, term]);
   const validateMessages = {
     required: "${label}을 적어주세요!",
@@ -144,7 +136,7 @@ const Signup = () => {
             )}
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={signUpLoading}>
+            <Button type="primary" htmlType="submit" loading={loading}>
               가입하기
             </Button>
           </Form.Item>
@@ -160,12 +152,19 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (context.req && cookie) {
       axios.defaults.headers.Cookie = cookie;
     }
-    context.store.dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    context.store.dispatch(END);
+    const response = await loadMyInfoAPI();
+    if (response.data) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
-    await context.store.sagaTask.toPromise();
+    return {
+      props: {},
+    };
   }
 );
 export default Signup;
