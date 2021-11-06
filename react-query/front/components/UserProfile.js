@@ -59,14 +59,14 @@ const UserProfile = () => {
         style={{ width: "300", marginTop: 16 }}
         type="inner"
         extra={[
-          <Tooltip title="닉네임 바꾸기">
+          <Tooltip key="change-nickname-btn" title="닉네임 바꾸기">
             <SettingOutlined
               key="edit-nickname"
               onClick={onClickEditNickname}
             />
           </Tooltip>,
           <Divider type="vertical" />,
-          <Tooltip title="탈퇴하기">
+          <Tooltip key="leave-btn" title="탈퇴하기">
             <ClearOutlined
               key="leave"
               onClick={onLeave}

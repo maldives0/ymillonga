@@ -15,7 +15,7 @@ const Ymillonga = ({ Component, pageProps }: AppProps) => {
   if (!queryClientRef.current) {
     queryClientRef.current = new QueryClient();
   }
-
+  // console.log("pageProps.dehydratedState", pageProps.dehydratedState);
   return (
     <QueryClientProvider client={queryClientRef.current}>
       <Hydrate state={pageProps.dehydratedState}>

@@ -8,12 +8,12 @@ export function loadPostAPI(data: number) {
   return axios.get(`/post/${data}`).then((response) => response.data);
 }
 
-export function loadUserPostsAPI(data: string, lastId?: number) {
+export function loadUserPostsAPI(data: number, lastId?: number) {
   return axios
     .get(`/user/${data}/posts?lastId=${lastId || 0}`)
     .then((response) => response.data);
 }
-export function loadHashtagPostsAPI(data: string, lastId?: number) {
+export function loadHashtagPostsAPI(data: number, lastId?: number) {
   return axios
     .get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`)
     .then((response) => response.data); // 주소에 한글이 들어가면 unescaped character error가 난다

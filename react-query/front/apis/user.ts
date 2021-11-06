@@ -8,16 +8,16 @@ export function loadMyInfoAPI() {
   return axios.get("/user").then((response) => response.data);
 }
 
-export function loadUserAPI(data: { id: number }) {
-  return axios.get(`/user/${data}`);
+export function loadUserAPI(data: number) {
+  return axios.get(`/user/${data}`).then((response) => response.data);
 }
 
 export function loginAPI(data: { email: string; password: string }) {
-  return axios.post("/user/login", data);
+  return axios.post("/user/login", data).then((response) => response.data);
 }
 
 export function logoutAPI() {
-  return axios.post("/user/logout");
+  return axios.post("/user/logout").then((response) => response.data);
 }
 
 export function signupAPI(data: {
@@ -25,33 +25,39 @@ export function signupAPI(data: {
   nickname: string;
   password: string;
 }) {
-  return axios.post("/user", data);
+  return axios.post("/user", data).then((response) => response.data);
 }
 
 export function changeNicknameAPI(data: string) {
-  return axios.patch("/user/nickname", { nickname: data });
+  return axios
+    .patch("/user/nickname", { nickname: data })
+    .then((response) => response.data);
 }
 
-export function ignoreAPI(data: { id: number }) {
-  return axios.patch(`/user/${data}/ignore`);
+export function ignoreAPI(data: number) {
+  return axios.patch(`/user/${data}/ignore`).then((response) => response.data);
 }
 
-export function unIgnoreAPI(data: { id: number }) {
-  return axios.delete(` /user/${data}/ignore`);
+export function unIgnoreAPI(data: number) {
+  return axios
+    .delete(` /user/${data}/ignore`)
+    .then((response) => response.data);
 }
 
-export function followAPI(data: { id: number }) {
-  return axios.patch(`/user/${data}/follow`);
+export function followAPI(data: number) {
+  return axios.patch(`/user/${data}/follow`).then((response) => response.data);
 }
 
-export function unfollowAPI(data: { id: number }) {
-  return axios.delete(`/user/${data}/follow`);
+export function unfollowAPI(data: number) {
+  return axios.delete(`/user/${data}/follow`).then((response) => response.data);
 }
 
-export function removeFollowerAPI(data: { id: number }) {
-  return axios.delete(`/user/follower/${data}`);
+export function removeFollowerAPI(data: number) {
+  return axios
+    .delete(`/user/follower/${data}`)
+    .then((response) => response.data);
 }
 
 export function leaveAPI() {
-  return axios.delete(`/user/leave`);
+  return axios.delete(`/user/leave`).then((response) => response.data);
 }
