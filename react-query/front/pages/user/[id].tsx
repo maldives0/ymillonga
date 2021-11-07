@@ -141,7 +141,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   }
 
-  await queryClient.prefetchInfiniteQuery(["user", id], () =>
+  await queryClient.prefetchInfiniteQuery(["user", id, "posts"], () =>
     loadUserPostsAPI(Number(id))
   );
   await queryClient.prefetchQuery(["user", id], () => loadUserAPI(Number(id)));
