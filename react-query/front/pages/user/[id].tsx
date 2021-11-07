@@ -9,7 +9,7 @@ import {
   useInfiniteQuery,
 } from "react-query";
 import { loadMyInfoAPI, loadUserAPI } from "../../apis/user";
-import { loadPostsAPI, loadUserPostsAPI } from "../../apis/post";
+import { loadUserPostsAPI } from "../../apis/post";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -22,13 +22,19 @@ const UserPosts = () => {
   const router = useRouter();
   const [ref, inView] = useInView();
   const { id } = router.query; //next 다이나믹 라우팅으로 특정 사용자id값을 query로 가져올 수 있다
-  const { data: me } = useQuery<User>("user", loadMyInfoAPI);
+
   const { data: userInfo } = useQuery<User, AxiosError>(["user", id], () =>
     loadUserAPI(Number(id))
   );
-  const { data, isLoading, fetchNextPage } = useInfiniteQuery<Post[]>(
-    "posts",
-    ({ pageParam = "" }) => loadPostsAPI(pageParam),
+  // console.log("userInfo", userInfo);
+  const { data: me } = useQuery<User>("user", loadMyInfoAPI);
+  const {
+    data,
+    isLoading: loadPostsLoading,
+    fetchNextPage,
+  } = useInfiniteQuery<Post[]>(
+    ["user", id, "posts"],
+    ({ pageParam = "" }) => loadUserPostsAPI(Number(id), pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage?.[lastPage.length - 1]?.id;
@@ -36,17 +42,18 @@ const UserPosts = () => {
     }
   );
 
-  // console.log("data", data);
   const mainPosts = data?.pages.flat();
   const isEmpty = data?.pages[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data.pages[data.pages.length - 1]?.length < 10);
-  const hasMorePosts = !isEmpty || !isReachingEnd;
-  const readToLoad = hasMorePosts && !isLoading;
+  const hasMorePosts = !isEmpty && !isReachingEnd;
+  const readToLoad = hasMorePosts && !loadPostsLoading;
 
   useEffect(() => {
-    console.log("inView", inView);
-    inView && readToLoad && fetchNextPage();
+    console.log("inView!!!", inView);
+    if (inView && readToLoad) {
+      fetchNextPage();
+    }
   }, [inView, readToLoad, fetchNextPage]);
 
   return (
@@ -125,7 +132,6 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const queryClient = new QueryClient();
   const id = context.params?.id as string;
 
-  console.log("id", id);
   if (!id) {
     return {
       redirect: {
@@ -135,10 +141,10 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   }
 
-  // await queryClient.prefetchQuery(["user", id], () => loadUserPostsAPI(Number(id)));
   await queryClient.prefetchInfiniteQuery(["user", id], () =>
     loadUserPostsAPI(Number(id))
   );
+  await queryClient.prefetchQuery(["user", id], () => loadUserAPI(Number(id)));
 
   return {
     props: {

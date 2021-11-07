@@ -20,6 +20,7 @@ const Ymillonga = ({ Component, pageProps }: AppProps) => {
     <QueryClientProvider client={queryClientRef.current}>
       <Hydrate state={pageProps.dehydratedState}>
         <Head>
+          <meta charSet="utf-8" />
           <title>Ymillonga</title>
         </Head>
         <Component {...pageProps} />

@@ -105,6 +105,7 @@ const PostCard: VFC<{ post: Post }> = ({ post }) => {
       },
     }
   );
+
   const onLike = useCallback(() => {
     if (!me?.id) {
       return message.info("로그인 후 좋아요를 할 수 있습니다.");
@@ -275,7 +276,7 @@ const PostCard: VFC<{ post: Post }> = ({ post }) => {
               avatar={
                 <Link prefetch={false} href={`/user/${post.Retweet.User.id}`}>
                   <a>
-                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    <Avatar>{post.Retweet.User.nickname[0]} </Avatar>
                   </a>
                 </Link>
               }
@@ -297,9 +298,9 @@ const PostCard: VFC<{ post: Post }> = ({ post }) => {
             </div>
             <Card.Meta
               avatar={
-                <Link href={`/user/${post.User?.id}`} prefetch={false}>
+                <Link href={`/user/${post.User.id}`} prefetch={false}>
                   <a>
-                    <Avatar>{post.User?.nickname[0] || "null"}</Avatar>
+                    <Avatar>{post.User.nickname?.[0]} </Avatar>
                   </a>
                 </Link>
               }
