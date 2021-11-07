@@ -1,5 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useRef, useCallback } from "react";
 import { Form, Input, Button } from "antd";
 import useInput from "../hooks/useInput";
 import {
@@ -8,7 +7,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import { uploadImagesAPI, removePostAPI, addPostAPI } from "../apis/post";
+import { uploadImagesAPI, addPostAPI } from "../apis/post";
 import { loadMyInfoAPI } from "../apis/user";
 import Post from "../interfaces/post";
 import User from "../interfaces/user";

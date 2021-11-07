@@ -36,7 +36,7 @@ const UserPosts = () => {
     }
   );
 
-  console.log("data", data);
+  // console.log("data", data);
   const mainPosts = data?.pages.flat();
   const isEmpty = data?.pages[0]?.length === 0;
   const isReachingEnd =
@@ -135,7 +135,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   }
 
-  await queryClient.prefetchQuery(["user", id], () => loadUserAPI(Number(id)));
+  // await queryClient.prefetchQuery(["user", id], () => loadUserPostsAPI(Number(id)));
   await queryClient.prefetchInfiniteQuery(["user", id], () =>
     loadUserPostsAPI(Number(id))
   );

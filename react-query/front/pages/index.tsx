@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   dehydrate,
   QueryClient,
@@ -35,9 +35,9 @@ const Home = () => {
       },
     }
   );
-  console.log("data", data);
 
   const mainPosts = data?.pages.flat();
+  // console.log("mainPosts", mainPosts);
   const isEmpty = data?.pages[0]?.length === 0;
   const isReachingEnd =
     isEmpty || (data && data.pages[data.pages.length - 1]?.length < 10);

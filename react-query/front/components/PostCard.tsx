@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, VFC } from "react";
 import {
   Card,
   Button,
@@ -11,10 +11,7 @@ import {
   Tooltip,
   message,
 } from "antd";
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import { InputReport, CardWrapper } from "./style";
-
 import moment from "moment";
 import Link from "next/link";
 import { default as RetweetOutlined } from "@ant-design/icons/RetweetOutlined";
@@ -22,135 +19,176 @@ import { default as HeartTwoTone } from "@ant-design/icons/HeartTwoTone";
 import { default as HeartOutlined } from "@ant-design/icons/HeartOutlined";
 import { default as MessageOutlined } from "@ant-design/icons/MessageOutlined";
 import { default as EllipsisOutlined } from "@ant-design/icons/EllipsisOutlined";
-
 import CommentForm from "./CommentForm";
 import PostImages from "./PostImages";
 import FollowButton from "./FollowButton";
 import PostCardContent from "./PostCardContent";
 import {
-  REMOVE_POST_REQUEST,
-  LIKE_POST_REQUEST,
-  UNLIKE_POST_REQUEST,
-  RETWEET_REQUEST,
-  UPDATE_POST_REQUEST,
-  REPORT_POST_REQUEST,
-} from "../reducers/post";
+  removePostAPI,
+  likePostAPI,
+  unlikePostAPI,
+  retweetAPI,
+  updatePostAPI,
+  reportPostAPI,
+} from "../apis/post";
 import useInput from "../hooks/useInput";
+import {
+  InfiniteData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query";
+import { loadMyInfoAPI } from "../apis/user";
+import User from "../interfaces/user";
+import Post from "../interfaces/post";
+import { AxiosError } from "axios";
 
 moment.locale("ko");
 
-const PostCard = ({ post }) => {
-  const dispatch = useDispatch();
-  const id = useSelector((state) => state.user.me?.id);
+const PostCard: VFC<{ post: Post }> = ({ post }) => {
+  const queryClient = useQueryClient();
+  const { data: me } = useQuery<User>("user", loadMyInfoAPI);
   const [reportText, onChangeReportText] = useInput("");
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const reportPostLoading = useSelector(
-    (state) => state.post.reportPostLoading
-  );
-  const reportPostDone = useSelector((state) => state.post.reportPostDone);
-  const reportPostError = useSelector((state) => state.post.reportPostError);
-  const removePostLoading = useSelector(
-    (state) => state.post.removePostLoading
-  );
+  const [reportPostLoading, setReportPostLoading] = useState(false);
+  const [removePostLoading, setRemovePostLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const likeMutation = useMutation<Post, AxiosError, number>(
+    ["post", post.id],
+    likePostAPI,
+    {
+      onMutate() {
+        if (!me?.id) {
+          return message.info("로그인 후 좋아요를 할 수 있습니다.");
+        }
+        queryClient.setQueryData<InfiniteData<Post[]>>("posts", (data) => {
+          const found = data?.pages.flat().find((v) => v.id === post.id);
+          if (found) {
+            found.Likers.push({ id: me.id });
+          }
+          console.log("like found", found);
+          return {
+            pageParams: data?.pageParams || [],
+            pages: data?.pages || [],
+          };
+        });
+      },
+      onSettled() {
+        queryClient.refetchQueries("posts");
+      },
+    }
+  );
+  const unlikeMutation = useMutation<Post, AxiosError, number>(
+    ["post", post.id],
+    unlikePostAPI,
+    {
+      onMutate() {
+        if (!me?.id) {
+          return message.info("로그인 후 좋아요를 할 수 있습니다.");
+        }
+        queryClient.setQueryData<InfiniteData<Post[]>>("posts", (data) => {
+          const found = data?.pages.flat().find((v) => v.id === post.id);
+          if (found) {
+            const index = found.Likers.findIndex((v) => v.id === me.id);
+            found.Likers.splice(index, 1);
+          }
+          console.log("unlike found", found);
+          return {
+            pageParams: data?.pageParams || [],
+            pages: data?.pages || [],
+          };
+        });
+      },
+      onSettled() {
+        queryClient.refetchQueries("posts");
+      },
+    }
+  );
   const onLike = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return message.info("로그인 후 좋아요를 할 수 있습니다.");
     }
-    return dispatch({
-      type: LIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
+
+    likeMutation.mutate(post.id);
+  }, [me?.id, post?.id]);
+
   const onUnlike = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return alert("로그인이 필요합니다");
     }
-    return dispatch({
-      type: UNLIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
+
+    unlikeMutation.mutate(post.id);
+  }, [me?.id, post?.id]);
+
   const onRemovePost = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return alert("로그인이 필요합니다");
     }
-    return dispatch({
-      type: REMOVE_POST_REQUEST,
-      data: post.id,
-    });
-  }, [id]);
+    setRemovePostLoading(true);
+    removePostAPI(post.id).finally(() => setRemovePostLoading(false));
+  }, [me?.id, post?.id]);
+
   const onRetweet = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return message.info("로그인 후 리트윗할 수 있습니다.");
     }
-    dispatch({
-      type: RETWEET_REQUEST,
-      data: post.id,
+
+    retweetAPI(post.id).catch((error) => {
+      message.error(error.response.data);
     });
-  }, [id]);
+  }, [me?.id, post?.id]);
 
   const onToggleComment = useCallback(() => {
-    if (id) {
+    if (me?.id) {
       setCommentFormOpened((prev) => !prev);
     } else {
       return message.info("로그인 후 댓글을 입력할 수 있습니다.");
     }
-  }, [id]);
+  }, [me?.id]);
 
   const onClickUpdate = useCallback(() => {
     setEditMode(true);
   }, []);
+
   const onCancelUpdate = useCallback(() => {
     setEditMode(false);
   }, []);
+
   const onChangePost = useCallback(
     (editText) => () => {
-      if (!id) {
+      if (!me?.id) {
         return alert("로그인이 필요합니다.");
       }
-      dispatch({
-        type: UPDATE_POST_REQUEST,
-        data: {
-          PostId: post.id,
-          content: editText,
-        },
-      });
+
+      updatePostAPI({ postId: post.id, content: editText });
     },
     [post]
   );
+
   const onReport = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return message.info("로그인 후 신고할 수 있습니다.");
     }
     setModalVisible(true);
   }, []);
+
   const onsubmitReport = useCallback(() => {
-    if (!id) {
+    if (!me?.id) {
       return alert("로그인이 필요합니다.");
     }
-    dispatch({
-      type: REPORT_POST_REQUEST,
-      data: {
-        postId: post.id,
-        reason: reportText,
-      },
-    });
+    setReportPostLoading(true);
+    reportPostAPI({ postId: post.id, content: reportText }).finally(
+      () => (setReportPostLoading(false), setModalVisible(false))
+    );
   }, [reportText]);
+
   const reportCancel = useCallback(() => {
     setModalVisible(false);
   }, []);
-  useEffect(() => {
-    if (reportPostDone) {
-      setModalVisible(false);
-    }
-    if (reportPostError) {
-      setModalVisible(false);
-    }
-  }, [reportPostDone, reportPostError]);
-  const liked = post.Likers?.find((v) => v.id === id);
+
+  const liked = post.Likers?.find((v) => v.id === me?.id);
+
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -177,13 +215,13 @@ const PostCard = ({ post }) => {
             key="ellipsis"
             content={
               <Button.Group>
-                {id && post.User?.id === id ? (
+                {me?.id && post.User?.id === me?.id ? (
                   <>
                     {!post.RetweetId && (
                       <Button onClick={onClickUpdate}>수정</Button>
                     )}
                     <Button
-                      type="danger"
+                      danger
                       onClick={onRemovePost}
                       loading={removePostLoading}
                     >
@@ -199,7 +237,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
-        extra={id && <FollowButton post={post} />}
+        extra={me?.id && <FollowButton post={post} />}
         title={
           post.RetweetId
             ? `${post.User?.nickname || "탈퇴한 사용자"}님이 리트윗하셨습니다.`
@@ -235,11 +273,7 @@ const PostCard = ({ post }) => {
             </div>
             <Card.Meta
               avatar={
-                <Link
-                  prefetch={false}
-                  href={`/user/${post.Retweet.UserId}`}
-                  prefetch={false}
-                >
+                <Link prefetch={false} href={`/user/${post.Retweet.User.id}`}>
                   <a>
                     <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
                   </a>
@@ -282,7 +316,7 @@ const PostCard = ({ post }) => {
           </>
         )}
       </Card>
-      {id && commentFormOpened && (
+      {me?.id && commentFormOpened && (
         <>
           <CommentForm post={post} />
           <List
@@ -310,17 +344,5 @@ const PostCard = ({ post }) => {
     </CardWrapper>
   );
 };
-PostCard.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.number,
-    User: PropTypes.object,
-    content: PropTypes.string,
-    createdAt: PropTypes.string,
-    Comments: PropTypes.arrayOf(PropTypes.any),
-    Images: PropTypes.arrayOf(PropTypes.any),
-    Likers: PropTypes.arrayOf(PropTypes.object),
-    RetweetId: PropTypes.number,
-    Retweet: PropTypes.objectOf(PropTypes.any),
-  }).isRequired,
-};
+
 export default PostCard;

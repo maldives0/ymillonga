@@ -67,7 +67,7 @@ export function unlikePostAPI(data: number) {
   return axios.delete(`/post/${data}/like`).then((response) => response.data);
 }
 
-export function reportPostAPI(data: { postId: number }) {
+export function reportPostAPI(data: { postId: number; content: string }) {
   return axios
     .post(`/post/${data.postId}/report`, data)
     .then((response) => response.data); // POST /post/1/comment
