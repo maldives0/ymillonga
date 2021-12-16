@@ -1,5 +1,6 @@
+import { Button } from "antd";
 import React, { useEffect, useCallback } from "react";
-import { useGetLoadMyInfoQuery } from "../services/user";
+import { useGetLoadMyInfoQuery, usePostLoginMutation } from "../services/user";
 // import App, { AppProps } from "next/app";
 // import { applyMiddleware, compose, createStore, Store } from "redux";
 // import createSagaMiddleware, { Task } from "redux-saga";
@@ -28,12 +29,27 @@ import { useGetLoadMyInfoQuery } from "../services/user";
 // }
 const Home = () => {
   const { data, isError, isLoading } = useGetLoadMyInfoQuery(null);
+  const [
+    postLogin,
+    {
+      isLoading: isLoadingLogin,
+      isSuccess: isSuccessLogin,
+      isError: isErrorLogin,
+    },
+  ] = usePostLoginMutation();
 
   useEffect(() => {
     console.log("data", data);
     console.log("isError", isError);
     console.log("isLoading", isLoading);
-  }, [data, isError, isLoading]);
+    console.log("isLoadingLogin", isLoadingLogin);
+    console.log("isSuccessLogin", isSuccessLogin);
+    console.log("isErrorLogin", isErrorLogin);
+  }, [data, isError, isLoading, isLoadingLogin]);
+
+  const handleLogin = useCallback(() => {
+    postLogin({ email: "maliethy@kakao.com", password: "tkfkd563802" });
+  }, []);
   //   const dispatch = useDispatch();
   //   const id = useSelector((state: RootStateOrAny) => state.user.me?.id);
   //   const mainPosts = useSelector(
@@ -134,7 +150,10 @@ const Home = () => {
   //   }, [mainPosts, hasMorePosts, loadPostsLoading]);
 
   return (
-    <>hello ymillonga</>
+    <>
+      hello ymillonga
+      <Button onClick={handleLogin}>login</Button>
+    </>
     // <AppLayout>
     //     {me && me.id ? <UserProfile /> : (
     //         <PageHeader
