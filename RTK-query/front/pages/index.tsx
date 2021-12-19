@@ -48,7 +48,7 @@ const Home = () => {
   }, [data, isError, isLoading, isLoadingLogin]);
 
   const handleLogin = useCallback(() => {
-    postLogin({ email: "maliethy@kakao.com", password: "tkfkd563802" });
+    postLogin({ email: "maliethy@kakao.com", password: "check.env" });
   }, []);
   //   const dispatch = useDispatch();
   //   const id = useSelector((state: RootStateOrAny) => state.user.me?.id);

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { backUrl } from "../config/config";
+import { RootState } from "../store/configureStore";
 
 interface LoginRequestProps {
   email: string;
@@ -14,7 +15,10 @@ interface LoginResponseProps {
   Ignorings: number;
 }
 export const userApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: backUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: backUrl,
+    credentials: "include",
+  }),
   tagTypes: [],
   endpoints: (builder) => ({
     getLoadMyInfo: builder.query({
@@ -23,13 +27,11 @@ export const userApi = createApi({
     postLogin: builder.mutation<LoginResponseProps, LoginRequestProps>({
       query(body) {
         return {
-          url: "/login",
+          url: "/user/login",
           method: "POST",
           body,
         };
       },
-      transformResponse: (response: { data: LoginResponseProps }, meta, arg) =>
-        response.data,
     }),
   }),
 });

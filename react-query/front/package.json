@@ -4,10 +4,10 @@
   "description": "ymilonga-front",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3050",
+    "dev": "next -p 3052",
     "build": "cross-env ANALYZE=true NODE_ENV=true next build",
     "prestart": "npm run build",
-    "start": "cross-env NODE_ENV=production next start -p 3050"
+    "start": "cross-env NODE_ENV=production next start -p 3052"
   },
   "repository": {
     "type": "git",
