@@ -1,14 +1,14 @@
-import { Button } from "antd";
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useGetLoadMyInfoQuery, usePostLoginMutation } from "../services/user";
+import { useGetLoadPostsQuery } from "../services/post";
 // import App, { AppProps } from "next/app";
 // import { applyMiddleware, compose, createStore, Store } from "redux";
 // import createSagaMiddleware, { Task } from "redux-saga";
 // import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
-// import AppLayout from "../components/AppLayout";
-// import PostForm from "../components/PostForm";
-// import PostCard from "../components/PostCard";
-// import UserProfile from "../components/UserProfile";
+import AppLayout from "../components/AppLayout";
+import PostForm from "../components/PostForm";
+import PostCard from "../components/PostCard";
+import UserProfile from "../components/UserProfile";
 // import { IReducerState, RootState } from "../reducers";
 // import {
 //   LOAD_POSTS_REQUEST,
@@ -18,17 +18,27 @@ import { useGetLoadMyInfoQuery, usePostLoginMutation } from "../services/user";
 // import wrapper from "../store/configureStore";
 // import { END } from "redux-saga";
 // import axios from "axios";
-// import { PageHeader, message, Button } from "antd";
-// import Link from "next/link";
-// import Router from "next/router";
-// import { ButtonLayout, ImgWrapper } from "../components/style";
+import { PageHeader, message, Button } from "antd";
+import Link from "next/link";
+import Router from "next/router";
+import { ButtonLayout, ImgWrapper } from "../components/style";
 
-// import { default as LoginOutlined } from "@ant-design/icons/LoginOutlined";
+import { default as LoginOutlined } from "@ant-design/icons/LoginOutlined";
 // interface Props extends AppProps {
 //   store: Store<IReducerState>;
 // }
 const Home = () => {
-  const { data, isError, isLoading } = useGetLoadMyInfoQuery(null);
+  const [lastId, setLastId] = useState(0);
+  const {
+    data: me,
+    isError: isLoadMyInfoError,
+    isLoading: isLoadMyInfoLoading,
+  } = useGetLoadMyInfoQuery(null);
+  const {
+    data: mainPosts,
+    isError: isLoadPostsError,
+    isLoading: isLoadPostsLoading,
+  } = useGetLoadPostsQuery(lastId);
   const [
     postLogin,
     {
@@ -39,16 +49,25 @@ const Home = () => {
   ] = usePostLoginMutation();
 
   useEffect(() => {
-    console.log("data", data);
-    console.log("isError", isError);
-    console.log("isLoading", isLoading);
+    console.log("me", me);
+    console.log("isLoadMyInfoError", isLoadMyInfoError);
+    console.log("isLoadMyInfoLoading", isLoadMyInfoLoading);
+  }, [me, isLoadMyInfoError, isLoadMyInfoLoading, isLoadingLogin]);
+
+  useEffect(() => {
     console.log("isLoadingLogin", isLoadingLogin);
     console.log("isSuccessLogin", isSuccessLogin);
     console.log("isErrorLogin", isErrorLogin);
-  }, [data, isError, isLoading, isLoadingLogin]);
+  }, [isLoadingLogin, isSuccessLogin, isErrorLogin]);
+
+  useEffect(() => {
+    console.log("mainPosts", mainPosts);
+    console.log("isLoadPostsError", isLoadPostsError);
+    console.log("isLoadPostsLoading", isLoadPostsLoading);
+  }, [isLoadPostsError, isLoadPostsLoading, mainPosts]);
 
   const handleLogin = useCallback(() => {
-    postLogin({ email: "maliethy@kakao.com", password: "check.env" });
+    postLogin({ email: "maliethy@kakao.com", password: "0*" });
   }, []);
   //   const dispatch = useDispatch();
   //   const id = useSelector((state: RootStateOrAny) => state.user.me?.id);
@@ -70,7 +89,7 @@ const Home = () => {
   //   const retweetError = useSelector(
   //     (state: RootStateOrAny) => state.post.retweetError
   //   );
-  //   const me = useSelector((state: RootStateOrAny) => state.user.me);
+
   //   const ignoreError = useSelector(
   //     (state: RootStateOrAny) => state.user.ignoreError
   //   );
@@ -150,46 +169,45 @@ const Home = () => {
   //   }, [mainPosts, hasMorePosts, loadPostsLoading]);
 
   return (
-    <>
-      hello ymillonga
-      <Button onClick={handleLogin}>login</Button>
-    </>
-    // <AppLayout>
-    //     {me && me.id ? <UserProfile /> : (
-    //         <PageHeader
-    //             className="site-page-header"
-    //             onBack={() => Router.push('/login')}
-    //             title="이번 밀롱가에서는 어떤 일이 있었나요?"
-    //             subTitle="로그인을 하면 Y millonga에서 제공하는 다양한 기능을 누리실 수 있습니다."
-    //             backIcon={<ButtonLayout
-    //                 type="primary"
-    //                 onClick={() => Router.push('/login')}
-    //             ><LoginOutlined />로그인</ButtonLayout>}
-    //         />
-    //     )}
-    //     <ImgWrapper>
-    //         <img src="/images/dancers.png" />
-    //     </ImgWrapper>
+    <AppLayout>
+      {me && me.id ? (
+        <UserProfile />
+      ) : (
+        <PageHeader
+          className="site-page-header"
+          onBack={() => Router.push("/login")}
+          title="이번 밀롱가에서는 어떤 일이 있었나요?"
+          subTitle="로그인을 하면 Y millonga에서 제공하는 다양한 기능을 누리실 수 있습니다."
+          backIcon={
+            <ButtonLayout type="primary" onClick={() => Router.push("/login")}>
+              <LoginOutlined />
+              로그인
+            </ButtonLayout>
+          }
+        />
+      )}
+      <ImgWrapper>
+        <img src="/images/dancers.png" />
+      </ImgWrapper>
 
-    //     {me && me.id &&
-    //         (<>
-    //             <PostForm />
-    //             <Button
-    //                 style={{ marginBottom: 5 }}
-    //                 type="primary"
-    //                 loading={loadPostsLoading}
-    //                 onClick={onClickRelatedPosts}>
-    //                 <Link href='/posts/related'>
-    //                     <a>팔로잉 게시글만 보기</a>
-    //                 </Link></Button>
-    //         </>)}
+      {me && me.id && (
+        <>
+          {/* <PostForm /> */}
+          {/* <Button
+                    style={{ marginBottom: 5 }}
+                    type="primary"
+                    loading={isLoadPostsLoading}
+                    onClick={onClickRelatedPosts}>
+                    <Link href='/posts/related'>
+                        <a>팔로잉 게시글만 보기</a>
+                    </Link></Button> */}
+        </>
+      )}
 
-    //     {mainPosts?.map((post) => {
-    //         return (
-    //             <PostCard key={post.id} post={post} />
-    //         );
-    //     })}
-    // </AppLayout>
+      {mainPosts?.map((post) => {
+        return <PostCard key={post.id} post={post} />;
+      })}
+    </AppLayout>
   );
 };
 //antd.less => antd customize theme

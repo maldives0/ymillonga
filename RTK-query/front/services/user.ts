@@ -1,30 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { backUrl } from "../config/config";
-import { RootState } from "../store/configureStore";
+import User from "../interfaces/user";
 
-interface LoginRequestProps {
-  email: string;
-  password: string;
-}
-interface LoginResponseProps {
-  id: string;
-  nickname: string;
-  Posts: number;
-  Followings: number;
-  Followers: number;
-  Ignorings: number;
-}
 export const userApi = createApi({
+  reducerPath: "User",
   baseQuery: fetchBaseQuery({
     baseUrl: backUrl,
     credentials: "include",
   }),
-  tagTypes: [],
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getLoadMyInfo: builder.query({
       query: () => `/user`,
     }),
-    postLogin: builder.mutation<LoginResponseProps, LoginRequestProps>({
+    postLogin: builder.mutation<User, Pick<User, "id" & "password">>({
       query(body) {
         return {
           url: "/user/login",

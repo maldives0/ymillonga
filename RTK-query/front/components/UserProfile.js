@@ -7,16 +7,21 @@ import NicknameEditForm from "./NicknameEditForm";
 import { useSelector, useDispatch } from "react-redux";
 import { LEAVE_REQUEST, LOG_OUT_REQUEST } from "../reducers/user";
 import { CardWrapper } from "./style";
+import { useGetLoadMyInfoQuery } from "../services/user";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const me = useSelector((state) => state.user.me);
-  const leaveLoading = useSelector((state) => state.post.leaveLoading);
+  const {
+    data: me,
+    isError: isLoadMyInfoError,
+    isLoading: isLoadMyInfoLoading,
+  } = useGetLoadMyInfoQuery(null);
+  // const leaveLoading = useSelector((state) => state.post.leaveLoading);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const changeNicknameDone = useSelector(
-    (state) => state.user.changeNicknameDone
-  );
+  // const changeNicknameDone = useSelector(
+  //   (state) => state.user.changeNicknameDone
+  // );
   const [editNickname, setEditNickname] = useState(false);
 
   const onClickEditNickname = useCallback(() => {
@@ -45,12 +50,12 @@ const UserProfile = () => {
   const onCancel = useCallback(() => {
     setEditNickname((prev) => !prev);
   }, []);
-  useEffect(() => {
-    if (changeNicknameDone) {
-      setEditNickname(false);
-      message.success("닉네임이 변경되었습니다.");
-    }
-  }, [changeNicknameDone]);
+  // useEffect(() => {
+  //   if (changeNicknameDone) {
+  //     setEditNickname(false);
+  //     message.success("닉네임이 변경되었습니다.");
+  //   }
+  // }, [changeNicknameDone]);
 
   return (
     <CardWrapper>
@@ -70,7 +75,7 @@ const UserProfile = () => {
             <ClearOutlined
               key="leave"
               onClick={onLeave}
-              loading={leaveLoading}
+              // loading={leaveLoading}
             />
           </Tooltip>,
         ]}
@@ -117,7 +122,7 @@ const UserProfile = () => {
           title="report"
           visible={modalVisible}
           onOk={onsubmitLeave}
-          confirmLoading={leaveLoading}
+          // confirmLoading={leaveLoading}
           onCancel={leaveCancel}
         >
           <p>탈퇴하실 경우 되돌릴 수 없습니다. 계속 진행하시겠습니까?</p>

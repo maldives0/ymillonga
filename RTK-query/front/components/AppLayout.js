@@ -14,11 +14,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { LOG_OUT_REQUEST } from "../reducers/user";
+import { useGetLoadMyInfoQuery } from "../services/user";
 
 const { Header, Content, Footer } = Layout;
 
 const AppLayout = ({ children }) => {
-  const me = useSelector((state) => state.user.me);
+  const {
+    data: me,
+    isError: isLoadMyInfoError,
+    isLoading: isLoadMyInfoLoading,
+  } = useGetLoadMyInfoQuery(null);
+
   const dispatch = useDispatch();
   const [searchInput, onChangeSearchInput] = useInput("");
 
