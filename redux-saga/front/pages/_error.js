@@ -1,15 +1,12 @@
-import { NextPage } from 'next';
-import { ErrorProps } from 'next/error';
-import React from 'react';
-interface Props extends ErrorProps {}
+import React from "react";
 
-const Error:NextPage<Props>=({ statusCode })=> {
+const Error = ({ statusCode }) => {
   return (
     <div>
       <h1>{statusCode} Error발생</h1>
     </div>
   );
-}
+};
 
 Error.defaultProps = {
   statusCode: 400,
