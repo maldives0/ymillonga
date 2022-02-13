@@ -1,7 +1,16 @@
 # 프로젝트명 : ymillonga sns version  
   
   
-## URL: https://ymillonga.xyz
+## 스크린샷
+
+<img width="1552" alt="Ymillonga homepage logout version" src="https://user-images.githubusercontent.com/67949211/153745384-5af63bcc-d84e-4c40-a242-6aab0ebe32cd.png">
+<img width="1552" alt="Ymillonga loginpage" src="https://user-images.githubusercontent.com/67949211/153745397-eb58cad0-b669-4558-a34e-a004a98ac2d6.png">
+<img width="548" alt="Ymillonga 반응형 556px" src="https://user-images.githubusercontent.com/67949211/153745411-23ea5b77-fadc-4bf5-8b22-878538e3fd40.png">
+<img width="560" alt="Ymillonga 반응형 556px 좋아요 댓글 저장 완료" src="https://user-images.githubusercontent.com/67949211/153745439-5176991f-3956-493a-ab81-7f9f10e7c601.png">
+<img width="581" alt="Ymillonga 리트윗 좋아요 수정, 신고 버튼 예시" src="https://user-images.githubusercontent.com/67949211/153745442-a7ec9070-a148-4b5d-8c82-41de00f3f198.png">
+<img width="581" alt="Ymillonga 이미지 업로드 저장 완료 예시" src="https://user-images.githubusercontent.com/67949211/153745865-21d8f27c-98c7-4346-99dd-ca0a6752bbe4.png">
+
+
   
   
 ## 작품 소개
